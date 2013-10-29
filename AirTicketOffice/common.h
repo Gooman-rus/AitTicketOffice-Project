@@ -6,10 +6,13 @@
 #define PORT	"3306"
 #define USER	"root"
 #define PASSWD	"qwerty721"
+#pragma once
 
 using namespace MySql::Data::MySqlClient;
 using namespace System;
 
-MySqlDataReader^ executeReq(String^ request);	// выполняет запрос
+extern int numTab;
 
+MySqlDataReader^ executeReq(String^ request);	// выполняет запрос
+String^ getError();
 #endif

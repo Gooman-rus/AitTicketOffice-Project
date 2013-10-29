@@ -1,4 +1,3 @@
-
 #pragma once
 #include "reg_check.h"
 #include "common.h"
@@ -183,7 +182,7 @@ namespace AirTicketOffice {
 			this->checkRules->AutoSize = true;
 			this->checkRules->Location = System::Drawing::Point(135, 129);
 			this->checkRules->Name = L"checkRules";
-			this->checkRules->Size = System::Drawing::Size(158, 17);
+			this->checkRules->Size = System::Drawing::Size(159, 17);
 			this->checkRules->TabIndex = 4;
 			this->checkRules->Text = L"С правилами соглашаюсь";
 			this->checkRules->UseVisualStyleBackColor = true;
@@ -219,6 +218,14 @@ namespace AirTicketOffice {
 				 
 			 }
 private: System::Void registerButton_Click(System::Object^  sender, System::EventArgs^  e) {
+			 // todo: соглашение с правилами
+			 // проверка ФИО: 3 слова (с мин. двумя символами) с большой буквы лат. или русск. алфавита
+			 // пароли мин. 3 символа, совпадают друг с другом
+			 // todo: проверки существующего паспорта в БД.
+			 // если паспорт есть, но пользователь не зарегистрирован в системе,
+			 // то зарегистрировать его, иначе - нет.
+			 // ФИО в базу добавлять в ВЕРХНЕМ РЕГИСТРЕ
+
 			 if (nameInput->Text->Length == 0)
 			 {
 				 MessageBox::Show("Поле 'ФИО' не может быть пустым.", "Ошибка",
@@ -270,8 +277,10 @@ private: System::Void registerButton_Click(System::Object^  sender, System::Even
 
 			 //String^ constring = L"datasource="+SERVER+";port="+PORT+";username="+USER+";password="+PASSWD;
 			 //MySqlConnection^ conDataBase = gcnew MySqlConnection(constring);
-			MySqlDataReader^ myReader = executeReq("INSERT INTO airlines.users (passport,password) VALUES("+
-									    inputPassport->Text+","+inputPassword->Text+")");
+			 MySqlDataReader^ myReader;
+			 numTab =  1;
+			myReader = executeReq("INSERT INTO airlines.users (passport,password) VALUES("+
+				        inputPassport->Text+","+inputPassword->Text+")");
 			 if (!myReader) return;
 			 myReader = executeReq("INSERT INTO airlines.passengers VALUES("+
 				        inputPassport->Text+",'"+nameInput->Text+"')");
@@ -292,8 +301,8 @@ private: System::Void registerButton_Click(System::Object^  sender, System::Even
 
 		 }
 private: System::Void nameInput_KeyPress(System::Object^  sender, System::Windows::Forms::KeyPressEventArgs^  e) {
-			//регулярное выражение для ФИО, которое содержит только буквы
-			Regex^ rx = gcnew Regex("[a-zA-Z]|[а-яА-Я]"); 
+			Regex^ rx = gcnew Regex("[a-zA-Z]|[а-яА-Я]");//регулярное выражение для ФИО,
+														 //которое содержит только буквы
 			String^ c1 = e->KeyChar.ToString();
             int i = (int)e->KeyChar;
             if (!(i == 8 || i==32 || rx->IsMatch(c1)))
@@ -301,6 +310,9 @@ private: System::Void nameInput_KeyPress(System::Object^  sender, System::Window
                 // запрет ввода любых символов, кроме англ. и русских
                 e->Handled = true;
             }
+		 }
+private: System::Void inputPassport_KeyPress(System::Object^  sender, System::Windows::Forms::KeyPressEventArgs^  e) {
+
 		 }
 };
 }
