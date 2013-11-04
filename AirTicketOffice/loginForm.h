@@ -155,37 +155,13 @@ namespace AirTicketOffice {
 		}
 #pragma endregion
 	private: System::Void loginButton_Click(System::Object^  sender, System::EventArgs^  e) {
-
-			 //String^ constring=L"datasource=localhost;port=3306;username=root;password=qwerty721";
-			 /*String^ constring = L"datasource="+SERVER+";port="+PORT+";username="+USER+";password="+PASSWD;
-			 MySqlConnection^ conDataBase = gcnew MySqlConnection(constring);
-			 MySqlCommand^ cmdDataBase = gcnew MySqlCommand("select passport,password from airlines.users;",conDataBase);
-			 MySqlDataReader^ myReader;
-			 try
-			 {
-				conDataBase->Open();
-				myReader = cmdDataBase->ExecuteReader();
-				while (myReader->Read())
-				{
-					if (myReader->GetString(0)==loginTextBox->Text && myReader->GetString(1)==passTextBox->Text)
-					{
-						this->Hide();
-						mainForm^ secondForm = gcnew mainForm();
-						secondForm->ShowDialog();
-						break;
-					}
-					else
-						MessageBox::Show("Ќеправильный логин или пароль", "Login error", 
-										MessageBoxButtons::OK, MessageBoxIcon::Error);
-				}
-			 }
-			 catch(Exception^ ex){
-			 
-				 MessageBox::Show(ex->Message);
-			 }*/
-
+			 loginButton->Enabled = false;
 			 MySqlDataReader^ myReader = executeReq("select passport,password from airlines.users;");
-			 if (!myReader) return;
+			 if (!myReader) 
+			 {
+				 loginButton->Enabled = true;
+				 return;
+			 }
 			 bool login = false;
 			 while (myReader->Read())
 			 {
@@ -210,7 +186,6 @@ namespace AirTicketOffice {
 			   // проверка парол€ на отсутствие " ; '
 			   // todo: проверка  логина на отсутствие символов, кроме цифр
 			   // проверка парол€ на отсутствие " ; '
-
 			 }
 
 private: System::Void registrationLabel_Click(System::Object^  sender, System::EventArgs^  e) {

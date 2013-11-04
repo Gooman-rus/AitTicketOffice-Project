@@ -182,7 +182,7 @@ namespace AirTicketOffice {
 			this->checkRules->AutoSize = true;
 			this->checkRules->Location = System::Drawing::Point(135, 129);
 			this->checkRules->Name = L"checkRules";
-			this->checkRules->Size = System::Drawing::Size(159, 17);
+			this->checkRules->Size = System::Drawing::Size(158, 17);
 			this->checkRules->TabIndex = 4;
 			this->checkRules->Text = L"С правилами соглашаюсь";
 			this->checkRules->UseVisualStyleBackColor = true;
@@ -225,18 +225,20 @@ private: System::Void registerButton_Click(System::Object^  sender, System::Even
 			 // если паспорт есть, но пользователь не зарегистрирован в системе,
 			 // то зарегистрировать его, иначе - нет.
 			 // ФИО в базу добавлять в ВЕРХНЕМ РЕГИСТРЕ
-
+			 registerButton->Enabled = false;
 			 if (nameInput->Text->Length == 0)
 			 {
 				 MessageBox::Show("Поле 'ФИО' не может быть пустым.", "Ошибка",
 								 MessageBoxButtons::OK,MessageBoxIcon::Error);	
-				return;
+				 registerButton->Enabled = true;
+				 return;
 			 }
 
 			 if (!checkName(nameInput->Text))
 			 {
 				MessageBox::Show("ФИО заполнено неверно.", "Ошибка",
 								 MessageBoxButtons::OK,MessageBoxIcon::Error);
+				registerButton->Enabled = true;
 				return;
 			 }
 
@@ -244,13 +246,15 @@ private: System::Void registerButton_Click(System::Object^  sender, System::Even
 			 {
 				MessageBox::Show("Поле для ввода номера паспорта не может быть пустым.", "Ошибка",
 								 MessageBoxButtons::OK,MessageBoxIcon::Error);	
+				registerButton->Enabled = true;
 				return;
 			 }
 
 			 if (!checkPassport(inputPassport->Text))
 			 {
 				MessageBox::Show("Поле для ввода номера паспорта заполнено неверно.", "Ошибка",
-								 MessageBoxButtons::OK,MessageBoxIcon::Error);	
+								 MessageBoxButtons::OK,MessageBoxIcon::Error);
+				registerButton->Enabled = true;
 				return;
 			 }
 
@@ -258,20 +262,23 @@ private: System::Void registerButton_Click(System::Object^  sender, System::Even
 			 {
 				 MessageBox::Show("Одно из полей ввода паролей не заполнено.", "Ошибка",
 								 MessageBoxButtons::OK,MessageBoxIcon::Error);	
-				return;
+				 registerButton->Enabled = true;
+				 return;
 			 }
 
 			 if (!checkPassword(inputPassword->Text, inputPasswordAgain->Text))
 			 {
 				MessageBox::Show("Пароли должны совпадать, состоять из минимум 3-х символов.", 
-								 "Ошибка", MessageBoxButtons::OK,MessageBoxIcon::Error);	
+								 "Ошибка", MessageBoxButtons::OK,MessageBoxIcon::Error);
+				registerButton->Enabled = true;
 				return;
 			 }
 			 
 			 if (!checkRules->Checked)
 			 {
 				MessageBox::Show("Для регистрации в системе нужно согласиться с правилами.", "Ошибка",
-								 MessageBoxButtons::OK,MessageBoxIcon::Exclamation);	
+								 MessageBoxButtons::OK,MessageBoxIcon::Exclamation);
+				registerButton->Enabled = true;
 				return;
 			 }
 
@@ -281,10 +288,18 @@ private: System::Void registerButton_Click(System::Object^  sender, System::Even
 			 numTab =  1;
 			myReader = executeReq("INSERT INTO airlines.users (passport,password) VALUES("+
 				        inputPassport->Text+","+inputPassword->Text+")");
-			 if (!myReader) return;
+			 if (!myReader) 
+			 {
+				 registerButton->Enabled = true;
+				 return;
+			 }
 			 myReader = executeReq("INSERT INTO airlines.passengers VALUES("+
 				        inputPassport->Text+",'"+nameInput->Text+"')");
-			 if (!myReader) return;
+			 if (!myReader) 
+			 {
+				 registerButton->Enabled = true;
+				 return;
+			 }
 			 // todo: проверка на наличие человека с таким же паспортом
 			 // если такой пассп. есть в passengers, то проверить, есть ли у него пароль в users
 			 // если есть, то ошибка (пользователь существует)
