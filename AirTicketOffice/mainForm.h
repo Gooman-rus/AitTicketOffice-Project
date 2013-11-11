@@ -1,4 +1,5 @@
 #pragma once
+#include "common.h"
 
 namespace AirTicketOffice {
 
@@ -21,6 +22,7 @@ namespace AirTicketOffice {
 			//
 			//TODO: добавьте код конструктора
 			//
+			loadData("select * from airlines.flights", flightsTable);
 		}
 
 	protected:
@@ -36,9 +38,17 @@ namespace AirTicketOffice {
 		}
 	private: System::Windows::Forms::DataGridView^  mainGrid;
 	private: System::Windows::Forms::TabControl^  tabControl1;
-	private: System::Windows::Forms::TabPage^  tabPage1;
-	private: System::Windows::Forms::TabPage^  tabPage2;
-	private: System::Windows::Forms::TabPage^  tabPage3;
+	private: System::Windows::Forms::TabPage^  usersPage;
+	private: System::Windows::Forms::TabPage^  tellersPage;
+	private: System::Windows::Forms::TabPage^  managersPage;
+	private: System::Windows::Forms::DataGridView^  flightsTable;
+	private: System::Windows::Forms::TabPage^  adminsPage;
+
+
+
+
+
+
 	protected: 
 
 	protected: 
@@ -58,12 +68,16 @@ namespace AirTicketOffice {
 		{
 			this->mainGrid = (gcnew System::Windows::Forms::DataGridView());
 			this->tabControl1 = (gcnew System::Windows::Forms::TabControl());
-			this->tabPage1 = (gcnew System::Windows::Forms::TabPage());
-			this->tabPage2 = (gcnew System::Windows::Forms::TabPage());
-			this->tabPage3 = (gcnew System::Windows::Forms::TabPage());
+			this->usersPage = (gcnew System::Windows::Forms::TabPage());
+			this->tellersPage = (gcnew System::Windows::Forms::TabPage());
+			this->managersPage = (gcnew System::Windows::Forms::TabPage());
+			this->adminsPage = (gcnew System::Windows::Forms::TabPage());
+			this->flightsTable = (gcnew System::Windows::Forms::DataGridView());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->mainGrid))->BeginInit();
 			this->tabControl1->SuspendLayout();
-			this->tabPage1->SuspendLayout();
+			this->usersPage->SuspendLayout();
+			this->managersPage->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->flightsTable))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// mainGrid
@@ -77,51 +91,70 @@ namespace AirTicketOffice {
 			// 
 			// tabControl1
 			// 
-			this->tabControl1->Controls->Add(this->tabPage1);
-			this->tabControl1->Controls->Add(this->tabPage2);
-			this->tabControl1->Controls->Add(this->tabPage3);
+			this->tabControl1->Controls->Add(this->usersPage);
+			this->tabControl1->Controls->Add(this->tellersPage);
+			this->tabControl1->Controls->Add(this->managersPage);
+			this->tabControl1->Controls->Add(this->adminsPage);
 			this->tabControl1->Location = System::Drawing::Point(12, 12);
 			this->tabControl1->Name = L"tabControl1";
 			this->tabControl1->SelectedIndex = 0;
-			this->tabControl1->Size = System::Drawing::Size(401, 225);
+			this->tabControl1->Size = System::Drawing::Size(775, 428);
 			this->tabControl1->TabIndex = 1;
 			this->tabControl1->Selecting += gcnew System::Windows::Forms::TabControlCancelEventHandler(this, &mainForm::tabControl1_Selecting);
 			// 
-			// tabPage1
+			// usersPage
 			// 
-			this->tabPage1->Controls->Add(this->mainGrid);
-			this->tabPage1->Location = System::Drawing::Point(4, 22);
-			this->tabPage1->Name = L"tabPage1";
-			this->tabPage1->Padding = System::Windows::Forms::Padding(3);
-			this->tabPage1->Size = System::Drawing::Size(393, 199);
-			this->tabPage1->TabIndex = 0;
-			this->tabPage1->Text = L"tabPage1";
-			this->tabPage1->UseVisualStyleBackColor = true;
+			this->usersPage->Controls->Add(this->mainGrid);
+			this->usersPage->Location = System::Drawing::Point(4, 22);
+			this->usersPage->Name = L"usersPage";
+			this->usersPage->Padding = System::Windows::Forms::Padding(3);
+			this->usersPage->Size = System::Drawing::Size(767, 402);
+			this->usersPage->TabIndex = 0;
+			this->usersPage->Text = L"Пользователь";
+			this->usersPage->UseVisualStyleBackColor = true;
 			// 
-			// tabPage2
+			// tellersPage
 			// 
-			this->tabPage2->Location = System::Drawing::Point(4, 22);
-			this->tabPage2->Name = L"tabPage2";
-			this->tabPage2->Padding = System::Windows::Forms::Padding(3);
-			this->tabPage2->Size = System::Drawing::Size(192, 74);
-			this->tabPage2->TabIndex = 1;
-			this->tabPage2->Text = L"tabPage2";
-			this->tabPage2->UseVisualStyleBackColor = true;
+			this->tellersPage->Location = System::Drawing::Point(4, 22);
+			this->tellersPage->Name = L"tellersPage";
+			this->tellersPage->Padding = System::Windows::Forms::Padding(3);
+			this->tellersPage->Size = System::Drawing::Size(767, 402);
+			this->tellersPage->TabIndex = 1;
+			this->tellersPage->Text = L"Менеджер по билетам";
+			this->tellersPage->UseVisualStyleBackColor = true;
 			// 
-			// tabPage3
+			// managersPage
 			// 
-			this->tabPage3->Location = System::Drawing::Point(4, 22);
-			this->tabPage3->Name = L"tabPage3";
-			this->tabPage3->Size = System::Drawing::Size(192, 74);
-			this->tabPage3->TabIndex = 2;
-			this->tabPage3->Text = L"test!!!";
-			this->tabPage3->UseVisualStyleBackColor = true;
+			this->managersPage->Controls->Add(this->flightsTable);
+			this->managersPage->Location = System::Drawing::Point(4, 22);
+			this->managersPage->Name = L"managersPage";
+			this->managersPage->Size = System::Drawing::Size(767, 402);
+			this->managersPage->TabIndex = 2;
+			this->managersPage->Text = L"Организационный менеджер";
+			this->managersPage->UseVisualStyleBackColor = true;
+			// 
+			// adminsPage
+			// 
+			this->adminsPage->Location = System::Drawing::Point(4, 22);
+			this->adminsPage->Name = L"adminsPage";
+			this->adminsPage->Size = System::Drawing::Size(767, 402);
+			this->adminsPage->TabIndex = 3;
+			this->adminsPage->Text = L"Администратор";
+			this->adminsPage->UseVisualStyleBackColor = true;
+			// 
+			// flightsTable
+			// 
+			this->flightsTable->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
+			this->flightsTable->Location = System::Drawing::Point(387, 3);
+			this->flightsTable->Name = L"flightsTable";
+			this->flightsTable->Size = System::Drawing::Size(340, 192);
+			this->flightsTable->TabIndex = 0;
 			// 
 			// mainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(472, 250);
+			this->ClientSize = System::Drawing::Size(788, 444);
 			this->Controls->Add(this->tabControl1);
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
 			this->MaximizeBox = false;
@@ -132,7 +165,9 @@ namespace AirTicketOffice {
 			this->Load += gcnew System::EventHandler(this, &mainForm::mainForm_Load);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->mainGrid))->EndInit();
 			this->tabControl1->ResumeLayout(false);
-			this->tabPage1->ResumeLayout(false);
+			this->usersPage->ResumeLayout(false);
+			this->managersPage->ResumeLayout(false);
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->flightsTable))->EndInit();
 			this->ResumeLayout(false);
 
 		}
@@ -145,7 +180,7 @@ namespace AirTicketOffice {
 	private: System::Void mainGrid_CellContentClick(System::Object^  sender, System::Windows::Forms::DataGridViewCellEventArgs^  e) {
 			 }
 	private: System::Void tabControl1_Selecting(System::Object^  sender, System::Windows::Forms::TabControlCancelEventArgs^  e) {
-				    if (e->TabPageIndex == 2){
+				    if (e->TabPageIndex == 3){
 						e->Cancel = true;
             }
 			 }

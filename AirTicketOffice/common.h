@@ -10,9 +10,12 @@
 
 using namespace MySql::Data::MySqlClient;
 using namespace System;
+using namespace System::Data;
 
 extern int numTab;
 
 MySqlDataReader^ executeReq(String^ request);	// выполняет запрос
+bool loadData(String^ request, System::Windows::Forms::DataGridView^ dataGrid);
+
 String^ getError();
 #endif

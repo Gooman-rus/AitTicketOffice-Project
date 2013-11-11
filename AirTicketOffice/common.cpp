@@ -1,8 +1,12 @@
 #include "stdafx.h"
 #include "common.h"
-int numTab=1;
+
 using namespace System;
 using namespace System::Windows::Forms;
+//using namespace MySql::Data::MySqlClient;
+
+int numTab = 1;
+
 String^ getError()
 {
 	switch(numTab)
@@ -11,6 +15,7 @@ String^ getError()
 		default: return "0";
 	}
 }
+
 MySqlDataReader^ executeReq(String^ request)
 {
 	String^ constring = L"datasource="+SERVER+";port="+PORT+";username="+USER+";password="+PASSWD;
@@ -36,3 +41,40 @@ MySqlDataReader^ executeReq(String^ request)
 
 	return myReader;
 }
+
+// загружает данные по запросу в dataGridView
+bool loadData(String^ request, System::Windows::Forms::DataGridView^ dataGrid)
+{
+	String^ constring = L"datasource="+SERVER+";port="+PORT+";username="+USER+";password="+PASSWD;
+	MySqlConnection^ conDataBase = gcnew MySqlConnection(constring);
+	MySqlCommand^ cmdDataBase = gcnew MySqlCommand(request, conDataBase);
+	MySqlDataReader^ myReader;
+	try
+	{
+		MySqlDataAdapter^ sda = gcnew MySqlDataAdapter();
+		sda->SelectCommand = cmdDataBase;
+		DataTable^ dbdataset = gcnew DataTable();
+		sda->Fill(dbdataset);
+		BindingSource^ bSource = gcnew BindingSource();
+
+		bSource->DataSource = dbdataset;
+		dataGrid->DataSource = bSource;
+		sda->Update(dbdataset);
+	}
+	catch(MySqlException^ ex) {
+		int code = ex->Number;
+		if (code == 1062)
+		{
+			MessageBox::Show(getError());
+			return false;
+		}
+		else
+		{
+			MessageBox::Show("Error "+code.ToString()+": "+ex->Message);
+			return false;
+		}
+	}
+
+	return true;
+}
+
