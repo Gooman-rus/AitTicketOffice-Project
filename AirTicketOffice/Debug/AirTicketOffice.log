@@ -1,4 +1,4 @@
-﻿Построение начато 11-Nov-13 07:49:51.
+﻿Построение начато 11-Nov-13 09:42:34.
      1>Проект "C:\Users\Gooman\Documents\GitHub\AitTicketOffice-Project\AirTicketOffice\AirTicketOffice.vcxproj" в узле 2 (целевые объекты build).
      1>InitializeBuildStatus:
          Создание "Debug\AirTicketOffice.unsuccessfulbuild", так как было задано "AlwaysCreate".
@@ -13,7 +13,8 @@
          Создание кода...
          Для всех выходных данных обновления не требуется.
        CoreResGen:
-         Для всех выходных данных обновления не требуется.
+         "C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\NETFX 4.0 Tools\resgen.exe" /useSourcePath /r:"C:\Program Files (x86)\MySQL\MySQL for Visual Studio 1.0.2\Assemblies\v4.0\MySql.Data.dll" /r:"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Core.dll" /r:"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Data.dll" /r:"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.dll" /r:"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Drawing.dll" /r:"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Windows.Forms.dll" /r:"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Xml.dll" /compile mainForm.resx,Debug\AirTicketOffice.mainForm.resources
+         Обрабатывается файл ресурсов "mainForm.resx", результирующий объект: "Debug\AirTicketOffice.mainForm.resources".
        ResourceCompile:
          Для всех выходных данных обновления не требуется.
        Link:
@@ -38,4 +39,4 @@
 
 Построение успешно завершено.
 
-Затраченное время: 00:00:03.49
+Затраченное время: 00:00:03.67
