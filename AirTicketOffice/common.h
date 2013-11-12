@@ -14,9 +14,13 @@ using namespace System::Data;
 
 extern int numTab;
 
-MySqlDataReader^ executeReq(String^ request);	// выполняет запрос
+// выполняет запрос
+MySqlDataReader^ executeReq(String^ request);	
+// загружает данные в dataGridView
 bool loadData(String^ request, System::Windows::Forms::DataGridView^ dataGrid);
+// заполняет comboBox
 void FillCombo(String^ query,String^ column, System::Windows::Forms::ComboBox^ box);
 
 String^ getError();
+
 #endif

@@ -84,7 +84,8 @@ bool loadData(String^ request, System::Windows::Forms::DataGridView^ dataGrid)
 	return true;
 }
 
-void FillCombo(String^ query,String^ column, System::Windows::Forms::ComboBox^ box)//функция заполняет combobox
+// заполняет combobox
+void FillCombo(String^ query,String^ column, System::Windows::Forms::ComboBox^ box)
 {
 	MySqlDataReader^ myReader = executeReq(query);
 	box->Items->Clear();
