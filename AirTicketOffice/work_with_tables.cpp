@@ -38,16 +38,16 @@ bool asMainManager (System::Windows::Forms::DataGridView^ tableFlights,
 	tableFlights->Columns[5]->Width = 90;
 	tableFlights->Columns[6]->Width = 93;
 
-	tablePlanes->Columns[0]->HeaderText = "№ самолета";
+	tablePlanes->Columns[0]->HeaderText = "№ самол.";
 	tablePlanes->Columns[1]->HeaderText = "Модель";
 	tablePlanes->Columns[2]->HeaderText = "Компания";
-	tablePlanes->Columns[0]->Width = 80;
-	tablePlanes->Columns[1]->Width = 59;
-	tablePlanes->Columns[2]->Width = 75;
+	tablePlanes->Columns[0]->Width = 75;
+	tablePlanes->Columns[1]->Width = 85;
+	tablePlanes->Columns[2]->Width = 80;
 
 	tablePlaneParam->Columns[0]->HeaderText = "Модель";
 	tablePlaneParam->Columns[1]->HeaderText = "Кол-во мест";
-	tablePlaneParam->Columns[0]->Width = 59;
+	tablePlaneParam->Columns[0]->Width = 85;
 	tablePlaneParam->Columns[1]->Width = 80;
 
 	return check;

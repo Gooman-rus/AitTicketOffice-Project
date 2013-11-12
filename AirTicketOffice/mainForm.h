@@ -315,9 +315,12 @@ namespace AirTicketOffice {
 			this->planesParamGroupBox->Controls->Add(this->groupBox2);
 			this->planesParamGroupBox->Controls->Add(this->groupBox1);
 			this->planesParamGroupBox->Controls->Add(this->addPlanesParametrsGroupBox);
+			this->planesParamGroupBox->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, 
+				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(204)));
+			this->planesParamGroupBox->ForeColor = System::Drawing::SystemColors::HotTrack;
 			this->planesParamGroupBox->Location = System::Drawing::Point(5, 219);
 			this->planesParamGroupBox->Name = L"planesParamGroupBox";
-			this->planesParamGroupBox->Size = System::Drawing::Size(575, 194);
+			this->planesParamGroupBox->Size = System::Drawing::Size(542, 194);
 			this->planesParamGroupBox->TabIndex = 3;
 			this->planesParamGroupBox->TabStop = false;
 			this->planesParamGroupBox->Text = L"Параметры Самолета";
@@ -327,9 +330,12 @@ namespace AirTicketOffice {
 			this->groupBox2->Controls->Add(this->label6);
 			this->groupBox2->Controls->Add(this->delPlaneParamModelComboBox);
 			this->groupBox2->Controls->Add(this->deletePlanesParametrsButton);
-			this->groupBox2->Location = System::Drawing::Point(351, 20);
+			this->groupBox2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
+			this->groupBox2->ForeColor = System::Drawing::SystemColors::MenuHighlight;
+			this->groupBox2->Location = System::Drawing::Point(351, 19);
 			this->groupBox2->Name = L"groupBox2";
-			this->groupBox2->Size = System::Drawing::Size(218, 168);
+			this->groupBox2->Size = System::Drawing::Size(181, 169);
 			this->groupBox2->TabIndex = 8;
 			this->groupBox2->TabStop = false;
 			this->groupBox2->Text = L"Удаление";
@@ -337,14 +343,16 @@ namespace AirTicketOffice {
 			// label6
 			// 
 			this->label6->AutoSize = true;
+			this->label6->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
 			this->label6->Location = System::Drawing::Point(6, 23);
 			this->label6->Name = L"label6";
-			this->label6->Size = System::Drawing::Size(169, 13);
+			this->label6->Size = System::Drawing::Size(172, 13);
 			this->label6->TabIndex = 9;
-			this->label6->Text = L"Модель самолета для удаления";
+			this->label6->Text = L"Модель самолета для удаления:";
 			// 
 			// delPlaneParamModelComboBox
 			// 
+			this->delPlaneParamModelComboBox->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
 			this->delPlaneParamModelComboBox->FormattingEnabled = true;
 			this->delPlaneParamModelComboBox->Location = System::Drawing::Point(9, 39);
 			this->delPlaneParamModelComboBox->Name = L"delPlaneParamModelComboBox";
@@ -353,7 +361,8 @@ namespace AirTicketOffice {
 			// 
 			// deletePlanesParametrsButton
 			// 
-			this->deletePlanesParametrsButton->Location = System::Drawing::Point(9, 139);
+			this->deletePlanesParametrsButton->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
+			this->deletePlanesParametrsButton->Location = System::Drawing::Point(9, 140);
 			this->deletePlanesParametrsButton->Name = L"deletePlanesParametrsButton";
 			this->deletePlanesParametrsButton->Size = System::Drawing::Size(75, 23);
 			this->deletePlanesParametrsButton->TabIndex = 9;
@@ -370,15 +379,19 @@ namespace AirTicketOffice {
 			this->groupBox1->Controls->Add(this->newSpotNumericUpDown);
 			this->groupBox1->Controls->Add(this->label4);
 			this->groupBox1->Controls->Add(this->label3);
-			this->groupBox1->Location = System::Drawing::Point(144, 20);
+			this->groupBox1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
+			this->groupBox1->ForeColor = System::Drawing::SystemColors::MenuHighlight;
+			this->groupBox1->Location = System::Drawing::Point(144, 19);
 			this->groupBox1->Name = L"groupBox1";
-			this->groupBox1->Size = System::Drawing::Size(200, 168);
+			this->groupBox1->Size = System::Drawing::Size(200, 169);
 			this->groupBox1->TabIndex = 7;
 			this->groupBox1->TabStop = false;
 			this->groupBox1->Text = L"Редактирование";
 			// 
 			// updPlanesParamModelComboBox
 			// 
+			this->updPlanesParamModelComboBox->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
 			this->updPlanesParamModelComboBox->FormattingEnabled = true;
 			this->updPlanesParamModelComboBox->Location = System::Drawing::Point(9, 39);
 			this->updPlanesParamModelComboBox->Name = L"updPlanesParamModelComboBox";
@@ -387,7 +400,8 @@ namespace AirTicketOffice {
 			// 
 			// updatePlanesParamButton
 			// 
-			this->updatePlanesParamButton->Location = System::Drawing::Point(119, 139);
+			this->updatePlanesParamButton->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
+			this->updatePlanesParamButton->Location = System::Drawing::Point(119, 140);
 			this->updatePlanesParamButton->Name = L"updatePlanesParamButton";
 			this->updatePlanesParamButton->Size = System::Drawing::Size(75, 23);
 			this->updatePlanesParamButton->TabIndex = 6;
@@ -398,6 +412,7 @@ namespace AirTicketOffice {
 			// label5
 			// 
 			this->label5->AutoSize = true;
+			this->label5->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
 			this->label5->Location = System::Drawing::Point(6, 101);
 			this->label5->Name = L"label5";
 			this->label5->Size = System::Drawing::Size(106, 13);
@@ -406,6 +421,7 @@ namespace AirTicketOffice {
 			// 
 			// newPlanesParamModelTextBox
 			// 
+			this->newPlanesParamModelTextBox->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
 			this->newPlanesParamModelTextBox->Location = System::Drawing::Point(9, 78);
 			this->newPlanesParamModelTextBox->Name = L"newPlanesParamModelTextBox";
 			this->newPlanesParamModelTextBox->Size = System::Drawing::Size(100, 20);
@@ -413,6 +429,7 @@ namespace AirTicketOffice {
 			// 
 			// newSpotNumericUpDown
 			// 
+			this->newSpotNumericUpDown->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
 			this->newSpotNumericUpDown->Location = System::Drawing::Point(9, 119);
 			this->newSpotNumericUpDown->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) {500, 0, 0, 0});
 			this->newSpotNumericUpDown->Name = L"newSpotNumericUpDown";
@@ -423,6 +440,7 @@ namespace AirTicketOffice {
 			// label4
 			// 
 			this->label4->AutoSize = true;
+			this->label4->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
 			this->label4->Location = System::Drawing::Point(6, 62);
 			this->label4->Name = L"label4";
 			this->label4->Size = System::Drawing::Size(101, 13);
@@ -432,6 +450,7 @@ namespace AirTicketOffice {
 			// label3
 			// 
 			this->label3->AutoSize = true;
+			this->label3->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
 			this->label3->Location = System::Drawing::Point(6, 23);
 			this->label3->Name = L"label3";
 			this->label3->Size = System::Drawing::Size(165, 13);
@@ -445,6 +464,9 @@ namespace AirTicketOffice {
 			this->addPlanesParametrsGroupBox->Controls->Add(this->planesParamModelTextBox);
 			this->addPlanesParametrsGroupBox->Controls->Add(this->addPlanesParamButton);
 			this->addPlanesParametrsGroupBox->Controls->Add(this->label2);
+			this->addPlanesParametrsGroupBox->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, 
+				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(204)));
+			this->addPlanesParametrsGroupBox->ForeColor = System::Drawing::SystemColors::MenuHighlight;
 			this->addPlanesParametrsGroupBox->Location = System::Drawing::Point(6, 19);
 			this->addPlanesParametrsGroupBox->Name = L"addPlanesParametrsGroupBox";
 			this->addPlanesParametrsGroupBox->Size = System::Drawing::Size(131, 169);
@@ -455,6 +477,7 @@ namespace AirTicketOffice {
 			// label1
 			// 
 			this->label1->AutoSize = true;
+			this->label1->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
 			this->label1->Location = System::Drawing::Point(3, 24);
 			this->label1->Name = L"label1";
 			this->label1->Size = System::Drawing::Size(101, 13);
@@ -463,6 +486,7 @@ namespace AirTicketOffice {
 			// 
 			// spotNumericUpDown
 			// 
+			this->spotNumericUpDown->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
 			this->spotNumericUpDown->Location = System::Drawing::Point(6, 79);
 			this->spotNumericUpDown->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) {500, 0, 0, 0});
 			this->spotNumericUpDown->Name = L"spotNumericUpDown";
@@ -472,6 +496,7 @@ namespace AirTicketOffice {
 			// 
 			// planesParamModelTextBox
 			// 
+			this->planesParamModelTextBox->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
 			this->planesParamModelTextBox->Location = System::Drawing::Point(9, 40);
 			this->planesParamModelTextBox->Name = L"planesParamModelTextBox";
 			this->planesParamModelTextBox->Size = System::Drawing::Size(100, 20);
@@ -479,6 +504,7 @@ namespace AirTicketOffice {
 			// 
 			// addPlanesParamButton
 			// 
+			this->addPlanesParamButton->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
 			this->addPlanesParamButton->Location = System::Drawing::Point(6, 140);
 			this->addPlanesParamButton->Name = L"addPlanesParamButton";
 			this->addPlanesParamButton->Size = System::Drawing::Size(75, 23);
@@ -490,6 +516,7 @@ namespace AirTicketOffice {
 			// label2
 			// 
 			this->label2->AutoSize = true;
+			this->label2->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
 			this->label2->Location = System::Drawing::Point(3, 63);
 			this->label2->Name = L"label2";
 			this->label2->Size = System::Drawing::Size(106, 13);
@@ -501,9 +528,12 @@ namespace AirTicketOffice {
 			this->planesGroupBox->Controls->Add(this->groupBox5);
 			this->planesGroupBox->Controls->Add(this->groupBox4);
 			this->planesGroupBox->Controls->Add(this->groupBox3);
+			this->planesGroupBox->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
+			this->planesGroupBox->ForeColor = System::Drawing::SystemColors::HotTrack;
 			this->planesGroupBox->Location = System::Drawing::Point(6, 6);
 			this->planesGroupBox->Name = L"planesGroupBox";
-			this->planesGroupBox->Size = System::Drawing::Size(574, 190);
+			this->planesGroupBox->Size = System::Drawing::Size(541, 190);
 			this->planesGroupBox->TabIndex = 2;
 			this->planesGroupBox->TabStop = false;
 			this->planesGroupBox->Text = L"Сведения о самолете";
@@ -513,15 +543,19 @@ namespace AirTicketOffice {
 			this->groupBox5->Controls->Add(this->deletePlaneButton);
 			this->groupBox5->Controls->Add(this->delPlaneIdComboBox);
 			this->groupBox5->Controls->Add(this->label12);
-			this->groupBox5->Location = System::Drawing::Point(350, 20);
+			this->groupBox5->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
+			this->groupBox5->ForeColor = System::Drawing::SystemColors::MenuHighlight;
+			this->groupBox5->Location = System::Drawing::Point(350, 19);
 			this->groupBox5->Name = L"groupBox5";
-			this->groupBox5->Size = System::Drawing::Size(218, 164);
+			this->groupBox5->Size = System::Drawing::Size(178, 165);
 			this->groupBox5->TabIndex = 9;
 			this->groupBox5->TabStop = false;
 			this->groupBox5->Text = L"Удаление";
 			// 
 			// deletePlaneButton
 			// 
+			this->deletePlaneButton->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
 			this->deletePlaneButton->Location = System::Drawing::Point(9, 135);
 			this->deletePlaneButton->Name = L"deletePlaneButton";
 			this->deletePlaneButton->Size = System::Drawing::Size(75, 23);
@@ -532,6 +566,7 @@ namespace AirTicketOffice {
 			// 
 			// delPlaneIdComboBox
 			// 
+			this->delPlaneIdComboBox->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
 			this->delPlaneIdComboBox->FormattingEnabled = true;
 			this->delPlaneIdComboBox->Location = System::Drawing::Point(9, 32);
 			this->delPlaneIdComboBox->Name = L"delPlaneIdComboBox";
@@ -541,11 +576,12 @@ namespace AirTicketOffice {
 			// label12
 			// 
 			this->label12->AutoSize = true;
-			this->label12->Location = System::Drawing::Point(-1, 16);
+			this->label12->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
+			this->label12->Location = System::Drawing::Point(6, 16);
 			this->label12->Name = L"label12";
-			this->label12->Size = System::Drawing::Size(167, 13);
+			this->label12->Size = System::Drawing::Size(144, 13);
 			this->label12->TabIndex = 15;
-			this->label12->Text = L"Номер самолета для удаления:";
+			this->label12->Text = L"№ самолета для удаления:";
 			// 
 			// groupBox4
 			// 
@@ -556,15 +592,19 @@ namespace AirTicketOffice {
 			this->groupBox4->Controls->Add(this->updPlaneModelComboBox);
 			this->groupBox4->Controls->Add(this->updPlaneIdComboBox);
 			this->groupBox4->Controls->Add(this->label9);
-			this->groupBox4->Location = System::Drawing::Point(152, 20);
+			this->groupBox4->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
+			this->groupBox4->ForeColor = System::Drawing::SystemColors::MenuHighlight;
+			this->groupBox4->Location = System::Drawing::Point(143, 19);
 			this->groupBox4->Name = L"groupBox4";
-			this->groupBox4->Size = System::Drawing::Size(191, 164);
+			this->groupBox4->Size = System::Drawing::Size(200, 165);
 			this->groupBox4->TabIndex = 8;
 			this->groupBox4->TabStop = false;
-			this->groupBox4->Text = L"Редактирвоание";
+			this->groupBox4->Text = L"Редактирование";
 			// 
 			// updPlaneButton
 			// 
+			this->updPlaneButton->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
 			this->updPlaneButton->Location = System::Drawing::Point(6, 136);
 			this->updPlaneButton->Name = L"updPlaneButton";
 			this->updPlaneButton->Size = System::Drawing::Size(75, 23);
@@ -575,6 +615,7 @@ namespace AirTicketOffice {
 			// 
 			// updPlaneCompanyTextBox
 			// 
+			this->updPlaneCompanyTextBox->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
 			this->updPlaneCompanyTextBox->Location = System::Drawing::Point(6, 112);
 			this->updPlaneCompanyTextBox->Name = L"updPlaneCompanyTextBox";
 			this->updPlaneCompanyTextBox->Size = System::Drawing::Size(100, 20);
@@ -583,6 +624,7 @@ namespace AirTicketOffice {
 			// label11
 			// 
 			this->label11->AutoSize = true;
+			this->label11->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
 			this->label11->Location = System::Drawing::Point(6, 56);
 			this->label11->Name = L"label11";
 			this->label11->Size = System::Drawing::Size(101, 13);
@@ -592,6 +634,7 @@ namespace AirTicketOffice {
 			// label10
 			// 
 			this->label10->AutoSize = true;
+			this->label10->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
 			this->label10->Location = System::Drawing::Point(6, 96);
 			this->label10->Name = L"label10";
 			this->label10->Size = System::Drawing::Size(61, 13);
@@ -600,6 +643,7 @@ namespace AirTicketOffice {
 			// 
 			// updPlaneModelComboBox
 			// 
+			this->updPlaneModelComboBox->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
 			this->updPlaneModelComboBox->FormattingEnabled = true;
 			this->updPlaneModelComboBox->Location = System::Drawing::Point(6, 72);
 			this->updPlaneModelComboBox->Name = L"updPlaneModelComboBox";
@@ -608,6 +652,7 @@ namespace AirTicketOffice {
 			// 
 			// updPlaneIdComboBox
 			// 
+			this->updPlaneIdComboBox->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
 			this->updPlaneIdComboBox->FormattingEnabled = true;
 			this->updPlaneIdComboBox->Location = System::Drawing::Point(6, 32);
 			this->updPlaneIdComboBox->Name = L"updPlaneIdComboBox";
@@ -617,11 +662,12 @@ namespace AirTicketOffice {
 			// label9
 			// 
 			this->label9->AutoSize = true;
+			this->label9->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
 			this->label9->Location = System::Drawing::Point(6, 16);
 			this->label9->Name = L"label9";
-			this->label9->Size = System::Drawing::Size(136, 13);
+			this->label9->Size = System::Drawing::Size(153, 13);
 			this->label9->TabIndex = 14;
-			this->label9->Text = L"Замена самолета номер:";
+			this->label9->Text = L"№ самолета для изменения:";
 			// 
 			// groupBox3
 			// 
@@ -630,15 +676,19 @@ namespace AirTicketOffice {
 			this->groupBox3->Controls->Add(this->addPlaneModelComboBox);
 			this->groupBox3->Controls->Add(this->label7);
 			this->groupBox3->Controls->Add(this->addPlaneButton);
-			this->groupBox3->Location = System::Drawing::Point(11, 19);
+			this->groupBox3->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
+			this->groupBox3->ForeColor = System::Drawing::SystemColors::MenuHighlight;
+			this->groupBox3->Location = System::Drawing::Point(5, 19);
 			this->groupBox3->Name = L"groupBox3";
-			this->groupBox3->Size = System::Drawing::Size(131, 169);
+			this->groupBox3->Size = System::Drawing::Size(131, 165);
 			this->groupBox3->TabIndex = 7;
 			this->groupBox3->TabStop = false;
 			this->groupBox3->Text = L"Добавление";
 			// 
 			// addPlaneCompanyTextBox
 			// 
+			this->addPlaneCompanyTextBox->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
 			this->addPlaneCompanyTextBox->Location = System::Drawing::Point(3, 73);
 			this->addPlaneCompanyTextBox->Name = L"addPlaneCompanyTextBox";
 			this->addPlaneCompanyTextBox->Size = System::Drawing::Size(100, 20);
@@ -647,6 +697,7 @@ namespace AirTicketOffice {
 			// label8
 			// 
 			this->label8->AutoSize = true;
+			this->label8->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
 			this->label8->Location = System::Drawing::Point(1, 57);
 			this->label8->Name = L"label8";
 			this->label8->Size = System::Drawing::Size(61, 13);
@@ -655,6 +706,7 @@ namespace AirTicketOffice {
 			// 
 			// addPlaneModelComboBox
 			// 
+			this->addPlaneModelComboBox->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
 			this->addPlaneModelComboBox->FormattingEnabled = true;
 			this->addPlaneModelComboBox->Location = System::Drawing::Point(3, 33);
 			this->addPlaneModelComboBox->Name = L"addPlaneModelComboBox";
@@ -664,6 +716,7 @@ namespace AirTicketOffice {
 			// label7
 			// 
 			this->label7->AutoSize = true;
+			this->label7->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
 			this->label7->Location = System::Drawing::Point(3, 17);
 			this->label7->Name = L"label7";
 			this->label7->Size = System::Drawing::Size(101, 13);
@@ -672,6 +725,7 @@ namespace AirTicketOffice {
 			// 
 			// addPlaneButton
 			// 
+			this->addPlaneButton->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
 			this->addPlaneButton->Location = System::Drawing::Point(6, 137);
 			this->addPlaneButton->Name = L"addPlaneButton";
 			this->addPlaneButton->Size = System::Drawing::Size(75, 23);
@@ -688,12 +742,12 @@ namespace AirTicketOffice {
 			this->planeParamTable->AllowUserToResizeRows = false;
 			this->planeParamTable->BackgroundColor = System::Drawing::SystemColors::ControlLightLight;
 			this->planeParamTable->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::DisableResizing;
-			this->planeParamTable->Location = System::Drawing::Point(586, 224);
+			this->planeParamTable->Location = System::Drawing::Point(553, 224);
 			this->planeParamTable->MultiSelect = false;
 			this->planeParamTable->Name = L"planeParamTable";
 			this->planeParamTable->ReadOnly = true;
 			this->planeParamTable->RowHeadersVisible = false;
-			this->planeParamTable->Size = System::Drawing::Size(220, 194);
+			this->planeParamTable->Size = System::Drawing::Size(253, 194);
 			this->planeParamTable->TabIndex = 1;
 			this->planeParamTable->CellClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &mainForm::planeParamTable_CellClick);
 			// 
@@ -705,12 +759,12 @@ namespace AirTicketOffice {
 			this->planesTable->AllowUserToResizeRows = false;
 			this->planesTable->BackgroundColor = System::Drawing::SystemColors::ControlLightLight;
 			this->planesTable->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::DisableResizing;
-			this->planesTable->Location = System::Drawing::Point(586, 6);
+			this->planesTable->Location = System::Drawing::Point(553, 6);
 			this->planesTable->MultiSelect = false;
 			this->planesTable->Name = L"planesTable";
 			this->planesTable->ReadOnly = true;
 			this->planesTable->RowHeadersVisible = false;
-			this->planesTable->Size = System::Drawing::Size(220, 190);
+			this->planesTable->Size = System::Drawing::Size(253, 190);
 			this->planesTable->TabIndex = 0;
 			this->planesTable->CellClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &mainForm::planesTable_CellClick);
 			// 
