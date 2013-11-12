@@ -156,7 +156,7 @@ namespace AirTicketOffice {
 #pragma endregion
 	private: System::Void loginButton_Click(System::Object^  sender, System::EventArgs^  e) {
 			 loginButton->Enabled = false;
-			 MySqlDataReader^ myReader = executeReq("select passport,password from airlines.users;");
+			 MySqlDataReader^ myReader = executeReq("select * from airlines.users;");
 			 if (!myReader) 
 			 {
 				 loginButton->Enabled = true;
