@@ -12,6 +12,7 @@ String^ getError()
 	switch(numTab)
 	{
 		case 1:return "Пользователь с таким паспортом уже зарегистрирован в системе.";break;
+		case 2:return "Данная модель самолета уже есть в базе";break;
 		default: return "0";
 	}
 }
@@ -33,6 +34,11 @@ MySqlDataReader^ executeReq(String^ request)
 				if(code==1062)
 				{
 					MessageBox::Show(getError());
+					return myReader;
+				}
+				if(code==1451)
+				{
+					MessageBox::Show("Невозможно удалить элемент,т.к. на него ссылаются поля другой таблицы");
 					return myReader;
 				}
 				else
@@ -78,3 +84,12 @@ bool loadData(String^ request, System::Windows::Forms::DataGridView^ dataGrid)
 	return true;
 }
 
+void FillCombo(String^ query,String^ column, System::Windows::Forms::ComboBox^ box)//функция заполняет combobox
+{
+	MySqlDataReader^ myReader = executeReq(query);
+	box->Items->Clear();
+	while(myReader->Read())
+	{
+		box->Items->Add(myReader->GetString(column));
+	}
+}

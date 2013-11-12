@@ -16,6 +16,7 @@ extern int numTab;
 
 MySqlDataReader^ executeReq(String^ request);	// выполняет запрос
 bool loadData(String^ request, System::Windows::Forms::DataGridView^ dataGrid);
+void FillCombo(String^ query,String^ column, System::Windows::Forms::ComboBox^ box);
 
 String^ getError();
 #endif

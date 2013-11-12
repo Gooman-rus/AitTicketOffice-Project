@@ -182,7 +182,7 @@ namespace AirTicketOffice {
 			this->checkRules->AutoSize = true;
 			this->checkRules->Location = System::Drawing::Point(135, 129);
 			this->checkRules->Name = L"checkRules";
-			this->checkRules->Size = System::Drawing::Size(158, 17);
+			this->checkRules->Size = System::Drawing::Size(159, 17);
 			this->checkRules->TabIndex = 4;
 			this->checkRules->Text = L"С правилами соглашаюсь";
 			this->checkRules->UseVisualStyleBackColor = true;
