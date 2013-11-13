@@ -42,12 +42,12 @@ bool asMainManager (System::Windows::Forms::DataGridView^ tableFlights,
 	tablePlanes->Columns[1]->HeaderText = "Модель";
 	tablePlanes->Columns[2]->HeaderText = "Компания";
 	tablePlanes->Columns[0]->Width = 75;
-	tablePlanes->Columns[1]->Width = 85;
+	tablePlanes->Columns[1]->Width = 90;
 	tablePlanes->Columns[2]->Width = 80;
 
 	tablePlaneParam->Columns[0]->HeaderText = "Модель";
 	tablePlaneParam->Columns[1]->HeaderText = "Кол-во мест";
-	tablePlaneParam->Columns[0]->Width = 85;
+	tablePlaneParam->Columns[0]->Width = 90;
 	tablePlaneParam->Columns[1]->Width = 80;
 
 	return check;

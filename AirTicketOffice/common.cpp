@@ -12,7 +12,7 @@ String^ getError()
 	switch(numTab)
 	{
 		case 1:return "Пользователь с таким паспортом уже зарегистрирован в системе.";break;
-		case 2:return "Данная модель самолета уже есть в базе";break;
+		case 2:return "Данная модель самолета уже есть в базе.";break;
 		default: return "0";
 	}
 }
@@ -33,21 +33,30 @@ MySqlDataReader^ executeReq(String^ request)
 				int code = ex->Number;
 				if(code==1062)
 				{
-					MessageBox::Show(getError());
+					MessageBox::Show(getError(),"Ошибка",MessageBoxButtons::OK,MessageBoxIcon::Error);
 					return myReader;
 				}
 				if(code==1451)
 				{
-					MessageBox::Show("Невозможно удалить элемент,т.к. на него ссылаются поля другой таблицы");
+					MessageBox::Show("Невозможно удалить элемент, т.к. на него ссылаются поля другой таблицы.",
+									"Ошибка",MessageBoxButtons::OK,MessageBoxIcon::Error);
 					return myReader;
 				}
 				if(code==1452)
 				{
-					MessageBox::Show("Невозможно удалить элемент,т.к. на него ссылаются поля другой таблицы");
+					MessageBox::Show("Невозможно удалить элемент, т.к. на него ссылаются поля другой таблицы.",
+									"Ошибка",MessageBoxButtons::OK,MessageBoxIcon::Error);
+					return myReader;
+				}
+				if (code == 1042)
+				{
+					MessageBox::Show("Невозможно подсоединиться к серверу базы данных.",
+									"Ошибка",MessageBoxButtons::OK,MessageBoxIcon::Error);
 					return myReader;
 				}
 				else
-					MessageBox::Show("Error "+code.ToString()+": "+ex->Message);
+					MessageBox::Show("Error "+code.ToString()+": "+ex->Message,
+									"Ошибка",MessageBoxButtons::OK,MessageBoxIcon::Error);
 	}
 
 	return myReader;

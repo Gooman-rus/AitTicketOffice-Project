@@ -746,7 +746,6 @@ namespace AirTicketOffice {
 			// 
 			this->planeParamTable->AllowUserToAddRows = false;
 			this->planeParamTable->AllowUserToDeleteRows = false;
-			this->planeParamTable->AllowUserToResizeColumns = false;
 			this->planeParamTable->AllowUserToResizeRows = false;
 			this->planeParamTable->BackgroundColor = System::Drawing::SystemColors::ControlLightLight;
 			this->planeParamTable->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::DisableResizing;
@@ -763,7 +762,6 @@ namespace AirTicketOffice {
 			// 
 			this->planesTable->AllowUserToAddRows = false;
 			this->planesTable->AllowUserToDeleteRows = false;
-			this->planesTable->AllowUserToResizeColumns = false;
 			this->planesTable->AllowUserToResizeRows = false;
 			this->planesTable->BackgroundColor = System::Drawing::SystemColors::ControlLightLight;
 			this->planesTable->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::DisableResizing;
@@ -858,7 +856,8 @@ private: System::Void addPlanesParamButton_Click(System::Object^  sender, System
 			 }
 			 MySqlDataReader^ myReader;
 			 numTab = 2;
-			 myReader = executeReq("INSERT INTO airlines.plane_parametrs (model,spot_num) VALUES('"+planesParamModelTextBox->Text+"',"+spotNumericUpDown->Value+")");
+			 myReader = executeReq("INSERT INTO airlines.plane_parametrs (model,spot_num) VALUES('"
+								   +planesParamModelTextBox->Text+"',"+spotNumericUpDown->Value+")");
 			 loadData("select * from airlines.plane_parametrs", planeParamTable);
 			 FillCombo("SELECT model FROM airlines.plane_parametrs","model",delPlaneParamModelComboBox);
 			 FillCombo("SELECT model FROM airlines.plane_parametrs","model",updPlanesParamModelComboBox);
