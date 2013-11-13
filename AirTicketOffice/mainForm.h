@@ -397,8 +397,10 @@ namespace AirTicketOffice {
 			// 
 			// delPlaneParamModelComboBox
 			// 
+			this->delPlaneParamModelComboBox->DropDownHeight = 72;
 			this->delPlaneParamModelComboBox->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
 			this->delPlaneParamModelComboBox->FormattingEnabled = true;
+			this->delPlaneParamModelComboBox->IntegralHeight = false;
 			this->delPlaneParamModelComboBox->Location = System::Drawing::Point(9, 39);
 			this->delPlaneParamModelComboBox->Name = L"delPlaneParamModelComboBox";
 			this->delPlaneParamModelComboBox->Size = System::Drawing::Size(121, 21);
@@ -437,8 +439,10 @@ namespace AirTicketOffice {
 			// 
 			// updPlanesParamModelComboBox
 			// 
+			this->updPlanesParamModelComboBox->DropDownHeight = 72;
 			this->updPlanesParamModelComboBox->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
 			this->updPlanesParamModelComboBox->FormattingEnabled = true;
+			this->updPlanesParamModelComboBox->IntegralHeight = false;
 			this->updPlanesParamModelComboBox->Location = System::Drawing::Point(9, 39);
 			this->updPlanesParamModelComboBox->Name = L"updPlanesParamModelComboBox";
 			this->updPlanesParamModelComboBox->Size = System::Drawing::Size(121, 21);
@@ -613,8 +617,10 @@ namespace AirTicketOffice {
 			// 
 			// delPlaneIdComboBox
 			// 
+			this->delPlaneIdComboBox->DropDownHeight = 72;
 			this->delPlaneIdComboBox->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
 			this->delPlaneIdComboBox->FormattingEnabled = true;
+			this->delPlaneIdComboBox->IntegralHeight = false;
 			this->delPlaneIdComboBox->Location = System::Drawing::Point(9, 32);
 			this->delPlaneIdComboBox->Name = L"delPlaneIdComboBox";
 			this->delPlaneIdComboBox->Size = System::Drawing::Size(121, 21);
@@ -692,8 +698,10 @@ namespace AirTicketOffice {
 			// 
 			// updPlaneModelComboBox
 			// 
+			this->updPlaneModelComboBox->DropDownHeight = 72;
 			this->updPlaneModelComboBox->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
 			this->updPlaneModelComboBox->FormattingEnabled = true;
+			this->updPlaneModelComboBox->IntegralHeight = false;
 			this->updPlaneModelComboBox->Location = System::Drawing::Point(9, 72);
 			this->updPlaneModelComboBox->Name = L"updPlaneModelComboBox";
 			this->updPlaneModelComboBox->Size = System::Drawing::Size(121, 21);
@@ -702,8 +710,10 @@ namespace AirTicketOffice {
 			// 
 			// updPlaneIdComboBox
 			// 
+			this->updPlaneIdComboBox->DropDownHeight = 72;
 			this->updPlaneIdComboBox->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
 			this->updPlaneIdComboBox->FormattingEnabled = true;
+			this->updPlaneIdComboBox->IntegralHeight = false;
 			this->updPlaneIdComboBox->Location = System::Drawing::Point(9, 32);
 			this->updPlaneIdComboBox->Name = L"updPlaneIdComboBox";
 			this->updPlaneIdComboBox->Size = System::Drawing::Size(121, 21);
@@ -758,8 +768,10 @@ namespace AirTicketOffice {
 			// 
 			// addPlaneModelComboBox
 			// 
+			this->addPlaneModelComboBox->DropDownHeight = 72;
 			this->addPlaneModelComboBox->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
 			this->addPlaneModelComboBox->FormattingEnabled = true;
+			this->addPlaneModelComboBox->IntegralHeight = false;
 			this->addPlaneModelComboBox->Location = System::Drawing::Point(6, 33);
 			this->addPlaneModelComboBox->Name = L"addPlaneModelComboBox";
 			this->addPlaneModelComboBox->Size = System::Drawing::Size(121, 21);

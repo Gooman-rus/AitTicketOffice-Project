@@ -12,10 +12,10 @@ bool asMainManager (System::Windows::Forms::DataGridView^ tableFlights,
 	
 	// после удаления одной вкладки индекс меняется
 	if (!admin) {
-		tabCtrl->TabPages->Remove(tabCtrl->TabPages[0]);	
-		tabCtrl->TabPages->Remove(tabCtrl->TabPages[0]);
-		tabCtrl->TabPages->Remove(tabCtrl->TabPages[0]);
+		tabCtrl->TabPages->Remove(tabCtrl->TabPages[1]);	
 		tabCtrl->TabPages->Remove(tabCtrl->TabPages[1]);
+		tabCtrl->TabPages->Remove(tabCtrl->TabPages[2]);
+		//tabCtrl->TabPages->Remove(tabCtrl->TabPages[1]);
 	}
 
 	bool check;
@@ -66,8 +66,8 @@ bool asTeller(System::Windows::Forms::TabControl^ tabCtrl, bool admin) {
 	bool check;
 
 	if (!admin) {
-	tabCtrl->TabPages->Remove(tabCtrl->TabPages[0]);
-	for (int i=0;i<3;i++) tabCtrl->TabPages->Remove(tabCtrl->TabPages[1]);
+	//tabCtrl->TabPages->Remove(tabCtrl->TabPages[0]);
+	for (int i=0;i<3;i++) tabCtrl->TabPages->Remove(tabCtrl->TabPages[2]);
 	}
 
 
@@ -78,10 +78,10 @@ bool asCargoManager(System::Windows::Forms::TabControl^ tabCtrl, bool admin) {
 	bool check;
 
 	if (!admin) {
-		tabCtrl->TabPages->Remove(tabCtrl->TabPages[0]);	
-		tabCtrl->TabPages->Remove(tabCtrl->TabPages[0]);
-		tabCtrl->TabPages->Remove(tabCtrl->TabPages[1]);
-		tabCtrl->TabPages->Remove(tabCtrl->TabPages[1]);
+		tabCtrl->TabPages->Remove(tabCtrl->TabPages[1]);	
+		tabCtrl->TabPages->Remove(tabCtrl->TabPages[2]);
+		tabCtrl->TabPages->Remove(tabCtrl->TabPages[2]);
+		//tabCtrl->TabPages->Remove(tabCtrl->TabPages[1]);
 	}
 
 
