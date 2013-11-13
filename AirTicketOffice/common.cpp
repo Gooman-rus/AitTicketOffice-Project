@@ -41,6 +41,11 @@ MySqlDataReader^ executeReq(String^ request)
 					MessageBox::Show("Невозможно удалить элемент,т.к. на него ссылаются поля другой таблицы");
 					return myReader;
 				}
+				if(code==1452)
+				{
+					MessageBox::Show("Невозможно удалить элемент,т.к. на него ссылаются поля другой таблицы");
+					return myReader;
+				}
 				else
 					MessageBox::Show("Error "+code.ToString()+": "+ex->Message);
 	}
@@ -93,4 +98,10 @@ void FillCombo(String^ query,String^ column, System::Windows::Forms::ComboBox^ b
 	{
 		box->Items->Add(myReader->GetString(column));
 	}
+}
+void CopyCombo(System::Windows::Forms::ComboBox^ box1,System::Windows::Forms::ComboBox^ box2)
+{
+	box1->Items->Clear();
+	for(int i=0;i<box2->Items->Count;i++)
+		box1->Items->Add(box2->Items[i]);
 }

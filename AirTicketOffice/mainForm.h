@@ -224,7 +224,7 @@ namespace AirTicketOffice {
 			this->usersPage->Location = System::Drawing::Point(4, 22);
 			this->usersPage->Name = L"usersPage";
 			this->usersPage->Padding = System::Windows::Forms::Padding(3);
-			this->usersPage->Size = System::Drawing::Size(824, 451);
+			this->usersPage->Size = System::Drawing::Size(831, 458);
 			this->usersPage->TabIndex = 0;
 			this->usersPage->Text = L"Заказ билета";
 			this->usersPage->UseVisualStyleBackColor = true;
@@ -274,7 +274,7 @@ namespace AirTicketOffice {
 			this->manageFlights->Location = System::Drawing::Point(4, 22);
 			this->manageFlights->Name = L"manageFlights";
 			this->manageFlights->Padding = System::Windows::Forms::Padding(3);
-			this->manageFlights->Size = System::Drawing::Size(812, 419);
+			this->manageFlights->Size = System::Drawing::Size(820, 429);
 			this->manageFlights->TabIndex = 0;
 			this->manageFlights->Text = L"Управление рейсами";
 			this->manageFlights->UseVisualStyleBackColor = true;
@@ -358,6 +358,7 @@ namespace AirTicketOffice {
 			this->delPlaneParamModelComboBox->Name = L"delPlaneParamModelComboBox";
 			this->delPlaneParamModelComboBox->Size = System::Drawing::Size(121, 21);
 			this->delPlaneParamModelComboBox->TabIndex = 10;
+			this->delPlaneParamModelComboBox->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &mainForm::addPlaneModelComboBox_KeyPress);
 			// 
 			// deletePlanesParametrsButton
 			// 
@@ -397,6 +398,7 @@ namespace AirTicketOffice {
 			this->updPlanesParamModelComboBox->Name = L"updPlanesParamModelComboBox";
 			this->updPlanesParamModelComboBox->Size = System::Drawing::Size(121, 21);
 			this->updPlanesParamModelComboBox->TabIndex = 11;
+			this->updPlanesParamModelComboBox->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &mainForm::addPlaneModelComboBox_KeyPress);
 			// 
 			// updatePlanesParamButton
 			// 
@@ -571,7 +573,9 @@ namespace AirTicketOffice {
 			this->delPlaneIdComboBox->Location = System::Drawing::Point(9, 32);
 			this->delPlaneIdComboBox->Name = L"delPlaneIdComboBox";
 			this->delPlaneIdComboBox->Size = System::Drawing::Size(121, 21);
+			this->delPlaneIdComboBox->Sorted = true;
 			this->delPlaneIdComboBox->TabIndex = 17;
+			this->delPlaneIdComboBox->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &mainForm::addPlaneModelComboBox_KeyPress);
 			// 
 			// label12
 			// 
@@ -649,6 +653,7 @@ namespace AirTicketOffice {
 			this->updPlaneModelComboBox->Name = L"updPlaneModelComboBox";
 			this->updPlaneModelComboBox->Size = System::Drawing::Size(121, 21);
 			this->updPlaneModelComboBox->TabIndex = 16;
+			this->updPlaneModelComboBox->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &mainForm::addPlaneModelComboBox_KeyPress);
 			// 
 			// updPlaneIdComboBox
 			// 
@@ -657,7 +662,9 @@ namespace AirTicketOffice {
 			this->updPlaneIdComboBox->Location = System::Drawing::Point(9, 32);
 			this->updPlaneIdComboBox->Name = L"updPlaneIdComboBox";
 			this->updPlaneIdComboBox->Size = System::Drawing::Size(121, 21);
+			this->updPlaneIdComboBox->Sorted = true;
 			this->updPlaneIdComboBox->TabIndex = 15;
+			this->updPlaneIdComboBox->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &mainForm::addPlaneModelComboBox_KeyPress);
 			// 
 			// label9
 			// 
@@ -712,6 +719,7 @@ namespace AirTicketOffice {
 			this->addPlaneModelComboBox->Name = L"addPlaneModelComboBox";
 			this->addPlaneModelComboBox->Size = System::Drawing::Size(121, 21);
 			this->addPlaneModelComboBox->TabIndex = 12;
+			this->addPlaneModelComboBox->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &mainForm::addPlaneModelComboBox_KeyPress);
 			// 
 			// label7
 			// 
@@ -854,6 +862,8 @@ private: System::Void addPlanesParamButton_Click(System::Object^  sender, System
 			 loadData("select * from airlines.plane_parametrs", planeParamTable);
 			 FillCombo("SELECT model FROM airlines.plane_parametrs","model",delPlaneParamModelComboBox);
 			 FillCombo("SELECT model FROM airlines.plane_parametrs","model",updPlanesParamModelComboBox);
+			 FillCombo("SELECT model FROM airlines.plane_parametrs","model",addPlaneModelComboBox);
+			 FillCombo("SELECT model FROM airlines.plane_parametrs","model",updPlaneModelComboBox);
 			 addPlanesParamButton->Enabled = true;
 		 }
 private: System::Void numericUpDown1_KeyPress(System::Object^  sender, System::Windows::Forms::KeyPressEventArgs^  e) {
@@ -908,7 +918,12 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 			 loadData("select * from airlines.plane_parametrs", planeParamTable);
 			 loadData("select * from airlines.planes", planesTable);
 			 FillCombo("SELECT model FROM airlines.plane_parametrs","model",delPlaneParamModelComboBox);
-			 FillCombo("SELECT model FROM airlines.plane_parametrs","model",updPlanesParamModelComboBox);
+			 CopyCombo(updPlanesParamModelComboBox,delPlaneParamModelComboBox);
+			 CopyCombo(updPlaneModelComboBox,delPlaneParamModelComboBox);
+			 CopyCombo(addPlaneModelComboBox,delPlaneParamModelComboBox);
+			 //FillCombo("SELECT model FROM airlines.plane_parametrs","model",updPlanesParamModelComboBox);
+			 //FillCombo("SELECT model FROM airlines.plane_parametrs","model",addPlaneModelComboBox);
+			 //FillCombo("SELECT model FROM airlines.plane_parametrs","model",updPlaneModelComboBox);
 			 updatePlanesParamButton->Enabled = true;
 		 }
 
@@ -928,7 +943,12 @@ private: System::Void deletePlanesParametrsButton_Click(System::Object^  sender,
 			 loadData("select * from airlines.plane_parametrs", planeParamTable);
 			 loadData("select * from airlines.planes", planesTable);
 			 FillCombo("SELECT model FROM airlines.plane_parametrs","model",delPlaneParamModelComboBox);
-			 FillCombo("SELECT model FROM airlines.plane_parametrs","model",updPlanesParamModelComboBox);
+			 CopyCombo(updPlanesParamModelComboBox,delPlaneParamModelComboBox);
+			 CopyCombo(updPlaneModelComboBox,delPlaneParamModelComboBox);
+			 CopyCombo(addPlaneModelComboBox,delPlaneParamModelComboBox);
+			 //FillCombo("SELECT model FROM airlines.plane_parametrs","model",updPlanesParamModelComboBox);
+			 //FillCombo("SELECT model FROM airlines.plane_parametrs","model",addPlaneModelComboBox);
+			 //FillCombo("SELECT model FROM airlines.plane_parametrs","model",updPlaneModelComboBox);
 			 deletePlanesParametrsButton->Enabled = true;
 		 }
 private: System::Void planeParamTable_CellClick(System::Object^  sender, System::Windows::Forms::DataGridViewCellEventArgs^  e) {
@@ -957,7 +977,8 @@ private: System::Void addPlaneButton_Click(System::Object^  sender, System::Even
 			 myReader = executeReq("INSERT INTO airlines.planes (model,company) VALUES('"+addPlaneModelComboBox->Text+"','"+addPlaneCompanyTextBox->Text+"')");
 			 loadData("select * from airlines.planes", planesTable);
 			 FillCombo("SELECT id_plane FROM airlines.planes","id_plane",updPlaneIdComboBox);
-			 FillCombo("SELECT id_plane FROM airlines.planes","id_plane",delPlaneIdComboBox);
+			 CopyCombo(delPlaneIdComboBox,updPlaneIdComboBox);
+			 //FillCombo("SELECT id_plane FROM airlines.planes","id_plane",delPlaneIdComboBox);
 			 addPlaneButton->Enabled = true;
 		 }
 private: System::Void button1_Click_1(System::Object^  sender, System::EventArgs^  e) {
@@ -992,8 +1013,8 @@ private: System::Void button1_Click_1(System::Object^  sender, System::EventArgs
 private: System::Void planesTable_CellClick(System::Object^  sender, System::Windows::Forms::DataGridViewCellEventArgs^  e) {
 			  updPlaneIdComboBox->Text = planesTable->CurrentRow->Cells[0]->Value->ToString();
 			  delPlaneIdComboBox->Text = planesTable->CurrentRow->Cells[0]->Value->ToString();
-			  //updPlaneModelComboBox->Text = planesTable->CurrentRow->Cells[1]->Value->ToString();
-			  //updPlaneCompanyTextBox->Text = planesTable->CurrentRow->Cells[2]->Value->ToString();
+			  updPlaneModelComboBox->Text = planesTable->CurrentRow->Cells[1]->Value->ToString();
+			  updPlaneCompanyTextBox->Text = planesTable->CurrentRow->Cells[2]->Value->ToString();
 		 }
 private: System::Void deletePlaneButton_Click(System::Object^  sender, System::EventArgs^  e) {
 			 deletePlaneButton->Enabled = false;
@@ -1010,8 +1031,12 @@ private: System::Void deletePlaneButton_Click(System::Object^  sender, System::E
 			 myReader = executeReq("DELETE FROM airlines.planes where id_plane='"+delPlaneIdComboBox->Text+"';");
 			 loadData("select * from airlines.planes", planesTable);
 			 FillCombo("SELECT id_plane FROM airlines.planes","id_plane",updPlaneIdComboBox);
-			 FillCombo("SELECT id_plane FROM airlines.planes","id_plane",delPlaneIdComboBox);
+			 //FillCombo("SELECT id_plane FROM airlines.planes","id_plane",delPlaneIdComboBox);
+			 CopyCombo(delPlaneIdComboBox,updPlaneIdComboBox);
 			 deletePlaneButton->Enabled = true;
+		 }
+private: System::Void addPlaneModelComboBox_KeyPress(System::Object^  sender, System::Windows::Forms::KeyPressEventArgs^  e) {
+			 e->Handled = true;
 		 }
 };
 }

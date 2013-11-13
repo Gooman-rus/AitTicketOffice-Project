@@ -20,7 +20,7 @@ MySqlDataReader^ executeReq(String^ request);
 bool loadData(String^ request, System::Windows::Forms::DataGridView^ dataGrid);
 // заполняет comboBox
 void FillCombo(String^ query,String^ column, System::Windows::Forms::ComboBox^ box);
-
+void CopyCombo(System::Windows::Forms::ComboBox^ box1,System::Windows::Forms::ComboBox^ box2);
 String^ getError();
 
 #endif
