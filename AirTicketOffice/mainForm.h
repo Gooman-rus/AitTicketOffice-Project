@@ -43,12 +43,9 @@ namespace AirTicketOffice {
 					asMainManager (flightsTable, planesTable, planeParamTable, tabControl1, false);
 					FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",
 						delPlaneParamModelComboBox);
-					FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",
-						updPlanesParamModelComboBox);
-					FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",
-						addPlaneModelComboBox);
-					FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",
-						updPlaneModelComboBox);
+					CopyCombo(updPlanesParamModelComboBox,delPlaneParamModelComboBox);
+					CopyCombo(updPlaneModelComboBox,delPlaneParamModelComboBox);
+					CopyCombo(addPlaneModelComboBox,delPlaneParamModelComboBox);
 					FillCombo("SELECT id_plane FROM "+PREFIX+".planes","id_plane",
 						updPlaneIdComboBox);
 					FillCombo("SELECT id_plane FROM "+PREFIX+".planes","id_plane",
@@ -60,17 +57,12 @@ namespace AirTicketOffice {
 								   planeParamTable, tabControl1, true);
 					FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",
 						delPlaneParamModelComboBox);
-					FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",
-						updPlanesParamModelComboBox);
-					FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",
-						addPlaneModelComboBox);
-					FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",
-						updPlaneModelComboBox);
+					CopyCombo(updPlanesParamModelComboBox,delPlaneParamModelComboBox);
+					CopyCombo(updPlaneModelComboBox,delPlaneParamModelComboBox);
+					CopyCombo(addPlaneModelComboBox,delPlaneParamModelComboBox);
 					FillCombo("SELECT id_plane FROM "+PREFIX+".planes","id_plane",
 						updPlaneIdComboBox);
-					FillCombo("SELECT id_plane FROM "+PREFIX+".planes","id_plane",
-						delPlaneIdComboBox);
-					
+					CopyCombo(delPlaneIdComboBox,updPlaneIdComboBox);
 					break;
 				default: r = "Stop hacking my programm!";break;
 			}
@@ -880,7 +872,6 @@ namespace AirTicketOffice {
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->planeParamTable))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->planesTable))->EndInit();
 			this->ResumeLayout(false);
-
 		}
 #pragma endregion
 	private: System::Void mainForm_FormClosed(System::Object^  sender, System::Windows::Forms::FormClosedEventArgs^  e) {

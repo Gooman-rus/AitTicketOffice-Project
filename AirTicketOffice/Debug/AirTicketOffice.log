@@ -1,25 +1,5 @@
-﻿Построение начато 13-Nov-13 20:41:43.
-     1>Проект "C:\Users\Gooman\Documents\GitHub\AitTicketOffice-Project\AirTicketOffice\AirTicketOffice.vcxproj" в узле 2 (целевые объекты build).
-     1>InitializeBuildStatus:
-         Создание "Debug\AirTicketOffice.unsuccessfulbuild", так как было задано "AlwaysCreate".
-       GenerateTargetFrameworkMonikerAttribute:
-       Целевой объект "GenerateTargetFrameworkMonikerAttribute" пропускается, так как все выходные файлы актуальны по отношению к входным.
-       ClCompile:
-         Для всех выходных данных обновления не требуется.
-         Для всех выходных данных обновления не требуется.
-         Для всех выходных данных обновления не требуется.
-       CoreResGen:
-         Для всех выходных данных обновления не требуется.
-       ResourceCompile:
-         Для всех выходных данных обновления не требуется.
-       Link:
-         Для всех выходных данных обновления не требуется.
-         AirTicketOffice.vcxproj -> C:\Users\Gooman\Documents\GitHub\AitTicketOffice-Project\Debug\AirTicketOffice.exe
-       FinalizeBuildStatus:
-         Файл "Debug\AirTicketOffice.unsuccessfulbuild" удаляется.
-         Обращение к "Debug\AirTicketOffice.lastbuildstate".
-     1>Построение проекта "C:\Users\Gooman\Documents\GitHub\AitTicketOffice-Project\AirTicketOffice\AirTicketOffice.vcxproj" завершено (целевые объекты build).
-
-Построение успешно завершено.
-
-Затраченное время: 00:00:00.64
+﻿  AirTicketOffice.cpp
+  code.cpp
+  mainForm.cpp
+  Создание кода...
+  AirTicketOffice.vcxproj -> D:\!универ\ОБД\AitTicketOffice-Project\Debug\AirTicketOffice.exe
