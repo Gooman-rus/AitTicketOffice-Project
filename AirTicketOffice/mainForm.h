@@ -23,13 +23,58 @@ namespace AirTicketOffice {
 			InitializeComponent();
 			// todo: вызов нужной функции в зависимости от роли
 			
-			asMainManager (flightsTable, planesTable, planeParamTable, tabControl1);
-			FillCombo("SELECT model FROM airlines.plane_parametrs","model",delPlaneParamModelComboBox);
-			FillCombo("SELECT model FROM airlines.plane_parametrs","model",updPlanesParamModelComboBox);
-			FillCombo("SELECT model FROM airlines.plane_parametrs","model",addPlaneModelComboBox);
-			FillCombo("SELECT model FROM airlines.plane_parametrs","model",updPlaneModelComboBox);
-			FillCombo("SELECT id_plane FROM airlines.planes","id_plane",updPlaneIdComboBox);
-			FillCombo("SELECT id_plane FROM airlines.planes","id_plane",delPlaneIdComboBox);
+			String^ r;
+			switch(currRole)
+			{
+				case 1:
+					r = "Пользователь"; 
+					asUser(tabControl1, false);
+					break;
+				case 2:
+					r = "Менеджер по билетам"; 
+					asTeller(tabControl1, false);
+					break;
+				case 3:
+					r = "Менеджер грузов"; 
+					asCargoManager(tabControl1, false);
+					break;
+				case 4:
+					r = "Организационный менеджер"; 
+					asMainManager (flightsTable, planesTable, planeParamTable, tabControl1, false);
+					FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",
+						delPlaneParamModelComboBox);
+					FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",
+						updPlanesParamModelComboBox);
+					FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",
+						addPlaneModelComboBox);
+					FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",
+						updPlaneModelComboBox);
+					FillCombo("SELECT id_plane FROM "+PREFIX+".planes","id_plane",
+						updPlaneIdComboBox);
+					FillCombo("SELECT id_plane FROM "+PREFIX+".planes","id_plane",
+						delPlaneIdComboBox);
+					break;
+				case 5:
+					r = "Администратор";	
+					asMainManager (flightsTable, planesTable, 
+								   planeParamTable, tabControl1, true);
+					FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",
+						delPlaneParamModelComboBox);
+					FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",
+						updPlanesParamModelComboBox);
+					FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",
+						addPlaneModelComboBox);
+					FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",
+						updPlaneModelComboBox);
+					FillCombo("SELECT id_plane FROM "+PREFIX+".planes","id_plane",
+						updPlaneIdComboBox);
+					FillCombo("SELECT id_plane FROM "+PREFIX+".planes","id_plane",
+						delPlaneIdComboBox);
+					
+					break;
+				default: r = "Stop hacking my programm!";break;
+			}
+			this->Text = "AirTicketOffice - " + r; // заголовок окна
 		}
 
 	protected:
@@ -856,13 +901,13 @@ private: System::Void addPlanesParamButton_Click(System::Object^  sender, System
 			 }
 			 MySqlDataReader^ myReader;
 			 numTab = 2;
-			 myReader = executeReq("INSERT INTO airlines.plane_parametrs (model,spot_num) VALUES('"
+			 myReader = executeReq("INSERT INTO "+PREFIX+".plane_parametrs (model,spot_num) VALUES('"
 								   +planesParamModelTextBox->Text+"',"+spotNumericUpDown->Value+")");
-			 loadData("select * from airlines.plane_parametrs", planeParamTable);
-			 FillCombo("SELECT model FROM airlines.plane_parametrs","model",delPlaneParamModelComboBox);
-			 FillCombo("SELECT model FROM airlines.plane_parametrs","model",updPlanesParamModelComboBox);
-			 FillCombo("SELECT model FROM airlines.plane_parametrs","model",addPlaneModelComboBox);
-			 FillCombo("SELECT model FROM airlines.plane_parametrs","model",updPlaneModelComboBox);
+			 loadData("select * from "+PREFIX+".plane_parametrs", planeParamTable);
+			 FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",delPlaneParamModelComboBox);
+			 FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",updPlanesParamModelComboBox);
+			 FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",addPlaneModelComboBox);
+			 FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",updPlaneModelComboBox);
 			 addPlanesParamButton->Enabled = true;
 		 }
 private: System::Void numericUpDown1_KeyPress(System::Object^  sender, System::Windows::Forms::KeyPressEventArgs^  e) {
@@ -913,23 +958,29 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 			 }
 			 MySqlDataReader^ myReader;
 			 numTab = 2;
-			 myReader = executeReq("UPDATE airlines.plane_parametrs SET model='"+newPlanesParamModelTextBox->Text+"', spot_num ="+newSpotNumericUpDown->Value+" WHERE model = '"+updPlanesParamModelComboBox->Text+"';");
-			 loadData("select * from airlines.plane_parametrs", planeParamTable);
-			 loadData("select * from airlines.planes", planesTable);
-			 FillCombo("SELECT model FROM airlines.plane_parametrs","model",delPlaneParamModelComboBox);
+			 myReader = executeReq("UPDATE "+PREFIX+".plane_parametrs SET model='"+newPlanesParamModelTextBox->Text+"', spot_num ="+newSpotNumericUpDown->Value+" WHERE model = '"+updPlanesParamModelComboBox->Text+"';");
+			 loadData("select * from "+PREFIX+".plane_parametrs", planeParamTable);
+			 loadData("select * from "+PREFIX+".planes", planesTable);
+			 FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",delPlaneParamModelComboBox);
 			 CopyCombo(updPlanesParamModelComboBox,delPlaneParamModelComboBox);
 			 CopyCombo(updPlaneModelComboBox,delPlaneParamModelComboBox);
 			 CopyCombo(addPlaneModelComboBox,delPlaneParamModelComboBox);
-			 //FillCombo("SELECT model FROM airlines.plane_parametrs","model",updPlanesParamModelComboBox);
-			 //FillCombo("SELECT model FROM airlines.plane_parametrs","model",addPlaneModelComboBox);
-			 //FillCombo("SELECT model FROM airlines.plane_parametrs","model",updPlaneModelComboBox);
+			 //FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",updPlanesParamModelComboBox);
+			 //FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",addPlaneModelComboBox);
+			 //FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",updPlaneModelComboBox);
 			 updatePlanesParamButton->Enabled = true;
 		 }
 
 
 private: System::Void deletePlanesParametrsButton_Click(System::Object^  sender, System::EventArgs^  e) {
+			 String^ q = "Уверены, что хотите удалить?";
+			 String^ p = "Подтверждение удаления"; 
+			 System::Windows::Forms::DialogResult res;
+			 res = MessageBox::Show(q,p,MessageBoxButtons::YesNo,MessageBoxIcon::Question);
+			 if (res == System::Windows::Forms::DialogResult::Yes) {
+
 			 deletePlanesParametrsButton->Enabled = false;
-			 if(delPlaneParamModelComboBox->Text->Length==0)
+			 if (delPlaneParamModelComboBox->Text->Length==0)
 			 {
 				 MessageBox::Show("Введите модель, которую нужно удалить", "Ошибка",
 					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
@@ -938,17 +989,18 @@ private: System::Void deletePlanesParametrsButton_Click(System::Object^  sender,
 			 }
 			 MySqlDataReader^ myReader;
 			 numTab = 2;
-			 myReader = executeReq("DELETE FROM airlines.plane_parametrs where model='"+delPlaneParamModelComboBox->Text+"';");
-			 loadData("select * from airlines.plane_parametrs", planeParamTable);
-			 loadData("select * from airlines.planes", planesTable);
-			 FillCombo("SELECT model FROM airlines.plane_parametrs","model",delPlaneParamModelComboBox);
+			 myReader = executeReq("DELETE FROM "+PREFIX+".plane_parametrs where model='"+delPlaneParamModelComboBox->Text+"';");
+			 loadData("select * from "+PREFIX+".plane_parametrs", planeParamTable);
+			 loadData("select * from "+PREFIX+".planes", planesTable);
+			 FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",delPlaneParamModelComboBox);
 			 CopyCombo(updPlanesParamModelComboBox,delPlaneParamModelComboBox);
 			 CopyCombo(updPlaneModelComboBox,delPlaneParamModelComboBox);
 			 CopyCombo(addPlaneModelComboBox,delPlaneParamModelComboBox);
-			 //FillCombo("SELECT model FROM airlines.plane_parametrs","model",updPlanesParamModelComboBox);
-			 //FillCombo("SELECT model FROM airlines.plane_parametrs","model",addPlaneModelComboBox);
-			 //FillCombo("SELECT model FROM airlines.plane_parametrs","model",updPlaneModelComboBox);
+			 //FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",updPlanesParamModelComboBox);
+			 //FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",addPlaneModelComboBox);
+			 //FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",updPlaneModelComboBox);
 			 deletePlanesParametrsButton->Enabled = true;
+			 }
 		 }
 private: System::Void planeParamTable_CellClick(System::Object^  sender, System::Windows::Forms::DataGridViewCellEventArgs^  e) {
 			 updPlanesParamModelComboBox->Text = planeParamTable->CurrentRow->Cells[0]->Value->ToString();
@@ -973,11 +1025,12 @@ private: System::Void addPlaneButton_Click(System::Object^  sender, System::Even
 			 }
 			 MySqlDataReader^ myReader;
 			 numTab = 3;
-			 myReader = executeReq("INSERT INTO airlines.planes (model,company) VALUES('"+addPlaneModelComboBox->Text+"','"+addPlaneCompanyTextBox->Text+"')");
-			 loadData("select * from airlines.planes", planesTable);
-			 FillCombo("SELECT id_plane FROM airlines.planes","id_plane",updPlaneIdComboBox);
+			 myReader = executeReq("INSERT INTO "+PREFIX+".planes (model,company) VALUES('"+
+								   addPlaneModelComboBox->Text+"','"+addPlaneCompanyTextBox->Text+"')");
+			 loadData("select * from "+PREFIX+".planes", planesTable);
+			 FillCombo("SELECT id_plane FROM "+PREFIX+".planes","id_plane",updPlaneIdComboBox);
 			 CopyCombo(delPlaneIdComboBox,updPlaneIdComboBox);
-			 //FillCombo("SELECT id_plane FROM airlines.planes","id_plane",delPlaneIdComboBox);
+			 //FillCombo("SELECT id_plane FROM "+PREFIX+".planes","id_plane",delPlaneIdComboBox);
 			 addPlaneButton->Enabled = true;
 		 }
 private: System::Void button1_Click_1(System::Object^  sender, System::EventArgs^  e) {
@@ -1005,8 +1058,10 @@ private: System::Void button1_Click_1(System::Object^  sender, System::EventArgs
 			 }
 			 numTab = 3;
 			 MySqlDataReader^ myReader;
-			 myReader = executeReq("UPDATE airlines.planes SET model='"+updPlaneModelComboBox->Text+"', company ='"+updPlaneCompanyTextBox->Text+"' WHERE id_plane = '"+updPlaneIdComboBox->Text+"';");
-			 loadData("select * from airlines.planes", planesTable);
+			 myReader = executeReq("UPDATE "+PREFIX+".planes SET model='"+
+						updPlaneModelComboBox->Text+"', company ='"+
+						updPlaneCompanyTextBox->Text+"' WHERE id_plane = '"+updPlaneIdComboBox->Text+"';");
+			 loadData("select * from "+PREFIX+".planes", planesTable);
 			 updPlaneButton->Enabled = true;
 		 }
 private: System::Void planesTable_CellClick(System::Object^  sender, System::Windows::Forms::DataGridViewCellEventArgs^  e) {
@@ -1016,6 +1071,12 @@ private: System::Void planesTable_CellClick(System::Object^  sender, System::Win
 			  updPlaneCompanyTextBox->Text = planesTable->CurrentRow->Cells[2]->Value->ToString();
 		 }
 private: System::Void deletePlaneButton_Click(System::Object^  sender, System::EventArgs^  e) {
+			 String^ q = "Уверены, что хотите удалить?";
+			 String^ p = "Подтверждение удаления"; 
+			 System::Windows::Forms::DialogResult res;
+			 res = MessageBox::Show(q,p,MessageBoxButtons::YesNo,MessageBoxIcon::Question);
+			 if (res == System::Windows::Forms::DialogResult::Yes) {
+				 
 			 deletePlaneButton->Enabled = false;
 			 if(delPlaneIdComboBox->Text->Length == 0)
 			 {
@@ -1027,12 +1088,13 @@ private: System::Void deletePlaneButton_Click(System::Object^  sender, System::E
 			 deletePlaneButton->Enabled = true;
 			 numTab = 3;
 			 MySqlDataReader^ myReader;
-			 myReader = executeReq("DELETE FROM airlines.planes where id_plane='"+delPlaneIdComboBox->Text+"';");
-			 loadData("select * from airlines.planes", planesTable);
-			 FillCombo("SELECT id_plane FROM airlines.planes","id_plane",updPlaneIdComboBox);
-			 //FillCombo("SELECT id_plane FROM airlines.planes","id_plane",delPlaneIdComboBox);
+			 myReader = executeReq("DELETE FROM "+PREFIX+".planes where id_plane='"+delPlaneIdComboBox->Text+"';");
+			 loadData("select * from "+PREFIX+".planes", planesTable);
+			 FillCombo("SELECT id_plane FROM "+PREFIX+".planes","id_plane",updPlaneIdComboBox);
+			 //FillCombo("SELECT id_plane FROM "+PREFIX+".planes","id_plane",delPlaneIdComboBox);
 			 CopyCombo(delPlaneIdComboBox,updPlaneIdComboBox);
 			 deletePlaneButton->Enabled = true;
+			 }
 		 }
 private: System::Void addPlaneModelComboBox_KeyPress(System::Object^  sender, System::Windows::Forms::KeyPressEventArgs^  e) {
 			 e->Handled = true;

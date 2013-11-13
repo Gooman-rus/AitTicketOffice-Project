@@ -6,13 +6,15 @@
 #define PORT	"3306"
 #define USER	"root"
 #define PASSWD	"qwerty721"
-#pragma once
+#define PREFIX	"airlines"  // имя БД
 
+#pragma once
 using namespace MySql::Data::MySqlClient;
 using namespace System;
 using namespace System::Data;
 
 extern int numTab;
+extern int currRole;  // текущая роль
 
 // выполняет запрос
 MySqlDataReader^ executeReq(String^ request);	

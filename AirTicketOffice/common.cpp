@@ -6,6 +6,7 @@ using namespace System::Windows::Forms;
 //using namespace MySql::Data::MySqlClient;
 
 int numTab = 1;
+int currRole;  // текущая роль
 
 String^ getError()
 {

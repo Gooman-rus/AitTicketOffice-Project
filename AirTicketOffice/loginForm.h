@@ -2,8 +2,8 @@
 #include "mainForm.h"
 #include "registrationForm.h"
 #include "common.h"
-//#include "ticket.h"
-//#pragma once
+
+
 namespace AirTicketOffice {
 
 	using namespace System;
@@ -156,7 +156,7 @@ namespace AirTicketOffice {
 #pragma endregion
 	private: System::Void loginButton_Click(System::Object^  sender, System::EventArgs^  e) {
 			 loginButton->Enabled = false;
-			 MySqlDataReader^ myReader = executeReq("select * from airlines.users;");
+			 MySqlDataReader^ myReader = executeReq("select * from "+PREFIX+".users;");
 			 if (!myReader) 
 			 {
 				 loginButton->Enabled = true;
@@ -167,6 +167,12 @@ namespace AirTicketOffice {
 			 {
 					if (myReader->GetString(0)==loginTextBox->Text && myReader->GetString(1)==passTextBox->Text)
 					{
+						if (myReader->GetString(2) == "1") currRole = 1; // user
+						if (myReader->GetString(3) == "1") currRole = 2; // teller
+						if (myReader->GetString(4) == "1") currRole = 3; // cargoManager
+						if (myReader->GetString(5) == "1") currRole = 4; // mainManager
+						if (myReader->GetString(6) == "1") currRole = 5; // admin
+					
 						this->Hide();
 						mainForm^ secondForm = gcnew mainForm();
 						secondForm->ShowDialog();
@@ -175,8 +181,11 @@ namespace AirTicketOffice {
 					}
 			 }
 			   if (!login)
+			   {
 				 MessageBox::Show("Неправильный логин или пароль", "Login error", 
 				 MessageBoxButtons::OK, MessageBoxIcon::Error);
+				 loginButton->Enabled = true;
+			   }
 
 			   // todo: проверка  логина на отсутствие символов, кроме цифр
 			   // проверка пароля на отсутствие " ; '

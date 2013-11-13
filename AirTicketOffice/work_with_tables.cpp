@@ -7,16 +7,16 @@
 bool asMainManager (System::Windows::Forms::DataGridView^ tableFlights, 
 					System::Windows::Forms::DataGridView^ tablePlanes,
 					System::Windows::Forms::DataGridView^ tablePlaneParam,
-					System::Windows::Forms::TabControl^   tabCtrl)
+					System::Windows::Forms::TabControl^   tabCtrl, bool admin)
 {
-	// todo: удаляем из tabControl1 ненужные для этой роли вкладки
-	// todo: загружаем нужные данные в 3 DataGridView
-
+	
 	// после удаления одной вкладки индекс меняется
-	tabCtrl->TabPages->Remove(tabCtrl->TabPages[0]);	
-	tabCtrl->TabPages->Remove(tabCtrl->TabPages[0]);
-	tabCtrl->TabPages->Remove(tabCtrl->TabPages[0]);
-	tabCtrl->TabPages->Remove(tabCtrl->TabPages[1]);
+	if (!admin) {
+		tabCtrl->TabPages->Remove(tabCtrl->TabPages[0]);	
+		tabCtrl->TabPages->Remove(tabCtrl->TabPages[0]);
+		tabCtrl->TabPages->Remove(tabCtrl->TabPages[0]);
+		tabCtrl->TabPages->Remove(tabCtrl->TabPages[1]);
+	}
 
 	bool check;
 	check = loadData("select * from airlines.flights", tableFlights);
@@ -49,6 +49,41 @@ bool asMainManager (System::Windows::Forms::DataGridView^ tableFlights,
 	tablePlaneParam->Columns[1]->HeaderText = "Кол-во мест";
 	tablePlaneParam->Columns[0]->Width = 90;
 	tablePlaneParam->Columns[1]->Width = 80;
+
+	return check;
+}
+
+bool asUser(System::Windows::Forms::TabControl^ tabCtrl, bool admin) {
+	bool check;
+
+	if (!admin)
+	for (int i=0;i<4;i++) tabCtrl->TabPages->Remove(tabCtrl->TabPages[1]);
+
+	return check;
+}
+
+bool asTeller(System::Windows::Forms::TabControl^ tabCtrl, bool admin) {
+	bool check;
+
+	if (!admin) {
+	tabCtrl->TabPages->Remove(tabCtrl->TabPages[0]);
+	for (int i=0;i<3;i++) tabCtrl->TabPages->Remove(tabCtrl->TabPages[1]);
+	}
+
+
+	return check;
+}
+
+bool asCargoManager(System::Windows::Forms::TabControl^ tabCtrl, bool admin) {
+	bool check;
+
+	if (!admin) {
+		tabCtrl->TabPages->Remove(tabCtrl->TabPages[0]);	
+		tabCtrl->TabPages->Remove(tabCtrl->TabPages[0]);
+		tabCtrl->TabPages->Remove(tabCtrl->TabPages[1]);
+		tabCtrl->TabPages->Remove(tabCtrl->TabPages[1]);
+	}
+
 
 	return check;
 }
