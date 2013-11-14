@@ -48,8 +48,10 @@ namespace AirTicketOffice {
 					CopyCombo(addPlaneModelComboBox,delPlaneParamModelComboBox);
 					FillCombo("SELECT id_plane FROM "+PREFIX+".planes","id_plane",
 						updPlaneIdComboBox);
-					FillCombo("SELECT id_plane FROM "+PREFIX+".planes","id_plane",
-						delPlaneIdComboBox);
+					CopyCombo(delPlaneIdComboBox,updPlaneIdComboBox);
+					CopyCombo(addFlightPlaneId,updPlaneIdComboBox);
+					FillCombo("SELECT id_flight FROM "+PREFIX+".flights","id_flight",
+						updFlightId);
 					break;
 				case 5:
 					r = "Администратор";	
@@ -63,6 +65,11 @@ namespace AirTicketOffice {
 					FillCombo("SELECT id_plane FROM "+PREFIX+".planes","id_plane",
 						updPlaneIdComboBox);
 					CopyCombo(delPlaneIdComboBox,updPlaneIdComboBox);
+					CopyCombo(addFlightPlaneId,updPlaneIdComboBox);
+					CopyCombo(updFlightPlaneId,updPlaneIdComboBox);
+					FillCombo("SELECT id_flight FROM "+PREFIX+".flights","id_flight",
+						updFlightId);
+					CopyCombo(delFlightId,updFlightId);
 					break;
 				default: r = "Stop hacking my programm!";break;
 			}
@@ -139,6 +146,43 @@ namespace AirTicketOffice {
 	private: System::Windows::Forms::Button^  deletePlaneButton;
 	private: System::Windows::Forms::ComboBox^  delPlaneIdComboBox;
 	private: System::Windows::Forms::Label^  label12;
+private: System::Windows::Forms::GroupBox^  groupBox6;
+private: System::Windows::Forms::GroupBox^  groupBox9;
+private: System::Windows::Forms::GroupBox^  groupBox8;
+private: System::Windows::Forms::GroupBox^  groupBox7;
+private: System::Windows::Forms::DateTimePicker^  addFlightArrivalTime;
+
+private: System::Windows::Forms::Label^  label18;
+private: System::Windows::Forms::Label^  label17;
+private: System::Windows::Forms::DateTimePicker^  addFlightDepartTime;
+
+private: System::Windows::Forms::Label^  label16;
+private: System::Windows::Forms::Label^  label15;
+private: System::Windows::Forms::Label^  label14;
+private: System::Windows::Forms::TextBox^  addFlightArrive;
+private: System::Windows::Forms::TextBox^  addFlightDepart;
+private: System::Windows::Forms::Label^  label13;
+private: System::Windows::Forms::ComboBox^  addFlightPlaneId;
+private: System::Windows::Forms::Button^  addFlightButton;
+private: System::Windows::Forms::Label^  label25;
+private: System::Windows::Forms::ComboBox^  updFlightId;
+private: System::Windows::Forms::Label^  label24;
+private: System::Windows::Forms::Label^  label23;
+private: System::Windows::Forms::Label^  label22;
+private: System::Windows::Forms::Button^  updFlightButton;
+private: System::Windows::Forms::DateTimePicker^  updFlightArrivalDate;
+private: System::Windows::Forms::Label^  label19;
+private: System::Windows::Forms::Label^  label20;
+private: System::Windows::Forms::TextBox^  updFlightDest;
+private: System::Windows::Forms::Label^  label21;
+private: System::Windows::Forms::TextBox^  updFlightDep;
+private: System::Windows::Forms::DateTimePicker^  updFlightDepDate;
+private: System::Windows::Forms::ComboBox^  updFlightPlaneId;
+private: System::Windows::Forms::ComboBox^  delFlightId;
+private: System::Windows::Forms::Button^  delFlightButton;
+
+private: System::Windows::Forms::Label^  label26;
+
 
 
 
@@ -167,6 +211,39 @@ namespace AirTicketOffice {
 			this->managersPage = (gcnew System::Windows::Forms::TabPage());
 			this->orgTab = (gcnew System::Windows::Forms::TabControl());
 			this->manageFlights = (gcnew System::Windows::Forms::TabPage());
+			this->groupBox6 = (gcnew System::Windows::Forms::GroupBox());
+			this->groupBox9 = (gcnew System::Windows::Forms::GroupBox());
+			this->delFlightButton = (gcnew System::Windows::Forms::Button());
+			this->label26 = (gcnew System::Windows::Forms::Label());
+			this->delFlightId = (gcnew System::Windows::Forms::ComboBox());
+			this->groupBox8 = (gcnew System::Windows::Forms::GroupBox());
+			this->label25 = (gcnew System::Windows::Forms::Label());
+			this->updFlightId = (gcnew System::Windows::Forms::ComboBox());
+			this->label24 = (gcnew System::Windows::Forms::Label());
+			this->label23 = (gcnew System::Windows::Forms::Label());
+			this->label22 = (gcnew System::Windows::Forms::Label());
+			this->updFlightButton = (gcnew System::Windows::Forms::Button());
+			this->updFlightArrivalDate = (gcnew System::Windows::Forms::DateTimePicker());
+			this->label19 = (gcnew System::Windows::Forms::Label());
+			this->label20 = (gcnew System::Windows::Forms::Label());
+			this->updFlightDest = (gcnew System::Windows::Forms::TextBox());
+			this->label21 = (gcnew System::Windows::Forms::Label());
+			this->updFlightDep = (gcnew System::Windows::Forms::TextBox());
+			this->updFlightDepDate = (gcnew System::Windows::Forms::DateTimePicker());
+			this->updFlightPlaneId = (gcnew System::Windows::Forms::ComboBox());
+			this->groupBox7 = (gcnew System::Windows::Forms::GroupBox());
+			this->addFlightButton = (gcnew System::Windows::Forms::Button());
+			this->addFlightArrivalTime = (gcnew System::Windows::Forms::DateTimePicker());
+			this->label18 = (gcnew System::Windows::Forms::Label());
+			this->label17 = (gcnew System::Windows::Forms::Label());
+			this->addFlightDepartTime = (gcnew System::Windows::Forms::DateTimePicker());
+			this->label16 = (gcnew System::Windows::Forms::Label());
+			this->label15 = (gcnew System::Windows::Forms::Label());
+			this->label14 = (gcnew System::Windows::Forms::Label());
+			this->addFlightArrive = (gcnew System::Windows::Forms::TextBox());
+			this->addFlightDepart = (gcnew System::Windows::Forms::TextBox());
+			this->label13 = (gcnew System::Windows::Forms::Label());
+			this->addFlightPlaneId = (gcnew System::Windows::Forms::ComboBox());
 			this->flightsTable = (gcnew System::Windows::Forms::DataGridView());
 			this->managePlanes = (gcnew System::Windows::Forms::TabPage());
 			this->planesParamGroupBox = (gcnew System::Windows::Forms::GroupBox());
@@ -216,6 +293,10 @@ namespace AirTicketOffice {
 			this->managersPage->SuspendLayout();
 			this->orgTab->SuspendLayout();
 			this->manageFlights->SuspendLayout();
+			this->groupBox6->SuspendLayout();
+			this->groupBox9->SuspendLayout();
+			this->groupBox8->SuspendLayout();
+			this->groupBox7->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->flightsTable))->BeginInit();
 			this->managePlanes->SuspendLayout();
 			this->planesParamGroupBox->SuspendLayout();
@@ -307,6 +388,7 @@ namespace AirTicketOffice {
 			// 
 			// manageFlights
 			// 
+			this->manageFlights->Controls->Add(this->groupBox6);
 			this->manageFlights->Controls->Add(this->flightsTable);
 			this->manageFlights->Location = System::Drawing::Point(4, 22);
 			this->manageFlights->Name = L"manageFlights";
@@ -315,6 +397,338 @@ namespace AirTicketOffice {
 			this->manageFlights->TabIndex = 0;
 			this->manageFlights->Text = L"Управление рейсами";
 			this->manageFlights->UseVisualStyleBackColor = true;
+			// 
+			// groupBox6
+			// 
+			this->groupBox6->Controls->Add(this->groupBox9);
+			this->groupBox6->Controls->Add(this->groupBox8);
+			this->groupBox6->Controls->Add(this->groupBox7);
+			this->groupBox6->Location = System::Drawing::Point(3, 204);
+			this->groupBox6->Name = L"groupBox6";
+			this->groupBox6->Size = System::Drawing::Size(811, 222);
+			this->groupBox6->TabIndex = 2;
+			this->groupBox6->TabStop = false;
+			this->groupBox6->Text = L"Рейсы";
+			// 
+			// groupBox9
+			// 
+			this->groupBox9->Controls->Add(this->delFlightButton);
+			this->groupBox9->Controls->Add(this->label26);
+			this->groupBox9->Controls->Add(this->delFlightId);
+			this->groupBox9->Location = System::Drawing::Point(543, 19);
+			this->groupBox9->Name = L"groupBox9";
+			this->groupBox9->Size = System::Drawing::Size(262, 197);
+			this->groupBox9->TabIndex = 1;
+			this->groupBox9->TabStop = false;
+			this->groupBox9->Text = L"Удаление";
+			// 
+			// delFlightButton
+			// 
+			this->delFlightButton->Location = System::Drawing::Point(185, 168);
+			this->delFlightButton->Name = L"delFlightButton";
+			this->delFlightButton->Size = System::Drawing::Size(71, 23);
+			this->delFlightButton->TabIndex = 18;
+			this->delFlightButton->Text = L"Удалить";
+			this->delFlightButton->UseVisualStyleBackColor = true;
+			this->delFlightButton->Click += gcnew System::EventHandler(this, &mainForm::delFlightButton_Click);
+			// 
+			// label26
+			// 
+			this->label26->AutoSize = true;
+			this->label26->Location = System::Drawing::Point(3, 16);
+			this->label26->Name = L"label26";
+			this->label26->Size = System::Drawing::Size(132, 13);
+			this->label26->TabIndex = 18;
+			this->label26->Text = L"№ Рейса для изменения";
+			// 
+			// delFlightId
+			// 
+			this->delFlightId->FormattingEnabled = true;
+			this->delFlightId->Location = System::Drawing::Point(6, 36);
+			this->delFlightId->Name = L"delFlightId";
+			this->delFlightId->Size = System::Drawing::Size(86, 21);
+			this->delFlightId->Sorted = true;
+			this->delFlightId->TabIndex = 17;
+			this->delFlightId->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &mainForm::addPlaneModelComboBox_KeyPress);
+			// 
+			// groupBox8
+			// 
+			this->groupBox8->Controls->Add(this->label25);
+			this->groupBox8->Controls->Add(this->updFlightId);
+			this->groupBox8->Controls->Add(this->label24);
+			this->groupBox8->Controls->Add(this->label23);
+			this->groupBox8->Controls->Add(this->label22);
+			this->groupBox8->Controls->Add(this->updFlightButton);
+			this->groupBox8->Controls->Add(this->updFlightArrivalDate);
+			this->groupBox8->Controls->Add(this->label19);
+			this->groupBox8->Controls->Add(this->label20);
+			this->groupBox8->Controls->Add(this->updFlightDest);
+			this->groupBox8->Controls->Add(this->label21);
+			this->groupBox8->Controls->Add(this->updFlightDep);
+			this->groupBox8->Controls->Add(this->updFlightDepDate);
+			this->groupBox8->Controls->Add(this->updFlightPlaneId);
+			this->groupBox8->Location = System::Drawing::Point(278, 19);
+			this->groupBox8->Name = L"groupBox8";
+			this->groupBox8->Size = System::Drawing::Size(259, 197);
+			this->groupBox8->TabIndex = 1;
+			this->groupBox8->TabStop = false;
+			this->groupBox8->Text = L"Редактирование";
+			// 
+			// label25
+			// 
+			this->label25->AutoSize = true;
+			this->label25->Location = System::Drawing::Point(6, 20);
+			this->label25->Name = L"label25";
+			this->label25->Size = System::Drawing::Size(132, 13);
+			this->label25->TabIndex = 17;
+			this->label25->Text = L"№ Рейса для изменения";
+			// 
+			// updFlightId
+			// 
+			this->updFlightId->FormattingEnabled = true;
+			this->updFlightId->Location = System::Drawing::Point(9, 36);
+			this->updFlightId->Name = L"updFlightId";
+			this->updFlightId->Size = System::Drawing::Size(86, 21);
+			this->updFlightId->Sorted = true;
+			this->updFlightId->TabIndex = 16;
+			this->updFlightId->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &mainForm::addPlaneModelComboBox_KeyPress);
+			// 
+			// label24
+			// 
+			this->label24->AutoSize = true;
+			this->label24->Location = System::Drawing::Point(162, 20);
+			this->label24->Name = L"label24";
+			this->label24->Size = System::Drawing::Size(70, 13);
+			this->label24->TabIndex = 12;
+			this->label24->Text = L"№ самолета";
+			// 
+			// label23
+			// 
+			this->label23->AutoSize = true;
+			this->label23->Location = System::Drawing::Point(133, 60);
+			this->label23->Name = L"label23";
+			this->label23->Size = System::Drawing::Size(99, 13);
+			this->label23->TabIndex = 12;
+			this->label23->Text = L"Пункт назначения";
+			// 
+			// label22
+			// 
+			this->label22->AutoSize = true;
+			this->label22->Location = System::Drawing::Point(3, 60);
+			this->label22->Name = L"label22";
+			this->label22->Size = System::Drawing::Size(105, 13);
+			this->label22->TabIndex = 12;
+			this->label22->Text = L"Пункт отправления";
+			// 
+			// updFlightButton
+			// 
+			this->updFlightButton->Location = System::Drawing::Point(182, 168);
+			this->updFlightButton->Name = L"updFlightButton";
+			this->updFlightButton->Size = System::Drawing::Size(71, 23);
+			this->updFlightButton->TabIndex = 12;
+			this->updFlightButton->Text = L"Заменить";
+			this->updFlightButton->UseVisualStyleBackColor = true;
+			this->updFlightButton->Click += gcnew System::EventHandler(this, &mainForm::updFlightButton_Click);
+			// 
+			// updFlightArrivalDate
+			// 
+			this->updFlightArrivalDate->CustomFormat = L"yyyy-MM-dd HH:mm:ss";
+			this->updFlightArrivalDate->Format = System::Windows::Forms::DateTimePickerFormat::Custom;
+			this->updFlightArrivalDate->Location = System::Drawing::Point(9, 158);
+			this->updFlightArrivalDate->Name = L"updFlightArrivalDate";
+			this->updFlightArrivalDate->Size = System::Drawing::Size(142, 20);
+			this->updFlightArrivalDate->TabIndex = 15;
+			// 
+			// label19
+			// 
+			this->label19->AutoSize = true;
+			this->label19->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
+			this->label19->Location = System::Drawing::Point(113, 72);
+			this->label19->Name = L"label19";
+			this->label19->Size = System::Drawing::Size(19, 25);
+			this->label19->TabIndex = 12;
+			this->label19->Text = L"-";
+			// 
+			// label20
+			// 
+			this->label20->AutoSize = true;
+			this->label20->Location = System::Drawing::Point(6, 140);
+			this->label20->Name = L"label20";
+			this->label20->Size = System::Drawing::Size(92, 13);
+			this->label20->TabIndex = 14;
+			this->label20->Text = L"Время прибытия";
+			// 
+			// updFlightDest
+			// 
+			this->updFlightDest->Location = System::Drawing::Point(136, 77);
+			this->updFlightDest->Name = L"updFlightDest";
+			this->updFlightDest->Size = System::Drawing::Size(116, 20);
+			this->updFlightDest->TabIndex = 12;
+			// 
+			// label21
+			// 
+			this->label21->AutoSize = true;
+			this->label21->Location = System::Drawing::Point(6, 101);
+			this->label21->Name = L"label21";
+			this->label21->Size = System::Drawing::Size(108, 13);
+			this->label21->TabIndex = 13;
+			this->label21->Text = L"Время отправления";
+			// 
+			// updFlightDep
+			// 
+			this->updFlightDep->Location = System::Drawing::Point(9, 76);
+			this->updFlightDep->Name = L"updFlightDep";
+			this->updFlightDep->Size = System::Drawing::Size(104, 20);
+			this->updFlightDep->TabIndex = 12;
+			// 
+			// updFlightDepDate
+			// 
+			this->updFlightDepDate->CustomFormat = L"yyyy-MM-dd HH:mm:ss";
+			this->updFlightDepDate->Format = System::Windows::Forms::DateTimePickerFormat::Custom;
+			this->updFlightDepDate->Location = System::Drawing::Point(9, 117);
+			this->updFlightDepDate->Name = L"updFlightDepDate";
+			this->updFlightDepDate->Size = System::Drawing::Size(142, 20);
+			this->updFlightDepDate->TabIndex = 12;
+			// 
+			// updFlightPlaneId
+			// 
+			this->updFlightPlaneId->FormattingEnabled = true;
+			this->updFlightPlaneId->Location = System::Drawing::Point(161, 36);
+			this->updFlightPlaneId->Name = L"updFlightPlaneId";
+			this->updFlightPlaneId->Size = System::Drawing::Size(71, 21);
+			this->updFlightPlaneId->Sorted = true;
+			this->updFlightPlaneId->TabIndex = 12;
+			this->updFlightPlaneId->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &mainForm::addPlaneModelComboBox_KeyPress);
+			// 
+			// groupBox7
+			// 
+			this->groupBox7->Controls->Add(this->addFlightButton);
+			this->groupBox7->Controls->Add(this->addFlightArrivalTime);
+			this->groupBox7->Controls->Add(this->label18);
+			this->groupBox7->Controls->Add(this->label17);
+			this->groupBox7->Controls->Add(this->addFlightDepartTime);
+			this->groupBox7->Controls->Add(this->label16);
+			this->groupBox7->Controls->Add(this->label15);
+			this->groupBox7->Controls->Add(this->label14);
+			this->groupBox7->Controls->Add(this->addFlightArrive);
+			this->groupBox7->Controls->Add(this->addFlightDepart);
+			this->groupBox7->Controls->Add(this->label13);
+			this->groupBox7->Controls->Add(this->addFlightPlaneId);
+			this->groupBox7->Location = System::Drawing::Point(6, 19);
+			this->groupBox7->Name = L"groupBox7";
+			this->groupBox7->Size = System::Drawing::Size(266, 197);
+			this->groupBox7->TabIndex = 0;
+			this->groupBox7->TabStop = false;
+			this->groupBox7->Text = L"Добавление";
+			// 
+			// addFlightButton
+			// 
+			this->addFlightButton->Location = System::Drawing::Point(189, 168);
+			this->addFlightButton->Name = L"addFlightButton";
+			this->addFlightButton->Size = System::Drawing::Size(71, 23);
+			this->addFlightButton->TabIndex = 11;
+			this->addFlightButton->Text = L"Добавить";
+			this->addFlightButton->UseVisualStyleBackColor = true;
+			this->addFlightButton->Click += gcnew System::EventHandler(this, &mainForm::addFlightButton_Click);
+			// 
+			// addFlightArrivalTime
+			// 
+			this->addFlightArrivalTime->CustomFormat = L"yyyy-MM-dd HH:mm:ss";
+			this->addFlightArrivalTime->Format = System::Windows::Forms::DateTimePickerFormat::Custom;
+			this->addFlightArrivalTime->Location = System::Drawing::Point(6, 158);
+			this->addFlightArrivalTime->Name = L"addFlightArrivalTime";
+			this->addFlightArrivalTime->Size = System::Drawing::Size(142, 20);
+			this->addFlightArrivalTime->TabIndex = 10;
+			// 
+			// label18
+			// 
+			this->label18->AutoSize = true;
+			this->label18->Location = System::Drawing::Point(6, 140);
+			this->label18->Name = L"label18";
+			this->label18->Size = System::Drawing::Size(92, 13);
+			this->label18->TabIndex = 9;
+			this->label18->Text = L"Время прибытия";
+			// 
+			// label17
+			// 
+			this->label17->AutoSize = true;
+			this->label17->Location = System::Drawing::Point(6, 101);
+			this->label17->Name = L"label17";
+			this->label17->Size = System::Drawing::Size(108, 13);
+			this->label17->TabIndex = 8;
+			this->label17->Text = L"Время отправления";
+			// 
+			// addFlightDepartTime
+			// 
+			this->addFlightDepartTime->CustomFormat = L"yyyy-MM-dd HH:mm:ss";
+			this->addFlightDepartTime->Format = System::Windows::Forms::DateTimePickerFormat::Custom;
+			this->addFlightDepartTime->Location = System::Drawing::Point(6, 117);
+			this->addFlightDepartTime->Name = L"addFlightDepartTime";
+			this->addFlightDepartTime->Size = System::Drawing::Size(142, 20);
+			this->addFlightDepartTime->TabIndex = 7;
+			// 
+			// label16
+			// 
+			this->label16->AutoSize = true;
+			this->label16->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
+			this->label16->Location = System::Drawing::Point(123, 70);
+			this->label16->Name = L"label16";
+			this->label16->Size = System::Drawing::Size(19, 25);
+			this->label16->TabIndex = 6;
+			this->label16->Text = L"-";
+			// 
+			// label15
+			// 
+			this->label15->AutoSize = true;
+			this->label15->Location = System::Drawing::Point(145, 60);
+			this->label15->Name = L"label15";
+			this->label15->Size = System::Drawing::Size(99, 13);
+			this->label15->TabIndex = 5;
+			this->label15->Text = L"Пункт назначения";
+			// 
+			// label14
+			// 
+			this->label14->AutoSize = true;
+			this->label14->Location = System::Drawing::Point(2, 60);
+			this->label14->Name = L"label14";
+			this->label14->Size = System::Drawing::Size(105, 13);
+			this->label14->TabIndex = 4;
+			this->label14->Text = L"Пункт отправления";
+			// 
+			// addFlightArrive
+			// 
+			this->addFlightArrive->Location = System::Drawing::Point(148, 76);
+			this->addFlightArrive->Name = L"addFlightArrive";
+			this->addFlightArrive->Size = System::Drawing::Size(112, 20);
+			this->addFlightArrive->TabIndex = 3;
+			// 
+			// addFlightDepart
+			// 
+			this->addFlightDepart->Location = System::Drawing::Point(5, 76);
+			this->addFlightDepart->Name = L"addFlightDepart";
+			this->addFlightDepart->Size = System::Drawing::Size(112, 20);
+			this->addFlightDepart->TabIndex = 2;
+			// 
+			// label13
+			// 
+			this->label13->AutoSize = true;
+			this->label13->Location = System::Drawing::Point(6, 20);
+			this->label13->Name = L"label13";
+			this->label13->Size = System::Drawing::Size(70, 13);
+			this->label13->TabIndex = 1;
+			this->label13->Text = L"№ самолета";
+			// 
+			// addFlightPlaneId
+			// 
+			this->addFlightPlaneId->FormattingEnabled = true;
+			this->addFlightPlaneId->Location = System::Drawing::Point(6, 36);
+			this->addFlightPlaneId->Name = L"addFlightPlaneId";
+			this->addFlightPlaneId->Size = System::Drawing::Size(71, 21);
+			this->addFlightPlaneId->Sorted = true;
+			this->addFlightPlaneId->TabIndex = 0;
+			this->addFlightPlaneId->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &mainForm::addPlaneModelComboBox_KeyPress);
 			// 
 			// flightsTable
 			// 
@@ -330,8 +744,9 @@ namespace AirTicketOffice {
 			this->flightsTable->ReadOnly = true;
 			this->flightsTable->RowHeadersVisible = false;
 			this->flightsTable->RowHeadersWidthSizeMode = System::Windows::Forms::DataGridViewRowHeadersWidthSizeMode::DisableResizing;
-			this->flightsTable->Size = System::Drawing::Size(586, 192);
+			this->flightsTable->Size = System::Drawing::Size(603, 192);
 			this->flightsTable->TabIndex = 1;
+			this->flightsTable->CellClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &mainForm::flightsTable_CellClick);
 			// 
 			// managePlanes
 			// 
@@ -851,6 +1266,13 @@ namespace AirTicketOffice {
 			this->managersPage->ResumeLayout(false);
 			this->orgTab->ResumeLayout(false);
 			this->manageFlights->ResumeLayout(false);
+			this->groupBox6->ResumeLayout(false);
+			this->groupBox9->ResumeLayout(false);
+			this->groupBox9->PerformLayout();
+			this->groupBox8->ResumeLayout(false);
+			this->groupBox8->PerformLayout();
+			this->groupBox7->ResumeLayout(false);
+			this->groupBox7->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->flightsTable))->EndInit();
 			this->managePlanes->ResumeLayout(false);
 			this->planesParamGroupBox->ResumeLayout(false);
@@ -872,6 +1294,7 @@ namespace AirTicketOffice {
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->planeParamTable))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->planesTable))->EndInit();
 			this->ResumeLayout(false);
+
 		}
 #pragma endregion
 	private: System::Void mainForm_FormClosed(System::Object^  sender, System::Windows::Forms::FormClosedEventArgs^  e) {
@@ -1033,6 +1456,8 @@ private: System::Void addPlaneButton_Click(System::Object^  sender, System::Even
 			 loadData("select * from "+PREFIX+".planes", planesTable);
 			 FillCombo("SELECT id_plane FROM "+PREFIX+".planes","id_plane",updPlaneIdComboBox);
 			 CopyCombo(delPlaneIdComboBox,updPlaneIdComboBox);
+			 CopyCombo(addFlightPlaneId,updPlaneIdComboBox);
+			 CopyCombo(updFlightPlaneId,updPlaneIdComboBox);
 			 //FillCombo("SELECT id_plane FROM "+PREFIX+".planes","id_plane",delPlaneIdComboBox);
 			 addPlaneButton->Enabled = true;
 		 }
@@ -1096,11 +1521,127 @@ private: System::Void deletePlaneButton_Click(System::Object^  sender, System::E
 			 FillCombo("SELECT id_plane FROM "+PREFIX+".planes","id_plane",updPlaneIdComboBox);
 			 //FillCombo("SELECT id_plane FROM "+PREFIX+".planes","id_plane",delPlaneIdComboBox);
 			 CopyCombo(delPlaneIdComboBox,updPlaneIdComboBox);
+			 CopyCombo(addFlightPlaneId,updPlaneIdComboBox);
+			 CopyCombo(updFlightPlaneId,updPlaneIdComboBox);
 			 deletePlaneButton->Enabled = true;
 			 }
 		 }
 private: System::Void addPlaneModelComboBox_KeyPress(System::Object^  sender, System::Windows::Forms::KeyPressEventArgs^  e) {
 			 e->Handled = true;
+		 }
+private: System::Void addFlightButton_Click(System::Object^  sender, System::EventArgs^  e) {
+			 addFlightButton->Enabled = false;
+			 if(addFlightPlaneId->Text->Length==0)
+			 {
+				 MessageBox::Show("Поле 'Номер самолета' не может быть пустым.", "Ошибка",
+					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
+				 addFlightButton->Enabled = true;
+				 return;
+			 }
+			 if(addFlightDepart->Text->Length == 0)
+			 {
+				 MessageBox::Show("Поле 'Пункт отправления' не может быть пустым", "Ошибка",
+					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
+				 addFlightButton->Enabled = true;
+				 return;
+			 }
+			 if(addFlightArrive->Text->Length == 0)
+			 {
+				 MessageBox::Show("Поле 'Пункт назначения' не может быть пустым", "Ошибка",
+					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
+				 addFlightButton->Enabled = true;
+				 return;
+			 }
+			 if(addFlightArrivalTime->Value.Date <= addFlightDepartTime->Value.Date)
+			 {
+				 MessageBox::Show("Дата прибытия должна быть позже даты отправления", "Ошибка",
+					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
+				 addFlightButton->Enabled = true;
+				 return;
+			 }
+			 MySqlDataReader^ myReader;
+			 numTab = 4;
+			 myReader = executeReq("INSERT INTO "+PREFIX+".flights (id_plane,departure,destination,departure_date,arrival_date) VALUES("+
+				 addFlightPlaneId->Text+",'"+addFlightDepart->Text+"','"+addFlightArrive->Text+"','"+addFlightDepartTime->Text+"','"+addFlightArrivalTime->Text+"')");
+			 loadData("select * from "+PREFIX+".flights", flightsTable);
+			 FillCombo("SELECT id_flight FROM "+PREFIX+".flights","id_flight",
+				 updFlightId);
+			 CopyCombo(delFlightId,updFlightId);
+			 addFlightButton->Enabled = true;
+		 }
+private: System::Void updFlightButton_Click(System::Object^  sender, System::EventArgs^  e) {
+			 updFlightButton->Enabled = false;
+			 if(updFlightId->Text->Length==0)
+			 {
+				 MessageBox::Show("Поле 'Номер рейса' не может быть пустым.", "Ошибка",
+					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
+				 updFlightButton->Enabled = true;
+				 return;
+			 }
+			 if(updFlightPlaneId->Text->Length==0)
+			 {
+				 MessageBox::Show("Поле 'Номер самолета' не может быть пустым.", "Ошибка",
+					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
+				 updFlightButton->Enabled = true;
+				 return;
+			 }
+			 if(updFlightDep->Text->Length == 0)
+			 {
+				 MessageBox::Show("Поле 'Пункт отправления' не может быть пустым", "Ошибка",
+					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
+				 updFlightButton->Enabled = true;
+				 return;
+			 }
+			 if(updFlightDest->Text->Length == 0)
+			 {
+				 MessageBox::Show("Поле 'Пункт назначения' не может быть пустым", "Ошибка",
+					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
+				 updFlightButton->Enabled = true;
+				 return;
+			 }
+			 if(updFlightArrivalDate->Value.Date <= updFlightDepDate->Value.Date)
+			 {
+				 MessageBox::Show("Дата прибытия должна быть позже даты отправления", "Ошибка",
+					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
+				 updFlightButton->Enabled = true;
+				 return;
+			 }
+			 MySqlDataReader^ myReader;
+			 numTab = 4;
+			 myReader = executeReq("UPDATE "+PREFIX+".flights SET id_plane="+updFlightPlaneId->Text+
+				 ", departure ='"+updFlightDep->Text+"', destination ='"+updFlightDest->Text+
+				 "', departure_date = '"+updFlightDepDate->Text+
+				 "', arrival_date ='"+updFlightArrivalDate->Text+"' WHERE id_flight = "+updFlightId->Text+";");
+			 loadData("select * from "+PREFIX+".flights", flightsTable);
+			 //FillCombo("SELECT id_plane FROM "+PREFIX+".planes","id_plane",delPlaneIdComboBox);
+			 updFlightButton->Enabled = true;
+		 }
+private: System::Void flightsTable_CellClick(System::Object^  sender, System::Windows::Forms::DataGridViewCellEventArgs^  e) {
+			 updFlightId->Text = flightsTable->CurrentRow->Cells[0]->Value->ToString();
+			 updFlightPlaneId->Text = flightsTable->CurrentRow->Cells[1]->Value->ToString();
+			 updFlightDep->Text = flightsTable->CurrentRow->Cells[2]->Value->ToString();
+			 updFlightDest->Text = flightsTable->CurrentRow->Cells[3]->Value->ToString();
+			 updFlightDepDate->Text = flightsTable->CurrentRow->Cells[4]->Value->ToString();
+			 updFlightArrivalDate->Text = flightsTable->CurrentRow->Cells[5]->Value->ToString();
+			 delFlightId->Text = flightsTable->CurrentRow->Cells[0]->Value->ToString();
+		 }
+private: System::Void delFlightButton_Click(System::Object^  sender, System::EventArgs^  e) {
+			 delFlightButton->Enabled = false;
+			 if(delFlightId->Text->Length == 0)
+			 {
+				 MessageBox::Show("Поле 'Номер рейса' не может быть пустым.", "Ошибка",
+					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
+				 delFlightButton->Enabled = true;
+				 return;
+			 }
+			 numTab = 4;
+			 MySqlDataReader^ myReader;
+			 myReader = executeReq("DELETE FROM "+PREFIX+".flights where id_flight="+delFlightId->Text+";");
+			 loadData("select * from "+PREFIX+".flights", flightsTable);
+			 FillCombo("SELECT id_flight FROM "+PREFIX+".flights","id_flight",
+				 updFlightId);
+			 CopyCombo(delFlightId,updFlightId);
+			 delFlightButton->Enabled = true;
 		 }
 };
 }

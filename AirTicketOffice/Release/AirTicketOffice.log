@@ -1,42 +1,17 @@
-﻿Построение начато 28-Oct-13 19:38:07.
-     1>Проект "C:\Users\Gooman\Documents\Visual Studio 2010\Projects\AirTicketOffice\AirTicketOffice\AirTicketOffice.vcxproj" в узле 2 (целевые объекты build).
-     1>InitializeBuildStatus:
-         Обращение к "Release\AirTicketOffice.unsuccessfulbuild".
-       GenerateTargetFrameworkMonikerAttribute:
-       Целевой объект "GenerateTargetFrameworkMonikerAttribute" пропускается, так как все выходные файлы актуальны по отношению к входным.
-       ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I"C:\Program Files\MySQL\MySQL Server 5.6\include" /AI"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0" /Zi /clr:pure /nologo /W3 /WX- /O2 /Oy- /D WIN32 /D NDEBUG /D CPPCONN_PUBLIC_FUNC= /D _UNICODE /D UNICODE /EHa /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yc"StdAfx.h" /Fp"Release\AirTicketOffice.pch" /Fo"Release\\" /Fd"Release\vc100.pdb" /TP /FU"C:\Program Files (x86)\MySQL\MySQL for Visual Studio 1.0.2\Assemblies\v4.0\MySql.Data.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Core.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Data.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Drawing.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Windows.Forms.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Xml.dll" /analyze- /errorReport:prompt stdafx.cpp /clr:nostdlib 
-         stdafx.cpp
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I"C:\Program Files\MySQL\MySQL Server 5.6\include" /AI"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0" /Zi /clr:pure /nologo /W3 /WX- /O2 /Oy- /D WIN32 /D NDEBUG /D CPPCONN_PUBLIC_FUNC= /D _UNICODE /D UNICODE /EHa /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"StdAfx.h" /Fp"Release\AirTicketOffice.pch" /Fo"Release\\" /Fd"Release\vc100.pdb" /TP /FU"C:\Program Files (x86)\MySQL\MySQL for Visual Studio 1.0.2\Assemblies\v4.0\MySql.Data.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Core.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Data.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Drawing.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Windows.Forms.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Xml.dll" /analyze- /errorReport:prompt AirTicketOffice.cpp AssemblyInfo.cpp code.cpp mainForm.cpp registrationForm.cpp /clr:nostdlib 
-         AirTicketOffice.cpp
-         AssemblyInfo.cpp
-         code.cpp
-         mainForm.cpp
-         registrationForm.cpp
-         Создание кода...
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I"C:\Program Files\MySQL\MySQL Server 5.6\include" /Zi /clr:pure /nologo /W3 /WX- /O2 /Oy- /D WIN32 /D NDEBUG /D CPPCONN_PUBLIC_FUNC= /D _UNICODE /D UNICODE /EHa /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc100.pdb" /TP /analyze- /errorReport:prompt "C:\Users\Gooman\AppData\Local\Temp\.NETFramework,Version=v4.0.AssemblyAttributes.cpp"
-         .NETFramework,Version=v4.0.AssemblyAttributes.cpp
-       CoreResGen:
-         "C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\NETFX 4.0 Tools\resgen.exe" /useSourcePath /r:"C:\Program Files (x86)\MySQL\MySQL for Visual Studio 1.0.2\Assemblies\v4.0\MySql.Data.dll" /r:"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Core.dll" /r:"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Data.dll" /r:"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.dll" /r:"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Drawing.dll" /r:"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Windows.Forms.dll" /r:"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Xml.dll" /compile loginForm.resX,Release\AirTicketOffice.loginForm.resources mainForm.resx,Release\AirTicketOffice.mainForm.resources registrationForm.resx,Release\AirTicketOffice.registrationForm.resources
-         Обрабатывается файл ресурсов "loginForm.resX", результирующий объект: "Release\AirTicketOffice.loginForm.resources".
-         Обрабатывается файл ресурсов "mainForm.resx", результирующий объект: "Release\AirTicketOffice.mainForm.resources".
-         Обрабатывается файл ресурсов "registrationForm.resx", результирующий объект: "Release\AirTicketOffice.registrationForm.resources".
-       ResourceCompile:
-         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /D _UNICODE /D UNICODE /l"0x0409" /nologo /fo"Release\app.res" app.rc 
-       Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Gooman\Documents\Visual Studio 2010\Projects\AirTicketOffice\Release\AirTicketOffice.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:"C:\Program Files\MySQL\MySQL Server 5.6\lib" "mysqlcppconn-static.lib" libmysql.lib /ASSEMBLYRESOURCE:Release\AirTicketOffice.loginForm.resources /ASSEMBLYRESOURCE:Release\AirTicketOffice.mainForm.resources /ASSEMBLYRESOURCE:Release\AirTicketOffice.registrationForm.resources /MANIFEST /ManifestFile:"Release\AirTicketOffice.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\Gooman\Documents\Visual Studio 2010\Projects\AirTicketOffice\Release\AirTicketOffice.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /ENTRY:"main" /DYNAMICBASE /FIXED:NO /NXCOMPAT /MACHINE:X86 Release\app.res
-         Release\AirTicketOffice.obj
-         Release\AssemblyInfo.obj
-         Release\code.obj
-         Release\mainForm.obj
-         Release\registrationForm.obj
-         Release\stdafx.obj
-         "Release\.NETFramework,Version=v4.0.AssemblyAttributes.obj"
-     1>code.obj : error LNK2005: "bool __clrcall checkName(class System::String ^)" (?checkName@@$$FYM_NP$AAVString@System@@@Z) уже определен в AirTicketOffice.obj
-     1>registrationForm.obj : error LNK2005: "bool __clrcall checkName(class System::String ^)" (?checkName@@$$FYM_NP$AAVString@System@@@Z) уже определен в AirTicketOffice.obj
-     1>C:\Users\Gooman\Documents\Visual Studio 2010\Projects\AirTicketOffice\Release\AirTicketOffice.exe : fatal error LNK1169: обнаружен многократно определенный символ - один или более
-     1>Построение проекта "C:\Users\Gooman\Documents\Visual Studio 2010\Projects\AirTicketOffice\AirTicketOffice\AirTicketOffice.vcxproj" завершено (целевые объекты build) с ошибкой.
-
-СБОЙ построения.
-
-Затраченное время: 00:00:03.94
+﻿  stdafx.cpp
+  AirTicketOffice.cpp
+  AssemblyInfo.cpp
+  code.cpp
+  common.cpp
+common.cpp(72): warning C4101: myReader: неиспользованная локальная переменная
+  mainForm.cpp
+  registrationForm.cpp
+  reg_check.cpp
+reg_check.cpp(78): warning C4244: аргумент: преобразование "wchar_t" в "char", возможна потеря данных
+  work_with_tables.cpp
+  Создание кода...
+d:\!универ\обд\aitticketoffice-project\airticketoffice\work_with_tables.cpp(62): warning C4700: использована неинициализированная локальная переменная "check"
+d:\!универ\обд\aitticketoffice-project\airticketoffice\work_with_tables.cpp(74): warning C4700: использована неинициализированная локальная переменная "check"
+d:\!универ\обд\aitticketoffice-project\airticketoffice\work_with_tables.cpp(88): warning C4700: использована неинициализированная локальная переменная "check"
+  .NETFramework,Version=v4.0.AssemblyAttributes.cpp
+  AirTicketOffice.vcxproj -> D:\!универ\ОБД\AitTicketOffice-Project\Release\AirTicketOffice.exe
