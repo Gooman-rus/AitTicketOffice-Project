@@ -19,9 +19,9 @@ bool asMainManager (System::Windows::Forms::DataGridView^ tableFlights,
 	}
 
 	bool check;
-	check = loadData("select * from airlines.flights", tableFlights);
-	check = loadData("select * from airlines.planes", tablePlanes);
-	check = loadData("select * from airlines.plane_parametrs", tablePlaneParam);
+	check = loadData("select * from "+PREFIX+".flights", tableFlights);
+	check = loadData("select * from "+PREFIX+".planes", tablePlanes);
+	check = loadData("select * from "+PREFIX+".plane_parametrs", tablePlaneParam);
 
 	tableFlights->Columns[0]->HeaderText = "№ рейса";
 	tableFlights->Columns[1]->HeaderText = "№ самолета";
@@ -83,6 +83,27 @@ bool asCargoManager(System::Windows::Forms::TabControl^ tabCtrl, bool admin) {
 		tabCtrl->TabPages->Remove(tabCtrl->TabPages[2]);
 		//tabCtrl->TabPages->Remove(tabCtrl->TabPages[1]);
 	}
+
+
+	return check;
+}
+
+bool asAdmin(System::Windows::Forms::DataGridView^ ctrlUsersTable)
+{
+	bool check;
+
+	String^ querry = "select passengers.id_pass, passengers.Name, users.password ";
+	querry += "from "+PREFIX+".passengers join "+PREFIX+".users where passengers.id_pass = users.passport"; 
+	check = loadData(querry, ctrlUsersTable);
+
+	ctrlUsersTable->Columns[0]->HeaderText = "№ паспорта";
+	ctrlUsersTable->Columns[1]->HeaderText = "ФИО";
+	ctrlUsersTable->Columns[2]->HeaderText = "Пароль";
+	
+	ctrlUsersTable->Columns[0]->Width = 80;
+	ctrlUsersTable->Columns[1]->Width = 200;
+	ctrlUsersTable->Columns[2]->Width = 80;
+
 
 
 	return check;
