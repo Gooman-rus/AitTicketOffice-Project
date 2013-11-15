@@ -437,9 +437,9 @@ private: System::Windows::Forms::Label^  label26;
 			this->label26->AutoSize = true;
 			this->label26->Location = System::Drawing::Point(3, 16);
 			this->label26->Name = L"label26";
-			this->label26->Size = System::Drawing::Size(132, 13);
+			this->label26->Size = System::Drawing::Size(126, 13);
 			this->label26->TabIndex = 18;
-			this->label26->Text = L"№ Рейса для изменения";
+			this->label26->Text = L"№ Рейса для удаления:";
 			// 
 			// delFlightId
 			// 
@@ -734,7 +734,6 @@ private: System::Windows::Forms::Label^  label26;
 			// 
 			this->flightsTable->AllowUserToAddRows = false;
 			this->flightsTable->AllowUserToDeleteRows = false;
-			this->flightsTable->AllowUserToResizeColumns = false;
 			this->flightsTable->AllowUserToResizeRows = false;
 			this->flightsTable->BackgroundColor = System::Drawing::SystemColors::ButtonHighlight;
 			this->flightsTable->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::DisableResizing;
@@ -1552,7 +1551,8 @@ private: System::Void addFlightButton_Click(System::Object^  sender, System::Eve
 				 addFlightButton->Enabled = true;
 				 return;
 			 }
-			 if(addFlightArrivalTime->Value.Date <= addFlightDepartTime->Value.Date)
+			 if (addFlightArrivalTime->Value.Date <= addFlightDepartTime->Value.Date &&
+				 addFlightArrivalTime->Value.TimeOfDay <=  addFlightDepartTime->Value.TimeOfDay)
 			 {
 				 MessageBox::Show("Дата прибытия должна быть позже даты отправления", "Ошибка",
 					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
@@ -1599,7 +1599,8 @@ private: System::Void updFlightButton_Click(System::Object^  sender, System::Eve
 				 updFlightButton->Enabled = true;
 				 return;
 			 }
-			 if(updFlightArrivalDate->Value.Date <= updFlightDepDate->Value.Date)
+			 if (updFlightArrivalDate->Value.Date <= updFlightDepDate->Value.Date && 
+				 updFlightArrivalDate->Value.TimeOfDay <= updFlightDepDate->Value.TimeOfDay)
 			 {
 				 MessageBox::Show("Дата прибытия должна быть позже даты отправления", "Ошибка",
 					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
