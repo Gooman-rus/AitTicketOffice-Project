@@ -36,7 +36,7 @@ namespace AirTicketOffice {
 					break;
 				case 3:
 					r = "Менеджер грузов"; 
-					asCargoManager(tabControl1, false);
+					asCargoManager(cargoTable,tabControl1, false);
 					break;
 				case 4:
 					r = "Организационный менеджер"; 
@@ -56,8 +56,9 @@ namespace AirTicketOffice {
 				case 5:
 					r = "Администратор";
 					asAdmin(ctrlUsersTable);
-					asMainManager (flightsTable, planesTable, 
+					asMainManager(flightsTable, planesTable, 
 								   planeParamTable, tabControl1, true);
+					asCargoManager(cargoTable,tabControl1, true);
 					FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",
 						delPlaneParamModelComboBox);
 					CopyCombo(updPlanesParamModelComboBox,delPlaneParamModelComboBox);
@@ -68,9 +69,16 @@ namespace AirTicketOffice {
 					CopyCombo(delPlaneIdComboBox,updPlaneIdComboBox);
 					CopyCombo(addFlightPlaneId,updPlaneIdComboBox);
 					CopyCombo(updFlightPlaneId,updPlaneIdComboBox);
+					FillCombo("SELECT id_flight FROM "+PREFIX+".flights WHERE departure_date>curdate() AND departure_date>curtime()","id_flight",
+						addCargoFlight);
+					CopyCombo(updCargoFlight,addCargoFlight);
+					FillCombo("SELECT id_pass FROM "+PREFIX+".passengers","id_pass",
+						addCargoPass);
 					FillCombo("SELECT id_flight FROM "+PREFIX+".flights","id_flight",
 						updFlightId);
 					CopyCombo(delFlightId,updFlightId);
+					FillCombo("SELECT id_cargo FROM "+PREFIX+".cargo","id_cargo",updCargoId);
+					CopyCombo(delCargoId,updCargoId);
 					break;
 				default: r = "Stop hacking my programm!";break;
 			}
@@ -203,6 +211,56 @@ private: System::Windows::Forms::ComboBox^  updRulesBox;
 
 private: System::Windows::Forms::Label^  label27;
 private: System::Windows::Forms::TextBox^  updPasswText;
+private: System::Windows::Forms::DataGridView^  cargoTable;
+private: System::Windows::Forms::GroupBox^  groupBox11;
+private: System::Windows::Forms::GroupBox^  groupBox12;
+private: System::Windows::Forms::Label^  label32;
+private: System::Windows::Forms::Label^  label31;
+private: System::Windows::Forms::ComboBox^  addCargoFlight;
+
+private: System::Windows::Forms::ComboBox^  addCargoPass;
+private: System::Windows::Forms::NumericUpDown^  addCargoWeight;
+private: System::Windows::Forms::Label^  label34;
+private: System::Windows::Forms::GroupBox^  groupBox13;
+private: System::Windows::Forms::Label^  label37;
+private: System::Windows::Forms::Label^  label36;
+private: System::Windows::Forms::Label^  label35;
+
+
+
+private: System::Windows::Forms::TextBox^  addCargoName;
+private: System::Windows::Forms::Label^  label33;
+private: System::Windows::Forms::Button^  addCargoButton;
+private: System::Windows::Forms::NumericUpDown^  addCargoDimZ;
+
+private: System::Windows::Forms::NumericUpDown^  addCargoDimY;
+
+private: System::Windows::Forms::NumericUpDown^  addCargoDimX;
+private: System::Windows::Forms::GroupBox^  groupBox14;
+private: System::Windows::Forms::Label^  label45;
+private: System::Windows::Forms::ComboBox^  updCargoId;
+private: System::Windows::Forms::Button^  updCargoButton;
+
+private: System::Windows::Forms::ComboBox^  updCargoPass;
+private: System::Windows::Forms::NumericUpDown^  updCargoWeight;
+private: System::Windows::Forms::ComboBox^  updCargoFlight;
+private: System::Windows::Forms::Label^  label38;
+private: System::Windows::Forms::Label^  label44;
+private: System::Windows::Forms::GroupBox^  groupBox15;
+private: System::Windows::Forms::NumericUpDown^  updCargoDimZ;
+private: System::Windows::Forms::NumericUpDown^  updCargoDimY;
+private: System::Windows::Forms::NumericUpDown^  updCargoDimX;
+private: System::Windows::Forms::Label^  label39;
+private: System::Windows::Forms::Label^  label40;
+private: System::Windows::Forms::Label^  label41;
+private: System::Windows::Forms::Label^  label43;
+private: System::Windows::Forms::TextBox^  updCargoName;
+private: System::Windows::Forms::Label^  label42;
+private: System::Windows::Forms::GroupBox^  groupBox16;
+private: System::Windows::Forms::Label^  label46;
+private: System::Windows::Forms::ComboBox^  delCargoId;
+private: System::Windows::Forms::Button^  delCargoButton;
+
 
 
 
@@ -230,6 +288,48 @@ private: System::Windows::Forms::TextBox^  updPasswText;
 			this->usersPage = (gcnew System::Windows::Forms::TabPage());
 			this->tellersPage = (gcnew System::Windows::Forms::TabPage());
 			this->cargoPage = (gcnew System::Windows::Forms::TabPage());
+			this->groupBox11 = (gcnew System::Windows::Forms::GroupBox());
+			this->groupBox16 = (gcnew System::Windows::Forms::GroupBox());
+			this->delCargoButton = (gcnew System::Windows::Forms::Button());
+			this->label46 = (gcnew System::Windows::Forms::Label());
+			this->delCargoId = (gcnew System::Windows::Forms::ComboBox());
+			this->groupBox14 = (gcnew System::Windows::Forms::GroupBox());
+			this->label45 = (gcnew System::Windows::Forms::Label());
+			this->updCargoId = (gcnew System::Windows::Forms::ComboBox());
+			this->updCargoButton = (gcnew System::Windows::Forms::Button());
+			this->updCargoPass = (gcnew System::Windows::Forms::ComboBox());
+			this->updCargoWeight = (gcnew System::Windows::Forms::NumericUpDown());
+			this->updCargoFlight = (gcnew System::Windows::Forms::ComboBox());
+			this->label38 = (gcnew System::Windows::Forms::Label());
+			this->label44 = (gcnew System::Windows::Forms::Label());
+			this->groupBox15 = (gcnew System::Windows::Forms::GroupBox());
+			this->updCargoDimZ = (gcnew System::Windows::Forms::NumericUpDown());
+			this->updCargoDimY = (gcnew System::Windows::Forms::NumericUpDown());
+			this->updCargoDimX = (gcnew System::Windows::Forms::NumericUpDown());
+			this->label39 = (gcnew System::Windows::Forms::Label());
+			this->label40 = (gcnew System::Windows::Forms::Label());
+			this->label41 = (gcnew System::Windows::Forms::Label());
+			this->label43 = (gcnew System::Windows::Forms::Label());
+			this->updCargoName = (gcnew System::Windows::Forms::TextBox());
+			this->label42 = (gcnew System::Windows::Forms::Label());
+			this->groupBox12 = (gcnew System::Windows::Forms::GroupBox());
+			this->addCargoButton = (gcnew System::Windows::Forms::Button());
+			this->addCargoWeight = (gcnew System::Windows::Forms::NumericUpDown());
+			this->label34 = (gcnew System::Windows::Forms::Label());
+			this->groupBox13 = (gcnew System::Windows::Forms::GroupBox());
+			this->addCargoDimZ = (gcnew System::Windows::Forms::NumericUpDown());
+			this->addCargoDimY = (gcnew System::Windows::Forms::NumericUpDown());
+			this->addCargoDimX = (gcnew System::Windows::Forms::NumericUpDown());
+			this->label37 = (gcnew System::Windows::Forms::Label());
+			this->label36 = (gcnew System::Windows::Forms::Label());
+			this->label35 = (gcnew System::Windows::Forms::Label());
+			this->addCargoName = (gcnew System::Windows::Forms::TextBox());
+			this->label33 = (gcnew System::Windows::Forms::Label());
+			this->label32 = (gcnew System::Windows::Forms::Label());
+			this->label31 = (gcnew System::Windows::Forms::Label());
+			this->addCargoFlight = (gcnew System::Windows::Forms::ComboBox());
+			this->addCargoPass = (gcnew System::Windows::Forms::ComboBox());
+			this->cargoTable = (gcnew System::Windows::Forms::DataGridView());
 			this->managersPage = (gcnew System::Windows::Forms::TabPage());
 			this->orgTab = (gcnew System::Windows::Forms::TabControl());
 			this->manageFlights = (gcnew System::Windows::Forms::TabPage());
@@ -323,6 +423,22 @@ private: System::Windows::Forms::TextBox^  updPasswText;
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->mainGrid))->BeginInit();
 			this->tabControl1->SuspendLayout();
 			this->usersPage->SuspendLayout();
+			this->cargoPage->SuspendLayout();
+			this->groupBox11->SuspendLayout();
+			this->groupBox16->SuspendLayout();
+			this->groupBox14->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->updCargoWeight))->BeginInit();
+			this->groupBox15->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->updCargoDimZ))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->updCargoDimY))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->updCargoDimX))->BeginInit();
+			this->groupBox12->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->addCargoWeight))->BeginInit();
+			this->groupBox13->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->addCargoDimZ))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->addCargoDimY))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->addCargoDimX))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->cargoTable))->BeginInit();
 			this->managersPage->SuspendLayout();
 			this->orgTab->SuspendLayout();
 			this->manageFlights->SuspendLayout();
@@ -395,12 +511,463 @@ private: System::Windows::Forms::TextBox^  updPasswText;
 			// 
 			// cargoPage
 			// 
+			this->cargoPage->Controls->Add(this->groupBox11);
+			this->cargoPage->Controls->Add(this->cargoTable);
 			this->cargoPage->Location = System::Drawing::Point(4, 22);
 			this->cargoPage->Name = L"cargoPage";
 			this->cargoPage->Size = System::Drawing::Size(831, 458);
 			this->cargoPage->TabIndex = 4;
 			this->cargoPage->Text = L"Управление грузами";
 			this->cargoPage->UseVisualStyleBackColor = true;
+			// 
+			// groupBox11
+			// 
+			this->groupBox11->Controls->Add(this->groupBox16);
+			this->groupBox11->Controls->Add(this->groupBox14);
+			this->groupBox11->Controls->Add(this->groupBox12);
+			this->groupBox11->Location = System::Drawing::Point(9, 210);
+			this->groupBox11->Name = L"groupBox11";
+			this->groupBox11->Size = System::Drawing::Size(819, 236);
+			this->groupBox11->TabIndex = 3;
+			this->groupBox11->TabStop = false;
+			this->groupBox11->Text = L"Грузы";
+			// 
+			// groupBox16
+			// 
+			this->groupBox16->Controls->Add(this->delCargoButton);
+			this->groupBox16->Controls->Add(this->label46);
+			this->groupBox16->Controls->Add(this->delCargoId);
+			this->groupBox16->Location = System::Drawing::Point(565, 20);
+			this->groupBox16->Name = L"groupBox16";
+			this->groupBox16->Size = System::Drawing::Size(246, 209);
+			this->groupBox16->TabIndex = 2;
+			this->groupBox16->TabStop = false;
+			this->groupBox16->Text = L"Удаление";
+			// 
+			// delCargoButton
+			// 
+			this->delCargoButton->Location = System::Drawing::Point(165, 174);
+			this->delCargoButton->Name = L"delCargoButton";
+			this->delCargoButton->Size = System::Drawing::Size(75, 23);
+			this->delCargoButton->TabIndex = 23;
+			this->delCargoButton->Text = L"Удалить";
+			this->delCargoButton->UseVisualStyleBackColor = true;
+			this->delCargoButton->Click += gcnew System::EventHandler(this, &mainForm::delCargoButton_Click);
+			// 
+			// label46
+			// 
+			this->label46->AutoSize = true;
+			this->label46->Location = System::Drawing::Point(6, 15);
+			this->label46->Name = L"label46";
+			this->label46->Size = System::Drawing::Size(49, 13);
+			this->label46->TabIndex = 24;
+			this->label46->Text = L"№ груза";
+			// 
+			// delCargoId
+			// 
+			this->delCargoId->FormattingEnabled = true;
+			this->delCargoId->Location = System::Drawing::Point(6, 33);
+			this->delCargoId->Name = L"delCargoId";
+			this->delCargoId->Size = System::Drawing::Size(95, 21);
+			this->delCargoId->Sorted = true;
+			this->delCargoId->TabIndex = 23;
+			this->delCargoId->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &mainForm::addPlaneModelComboBox_KeyPress);
+			// 
+			// groupBox14
+			// 
+			this->groupBox14->Controls->Add(this->label45);
+			this->groupBox14->Controls->Add(this->updCargoId);
+			this->groupBox14->Controls->Add(this->updCargoButton);
+			this->groupBox14->Controls->Add(this->updCargoPass);
+			this->groupBox14->Controls->Add(this->updCargoWeight);
+			this->groupBox14->Controls->Add(this->updCargoFlight);
+			this->groupBox14->Controls->Add(this->label38);
+			this->groupBox14->Controls->Add(this->label44);
+			this->groupBox14->Controls->Add(this->groupBox15);
+			this->groupBox14->Controls->Add(this->label43);
+			this->groupBox14->Controls->Add(this->updCargoName);
+			this->groupBox14->Controls->Add(this->label42);
+			this->groupBox14->Location = System::Drawing::Point(285, 19);
+			this->groupBox14->Name = L"groupBox14";
+			this->groupBox14->Size = System::Drawing::Size(273, 210);
+			this->groupBox14->TabIndex = 1;
+			this->groupBox14->TabStop = false;
+			this->groupBox14->Text = L"Редактирование";
+			// 
+			// label45
+			// 
+			this->label45->AutoSize = true;
+			this->label45->Location = System::Drawing::Point(6, 16);
+			this->label45->Name = L"label45";
+			this->label45->Size = System::Drawing::Size(49, 13);
+			this->label45->TabIndex = 22;
+			this->label45->Text = L"№ груза";
+			// 
+			// updCargoId
+			// 
+			this->updCargoId->FormattingEnabled = true;
+			this->updCargoId->Location = System::Drawing::Point(7, 34);
+			this->updCargoId->Name = L"updCargoId";
+			this->updCargoId->Size = System::Drawing::Size(95, 21);
+			this->updCargoId->Sorted = true;
+			this->updCargoId->TabIndex = 21;
+			this->updCargoId->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &mainForm::addPlaneModelComboBox_KeyPress);
+			// 
+			// updCargoButton
+			// 
+			this->updCargoButton->Location = System::Drawing::Point(187, 175);
+			this->updCargoButton->Name = L"updCargoButton";
+			this->updCargoButton->Size = System::Drawing::Size(75, 23);
+			this->updCargoButton->TabIndex = 20;
+			this->updCargoButton->Text = L"Заменить";
+			this->updCargoButton->UseVisualStyleBackColor = true;
+			this->updCargoButton->Click += gcnew System::EventHandler(this, &mainForm::updCargoButton_Click);
+			// 
+			// updCargoPass
+			// 
+			this->updCargoPass->FormattingEnabled = true;
+			this->updCargoPass->Location = System::Drawing::Point(146, 34);
+			this->updCargoPass->Name = L"updCargoPass";
+			this->updCargoPass->Size = System::Drawing::Size(121, 21);
+			this->updCargoPass->Sorted = true;
+			this->updCargoPass->TabIndex = 11;
+			this->updCargoPass->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &mainForm::addPlaneModelComboBox_KeyPress);
+			// 
+			// updCargoWeight
+			// 
+			this->updCargoWeight->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) {100, 0, 0, 0});
+			this->updCargoWeight->Location = System::Drawing::Point(12, 178);
+			this->updCargoWeight->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) {50000, 0, 0, 0});
+			this->updCargoWeight->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) {100, 0, 0, 0});
+			this->updCargoWeight->Name = L"updCargoWeight";
+			this->updCargoWeight->Size = System::Drawing::Size(62, 20);
+			this->updCargoWeight->TabIndex = 19;
+			this->updCargoWeight->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) {100, 0, 0, 0});
+			this->updCargoWeight->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &mainForm::newSpotNumericUpDown_KeyPress);
+			// 
+			// updCargoFlight
+			// 
+			this->updCargoFlight->FormattingEnabled = true;
+			this->updCargoFlight->Location = System::Drawing::Point(6, 75);
+			this->updCargoFlight->Name = L"updCargoFlight";
+			this->updCargoFlight->Size = System::Drawing::Size(96, 21);
+			this->updCargoFlight->Sorted = true;
+			this->updCargoFlight->TabIndex = 12;
+			this->updCargoFlight->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &mainForm::addPlaneModelComboBox_KeyPress);
+			// 
+			// label38
+			// 
+			this->label38->AutoSize = true;
+			this->label38->Location = System::Drawing::Point(9, 161);
+			this->label38->Name = L"label38";
+			this->label38->Size = System::Drawing::Size(26, 13);
+			this->label38->TabIndex = 18;
+			this->label38->Text = L"Вес";
+			// 
+			// label44
+			// 
+			this->label44->AutoSize = true;
+			this->label44->Location = System::Drawing::Point(143, 18);
+			this->label44->Name = L"label44";
+			this->label44->Size = System::Drawing::Size(68, 13);
+			this->label44->TabIndex = 13;
+			this->label44->Text = L"№ паспорта";
+			// 
+			// groupBox15
+			// 
+			this->groupBox15->Controls->Add(this->updCargoDimZ);
+			this->groupBox15->Controls->Add(this->updCargoDimY);
+			this->groupBox15->Controls->Add(this->updCargoDimX);
+			this->groupBox15->Controls->Add(this->label39);
+			this->groupBox15->Controls->Add(this->label40);
+			this->groupBox15->Controls->Add(this->label41);
+			this->groupBox15->Location = System::Drawing::Point(9, 101);
+			this->groupBox15->Name = L"groupBox15";
+			this->groupBox15->Size = System::Drawing::Size(256, 53);
+			this->groupBox15->TabIndex = 17;
+			this->groupBox15->TabStop = false;
+			this->groupBox15->Text = L"Размеры (длина,ширина,высота)";
+			// 
+			// updCargoDimZ
+			// 
+			this->updCargoDimZ->Location = System::Drawing::Point(178, 24);
+			this->updCargoDimZ->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) {500, 0, 0, 0});
+			this->updCargoDimZ->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) {1, 0, 0, 0});
+			this->updCargoDimZ->Name = L"updCargoDimZ";
+			this->updCargoDimZ->Size = System::Drawing::Size(49, 20);
+			this->updCargoDimZ->TabIndex = 12;
+			this->updCargoDimZ->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) {100, 0, 0, 0});
+			this->updCargoDimZ->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &mainForm::newSpotNumericUpDown_KeyPress);
+			// 
+			// updCargoDimY
+			// 
+			this->updCargoDimY->Location = System::Drawing::Point(99, 24);
+			this->updCargoDimY->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) {500, 0, 0, 0});
+			this->updCargoDimY->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) {1, 0, 0, 0});
+			this->updCargoDimY->Name = L"updCargoDimY";
+			this->updCargoDimY->Size = System::Drawing::Size(40, 20);
+			this->updCargoDimY->TabIndex = 11;
+			this->updCargoDimY->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) {100, 0, 0, 0});
+			this->updCargoDimY->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &mainForm::newSpotNumericUpDown_KeyPress);
+			// 
+			// updCargoDimX
+			// 
+			this->updCargoDimX->Location = System::Drawing::Point(6, 24);
+			this->updCargoDimX->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) {500, 0, 0, 0});
+			this->updCargoDimX->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) {1, 0, 0, 0});
+			this->updCargoDimX->Name = L"updCargoDimX";
+			this->updCargoDimX->Size = System::Drawing::Size(41, 20);
+			this->updCargoDimX->TabIndex = 10;
+			this->updCargoDimX->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) {100, 0, 0, 0});
+			this->updCargoDimX->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &mainForm::newSpotNumericUpDown_KeyPress);
+			// 
+			// label39
+			// 
+			this->label39->AutoSize = true;
+			this->label39->Location = System::Drawing::Point(233, 26);
+			this->label39->Name = L"label39";
+			this->label39->Size = System::Drawing::Size(21, 13);
+			this->label39->TabIndex = 5;
+			this->label39->Text = L"см";
+			// 
+			// label40
+			// 
+			this->label40->AutoSize = true;
+			this->label40->Location = System::Drawing::Point(145, 26);
+			this->label40->Name = L"label40";
+			this->label40->Size = System::Drawing::Size(31, 13);
+			this->label40->TabIndex = 4;
+			this->label40->Text = L"см Х";
+			// 
+			// label41
+			// 
+			this->label41->AutoSize = true;
+			this->label41->Location = System::Drawing::Point(62, 26);
+			this->label41->Name = L"label41";
+			this->label41->Size = System::Drawing::Size(31, 13);
+			this->label41->TabIndex = 3;
+			this->label41->Text = L"см Х";
+			// 
+			// label43
+			// 
+			this->label43->AutoSize = true;
+			this->label43->Location = System::Drawing::Point(5, 58);
+			this->label43->Name = L"label43";
+			this->label43->Size = System::Drawing::Size(51, 13);
+			this->label43->TabIndex = 14;
+			this->label43->Text = L"№ рейса";
+			// 
+			// updCargoName
+			// 
+			this->updCargoName->Location = System::Drawing::Point(146, 75);
+			this->updCargoName->Name = L"updCargoName";
+			this->updCargoName->Size = System::Drawing::Size(121, 20);
+			this->updCargoName->TabIndex = 16;
+			// 
+			// label42
+			// 
+			this->label42->AutoSize = true;
+			this->label42->Location = System::Drawing::Point(143, 59);
+			this->label42->Name = L"label42";
+			this->label42->Size = System::Drawing::Size(83, 13);
+			this->label42->TabIndex = 15;
+			this->label42->Text = L"Наимнеование";
+			// 
+			// groupBox12
+			// 
+			this->groupBox12->Controls->Add(this->addCargoButton);
+			this->groupBox12->Controls->Add(this->addCargoWeight);
+			this->groupBox12->Controls->Add(this->label34);
+			this->groupBox12->Controls->Add(this->groupBox13);
+			this->groupBox12->Controls->Add(this->addCargoName);
+			this->groupBox12->Controls->Add(this->label33);
+			this->groupBox12->Controls->Add(this->label32);
+			this->groupBox12->Controls->Add(this->label31);
+			this->groupBox12->Controls->Add(this->addCargoFlight);
+			this->groupBox12->Controls->Add(this->addCargoPass);
+			this->groupBox12->Location = System::Drawing::Point(6, 19);
+			this->groupBox12->Name = L"groupBox12";
+			this->groupBox12->Size = System::Drawing::Size(273, 211);
+			this->groupBox12->TabIndex = 0;
+			this->groupBox12->TabStop = false;
+			this->groupBox12->Text = L"Добавление";
+			// 
+			// addCargoButton
+			// 
+			this->addCargoButton->Location = System::Drawing::Point(187, 175);
+			this->addCargoButton->Name = L"addCargoButton";
+			this->addCargoButton->Size = System::Drawing::Size(75, 23);
+			this->addCargoButton->TabIndex = 10;
+			this->addCargoButton->Text = L"Добавить";
+			this->addCargoButton->UseVisualStyleBackColor = true;
+			this->addCargoButton->Click += gcnew System::EventHandler(this, &mainForm::addCargoButton_Click);
+			// 
+			// addCargoWeight
+			// 
+			this->addCargoWeight->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) {100, 0, 0, 0});
+			this->addCargoWeight->Location = System::Drawing::Point(12, 178);
+			this->addCargoWeight->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) {50000, 0, 0, 0});
+			this->addCargoWeight->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) {100, 0, 0, 0});
+			this->addCargoWeight->Name = L"addCargoWeight";
+			this->addCargoWeight->Size = System::Drawing::Size(62, 20);
+			this->addCargoWeight->TabIndex = 9;
+			this->addCargoWeight->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) {100, 0, 0, 0});
+			this->addCargoWeight->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &mainForm::newSpotNumericUpDown_KeyPress);
+			// 
+			// label34
+			// 
+			this->label34->AutoSize = true;
+			this->label34->Location = System::Drawing::Point(9, 161);
+			this->label34->Name = L"label34";
+			this->label34->Size = System::Drawing::Size(26, 13);
+			this->label34->TabIndex = 8;
+			this->label34->Text = L"Вес";
+			// 
+			// groupBox13
+			// 
+			this->groupBox13->Controls->Add(this->addCargoDimZ);
+			this->groupBox13->Controls->Add(this->addCargoDimY);
+			this->groupBox13->Controls->Add(this->addCargoDimX);
+			this->groupBox13->Controls->Add(this->label37);
+			this->groupBox13->Controls->Add(this->label36);
+			this->groupBox13->Controls->Add(this->label35);
+			this->groupBox13->Location = System::Drawing::Point(9, 101);
+			this->groupBox13->Name = L"groupBox13";
+			this->groupBox13->Size = System::Drawing::Size(256, 53);
+			this->groupBox13->TabIndex = 7;
+			this->groupBox13->TabStop = false;
+			this->groupBox13->Text = L"Размеры (длина,ширина,высота)";
+			// 
+			// addCargoDimZ
+			// 
+			this->addCargoDimZ->Location = System::Drawing::Point(178, 24);
+			this->addCargoDimZ->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) {500, 0, 0, 0});
+			this->addCargoDimZ->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) {1, 0, 0, 0});
+			this->addCargoDimZ->Name = L"addCargoDimZ";
+			this->addCargoDimZ->Size = System::Drawing::Size(49, 20);
+			this->addCargoDimZ->TabIndex = 12;
+			this->addCargoDimZ->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) {100, 0, 0, 0});
+			this->addCargoDimZ->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &mainForm::newSpotNumericUpDown_KeyPress);
+			// 
+			// addCargoDimY
+			// 
+			this->addCargoDimY->Location = System::Drawing::Point(99, 24);
+			this->addCargoDimY->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) {500, 0, 0, 0});
+			this->addCargoDimY->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) {1, 0, 0, 0});
+			this->addCargoDimY->Name = L"addCargoDimY";
+			this->addCargoDimY->Size = System::Drawing::Size(40, 20);
+			this->addCargoDimY->TabIndex = 11;
+			this->addCargoDimY->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) {100, 0, 0, 0});
+			this->addCargoDimY->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &mainForm::newSpotNumericUpDown_KeyPress);
+			// 
+			// addCargoDimX
+			// 
+			this->addCargoDimX->Location = System::Drawing::Point(6, 24);
+			this->addCargoDimX->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) {500, 0, 0, 0});
+			this->addCargoDimX->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) {1, 0, 0, 0});
+			this->addCargoDimX->Name = L"addCargoDimX";
+			this->addCargoDimX->Size = System::Drawing::Size(41, 20);
+			this->addCargoDimX->TabIndex = 10;
+			this->addCargoDimX->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) {100, 0, 0, 0});
+			this->addCargoDimX->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &mainForm::newSpotNumericUpDown_KeyPress);
+			// 
+			// label37
+			// 
+			this->label37->AutoSize = true;
+			this->label37->Location = System::Drawing::Point(233, 26);
+			this->label37->Name = L"label37";
+			this->label37->Size = System::Drawing::Size(21, 13);
+			this->label37->TabIndex = 5;
+			this->label37->Text = L"см";
+			// 
+			// label36
+			// 
+			this->label36->AutoSize = true;
+			this->label36->Location = System::Drawing::Point(145, 26);
+			this->label36->Name = L"label36";
+			this->label36->Size = System::Drawing::Size(31, 13);
+			this->label36->TabIndex = 4;
+			this->label36->Text = L"см Х";
+			// 
+			// label35
+			// 
+			this->label35->AutoSize = true;
+			this->label35->Location = System::Drawing::Point(62, 26);
+			this->label35->Name = L"label35";
+			this->label35->Size = System::Drawing::Size(31, 13);
+			this->label35->TabIndex = 3;
+			this->label35->Text = L"см Х";
+			// 
+			// addCargoName
+			// 
+			this->addCargoName->Location = System::Drawing::Point(6, 75);
+			this->addCargoName->Name = L"addCargoName";
+			this->addCargoName->Size = System::Drawing::Size(121, 20);
+			this->addCargoName->TabIndex = 5;
+			// 
+			// label33
+			// 
+			this->label33->AutoSize = true;
+			this->label33->Location = System::Drawing::Point(6, 58);
+			this->label33->Name = L"label33";
+			this->label33->Size = System::Drawing::Size(83, 13);
+			this->label33->TabIndex = 4;
+			this->label33->Text = L"Наимнеование";
+			// 
+			// label32
+			// 
+			this->label32->AutoSize = true;
+			this->label32->Location = System::Drawing::Point(143, 18);
+			this->label32->Name = L"label32";
+			this->label32->Size = System::Drawing::Size(51, 13);
+			this->label32->TabIndex = 3;
+			this->label32->Text = L"№ рейса";
+			// 
+			// label31
+			// 
+			this->label31->AutoSize = true;
+			this->label31->Location = System::Drawing::Point(6, 18);
+			this->label31->Name = L"label31";
+			this->label31->Size = System::Drawing::Size(68, 13);
+			this->label31->TabIndex = 2;
+			this->label31->Text = L"№ паспорта";
+			// 
+			// addCargoFlight
+			// 
+			this->addCargoFlight->FormattingEnabled = true;
+			this->addCargoFlight->Location = System::Drawing::Point(146, 34);
+			this->addCargoFlight->Name = L"addCargoFlight";
+			this->addCargoFlight->Size = System::Drawing::Size(96, 21);
+			this->addCargoFlight->Sorted = true;
+			this->addCargoFlight->TabIndex = 1;
+			this->addCargoFlight->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &mainForm::addPlaneModelComboBox_KeyPress);
+			// 
+			// addCargoPass
+			// 
+			this->addCargoPass->FormattingEnabled = true;
+			this->addCargoPass->Location = System::Drawing::Point(6, 34);
+			this->addCargoPass->Name = L"addCargoPass";
+			this->addCargoPass->Size = System::Drawing::Size(121, 21);
+			this->addCargoPass->Sorted = true;
+			this->addCargoPass->TabIndex = 0;
+			this->addCargoPass->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &mainForm::addPlaneModelComboBox_KeyPress);
+			// 
+			// cargoTable
+			// 
+			this->cargoTable->AllowUserToAddRows = false;
+			this->cargoTable->AllowUserToDeleteRows = false;
+			this->cargoTable->AllowUserToResizeRows = false;
+			this->cargoTable->BackgroundColor = System::Drawing::SystemColors::ButtonHighlight;
+			this->cargoTable->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::DisableResizing;
+			this->cargoTable->Location = System::Drawing::Point(294, 12);
+			this->cargoTable->MultiSelect = false;
+			this->cargoTable->Name = L"cargoTable";
+			this->cargoTable->ReadOnly = true;
+			this->cargoTable->RowHeadersVisible = false;
+			this->cargoTable->RowHeadersWidthSizeMode = System::Windows::Forms::DataGridViewRowHeadersWidthSizeMode::DisableResizing;
+			this->cargoTable->Size = System::Drawing::Size(526, 192);
+			this->cargoTable->TabIndex = 2;
+			this->cargoTable->CellClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &mainForm::cargoTable_CellClick);
 			// 
 			// managersPage
 			// 
@@ -1447,6 +2014,27 @@ private: System::Windows::Forms::TextBox^  updPasswText;
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->mainGrid))->EndInit();
 			this->tabControl1->ResumeLayout(false);
 			this->usersPage->ResumeLayout(false);
+			this->cargoPage->ResumeLayout(false);
+			this->groupBox11->ResumeLayout(false);
+			this->groupBox16->ResumeLayout(false);
+			this->groupBox16->PerformLayout();
+			this->groupBox14->ResumeLayout(false);
+			this->groupBox14->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->updCargoWeight))->EndInit();
+			this->groupBox15->ResumeLayout(false);
+			this->groupBox15->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->updCargoDimZ))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->updCargoDimY))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->updCargoDimX))->EndInit();
+			this->groupBox12->ResumeLayout(false);
+			this->groupBox12->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->addCargoWeight))->EndInit();
+			this->groupBox13->ResumeLayout(false);
+			this->groupBox13->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->addCargoDimZ))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->addCargoDimY))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->addCargoDimX))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->cargoTable))->EndInit();
 			this->managersPage->ResumeLayout(false);
 			this->orgTab->ResumeLayout(false);
 			this->manageFlights->ResumeLayout(false);
@@ -1756,6 +2344,9 @@ private: System::Void addFlightButton_Click(System::Object^  sender, System::Eve
 			 FillCombo("SELECT id_flight FROM "+PREFIX+".flights","id_flight",
 				 updFlightId);
 			 CopyCombo(delFlightId,updFlightId);
+			 FillCombo("SELECT id_flight FROM "+PREFIX+".flights WHERE departure_date>curdate() AND departure_date>curtime()","id_flight",
+				 addCargoFlight);
+			 CopyCombo(updCargoFlight,addCargoFlight);
 			 addFlightButton->Enabled = true;
 		 }
 private: System::Void updFlightButton_Click(System::Object^  sender, System::EventArgs^  e) {
@@ -1804,6 +2395,9 @@ private: System::Void updFlightButton_Click(System::Object^  sender, System::Eve
 				 "', arrival_date ='"+updFlightArrivalDate->Text+"' WHERE id_flight = "+updFlightId->Text+";");
 			 loadData("select * from "+PREFIX+".flights", flightsTable);
 			 //FillCombo("SELECT id_plane FROM "+PREFIX+".planes","id_plane",delPlaneIdComboBox);
+			 FillCombo("SELECT id_flight FROM "+PREFIX+".flights WHERE departure_date>curdate() AND departure_date>curtime()","id_flight",
+				 addCargoFlight);
+			 CopyCombo(updCargoFlight,addCargoFlight);
 			 updFlightButton->Enabled = true;
 		 }
 private: System::Void flightsTable_CellClick(System::Object^  sender, System::Windows::Forms::DataGridViewCellEventArgs^  e) {
@@ -1831,6 +2425,9 @@ private: System::Void delFlightButton_Click(System::Object^  sender, System::Eve
 			 FillCombo("SELECT id_flight FROM "+PREFIX+".flights","id_flight",
 				 updFlightId);
 			 CopyCombo(delFlightId,updFlightId);
+			 FillCombo("SELECT id_flight FROM "+PREFIX+".flights WHERE departure_date>curdate() AND departure_date>curtime()","id_flight",
+				 addCargoFlight);
+			 CopyCombo(updCargoFlight,addCargoFlight);
 			 delFlightButton->Enabled = true;
 		 }
 private: System::Void ctrlUsersTable_CellClick(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^  e) {
@@ -1935,6 +2532,172 @@ private: System::Void updUserButton_Click(System::Object^  sender, System::Event
 			 asAdmin(ctrlUsersTable);
 
 			 updUserButton->Enabled = true;
+		 }
+private: System::Void addCargoButton_Click(System::Object^  sender, System::EventArgs^  e) {
+			 addCargoButton->Enabled = false;
+			 if(addCargoPass->Text->Length == 0)
+			 {
+				 MessageBox::Show("Поле 'Номер паспорта' не может быть пустым.", "Ошибка",
+					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
+				 addCargoButton->Enabled = true;
+				 return;
+			 }
+			 if(addCargoFlight->Text->Length == 0)
+			 {
+				 MessageBox::Show("Поле 'Номер рейса' не может быть пустым.", "Ошибка",
+					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
+				 addCargoButton->Enabled = true;
+				 return;
+			 }
+			 if(addCargoName->Text->Length == 0)
+			 {
+				 MessageBox::Show("Поле 'Наименование' не может быть пустым.", "Ошибка",
+					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
+				 addCargoButton->Enabled = true;
+				 return;
+			 }
+			 if(addCargoDimX->Value > 500)
+			 {
+				 MessageBox::Show("Поля размеров не могут превышать 500 см", "Ошибка",
+					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
+				 addCargoButton->Enabled = true;
+				 return;
+			 }
+			 if(addCargoDimY->Value > 500)
+			 {
+				 MessageBox::Show("Поля размеров не могут превышать 500 см", "Ошибка",
+					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
+				 addCargoButton->Enabled = true;
+				 return;
+			 }
+			 if(addCargoDimZ->Value > 500)
+			 {
+				 MessageBox::Show("Поля размеров не могут превышать 500 см", "Ошибка",
+					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
+				 addCargoButton->Enabled = true;
+				 return;
+			 }
+			 if(addCargoWeight->Value > 50000)
+			 {
+				 MessageBox::Show("Поле 'Вес' не может превышать 50000 г", "Ошибка",
+					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
+				 addCargoButton->Enabled = true;
+				 return;
+			 }
+			 MySqlDataReader^ myReader;
+			 numTab = 5;
+			 myReader = executeReq("INSERT INTO "+PREFIX+".cargo (id_pass,id_flight,name,dimensions,weight) VALUES('"+
+				 addCargoPass->Text+"',"+addCargoFlight->Text+",'"+addCargoName->Text+"','"
+				 +addCargoDimX->Text+"x"+addCargoDimY->Text+"x"+addCargoDimZ->Text+"','"+addCargoWeight->Text+"')");
+			 loadData("select * from "+PREFIX+".cargo", cargoTable);
+			 FillCombo("SELECT id_cargo FROM "+PREFIX+".cargo","id_cargo",updCargoId);
+			 CopyCombo(delCargoId,updCargoId);
+			 addCargoButton->Enabled = true;
+		 }
+private: System::Void updCargoButton_Click(System::Object^  sender, System::EventArgs^  e) {
+			 updCargoButton->Enabled = false;
+			 if(updCargoId->Text->Length ==0)
+			 {
+				 MessageBox::Show("Поле 'Номер груза' не может быть пустым.", "Ошибка",
+					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
+				 updCargoButton->Enabled = true;
+				 return;
+			 }
+			 if(updCargoPass->Text->Length == 0)
+			 {
+				 MessageBox::Show("Поле 'Номер паспорта' не может быть пустым.", "Ошибка",
+					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
+				 updCargoButton->Enabled = true;
+				 return;
+			 }
+			 if(updCargoFlight->Text->Length == 0)
+			 {
+				 MessageBox::Show("Поле 'Номер рейса' не может быть пустым.", "Ошибка",
+					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
+				 updCargoButton->Enabled = true;
+				 return;
+			 }
+			 if(updCargoName->Text->Length == 0)
+			 {
+				 MessageBox::Show("Поле 'Наименование' не может быть пустым.", "Ошибка",
+					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
+				 updCargoButton->Enabled = true;
+				 return;
+			 }
+			 if(updCargoDimX->Value > 500)
+			 {
+				 MessageBox::Show("Поля размеров не могут превышать 500 см", "Ошибка",
+					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
+				 updCargoButton->Enabled = true;
+				 return;
+			 }
+			 if(updCargoDimY->Value > 500)
+			 {
+				 MessageBox::Show("Поля размеров не могут превышать 500 см", "Ошибка",
+					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
+				 updCargoButton->Enabled = true;
+				 return;
+			 }
+			 if(updCargoDimZ->Value > 500)
+			 {
+				 MessageBox::Show("Поля размеров не могут превышать 500 см", "Ошибка",
+					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
+				 updCargoButton->Enabled = true;
+				 return;
+			 }
+			 if(updCargoWeight->Value > 50000)
+			 {
+				 MessageBox::Show("Поле 'Вес' не может превышать 50000 г", "Ошибка",
+					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
+				 updCargoButton->Enabled = true;
+				 return;
+			 }
+			 MySqlDataReader^ myReader;
+			 numTab = 5;
+			 myReader = executeReq("UPDATE "+PREFIX+".cargo SET id_pass='"+updCargoPass->Text+
+				 "', id_flight ="+updCargoFlight->Text+", name ='"+updCargoName->Text+
+				 "', dimensions = '"+updCargoDimX->Text+"x"+updCargoDimY->Text+"x"+updCargoDimZ->Text+
+				 "', weight ='"+updCargoWeight->Text+"' WHERE id_cargo = "+updCargoId->Text+";");
+			 loadData("select * from "+PREFIX+".cargo", cargoTable);
+			 updCargoButton->Enabled = true;
+		 }
+private: System::Void cargoTable_CellClick(System::Object^  sender, System::Windows::Forms::DataGridViewCellEventArgs^  e) {
+			 updCargoId->Text = cargoTable->CurrentRow->Cells[0]->Value->ToString();
+			 delCargoId->Text = cargoTable->CurrentRow->Cells[0]->Value->ToString();
+			 updCargoPass->Text = cargoTable->CurrentRow->Cells[1]->Value->ToString();
+			 updCargoFlight->Text = cargoTable->CurrentRow->Cells[2]->Value->ToString();
+			 updCargoName->Text = cargoTable->CurrentRow->Cells[3]->Value->ToString();
+			 updCargoDimX->Text = "";
+			 updCargoDimY->Text = "";
+			 updCargoDimZ->Text = "";
+			 String^ s1 = cargoTable->CurrentRow->Cells[4]->Value->ToString();
+			 int k=0;
+			 for(;s1[k]!='x';k++)
+				 updCargoDimX->Text += s1[k];
+			 k++;
+			 for(;s1[k]!='x';k++)
+				 updCargoDimY->Text += s1[k];
+			 k++;
+			 for(;k<s1->Length;k++)
+				 updCargoDimZ->Text += s1[k];
+			 updCargoWeight->Text = cargoTable->CurrentRow->Cells[5]->Value->ToString();
+		 }
+private: System::Void delCargoButton_Click(System::Object^  sender, System::EventArgs^  e) {
+			 delCargoButton->Enabled = false;
+			 if(delCargoId->Text->Length == 0)
+			 {
+				 MessageBox::Show("Поле 'Номер груза' не может быть пустым.", "Ошибка",
+					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
+				 delCargoButton->Enabled = true;
+				 return;
+			 }
+			 MySqlDataReader^ myReader;
+			 numTab = 5;
+			 myReader = executeReq("DELETE FROM "+PREFIX+".cargo where id_cargo="+delCargoId->Text+";");
+			 loadData("select * from "+PREFIX+".cargo", cargoTable);
+			 FillCombo("SELECT id_cargo FROM "+PREFIX+".cargo","id_cargo",updCargoId);
+			 CopyCombo(delCargoId,updCargoId);
+			 delCargoButton->Enabled = true;
 		 }
 };
 }

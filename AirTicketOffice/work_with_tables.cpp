@@ -74,7 +74,8 @@ bool asTeller(System::Windows::Forms::TabControl^ tabCtrl, bool admin) {
 	return check;
 }
 
-bool asCargoManager(System::Windows::Forms::TabControl^ tabCtrl, bool admin) {
+bool asCargoManager(System::Windows::Forms::DataGridView^ tableCargo,
+					System::Windows::Forms::TabControl^ tabCtrl, bool admin) {
 	bool check;
 
 	if (!admin) {
@@ -84,7 +85,20 @@ bool asCargoManager(System::Windows::Forms::TabControl^ tabCtrl, bool admin) {
 		//tabCtrl->TabPages->Remove(tabCtrl->TabPages[1]);
 	}
 
+	check = loadData("select * from "+PREFIX+".cargo", tableCargo);
 
+	tableCargo->Columns[0]->HeaderText = "№ груза";
+	tableCargo->Columns[1]->HeaderText = "№ паспорта";
+	tableCargo->Columns[2]->HeaderText = "№ рейса";
+	tableCargo->Columns[3]->HeaderText = "Наименование";
+	tableCargo->Columns[4]->HeaderText = "Размеры";
+	tableCargo->Columns[5]->HeaderText = "Вес";
+	tableCargo->Columns[0]->Width = 59;
+	tableCargo->Columns[1]->Width = 80;
+	tableCargo->Columns[2]->Width = 59;
+	tableCargo->Columns[3]->Width = 90;
+	tableCargo->Columns[4]->Width = 75;
+	tableCargo->Columns[5]->Width = 75;
 	return check;
 }
 

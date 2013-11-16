@@ -104,6 +104,8 @@ void FillCombo(String^ query,String^ column, System::Windows::Forms::ComboBox^ b
 {
 	MySqlDataReader^ myReader = executeReq(query);
 	box->Items->Clear();
+	if(!myReader)
+		return;
 	while(myReader->Read())
 	{
 		box->Items->Add(myReader->GetString(column));

@@ -14,7 +14,8 @@ bool asMainManager (System::Windows::Forms::DataGridView^ tableFlights,
 
 bool asUser(System::Windows::Forms::TabControl^ tabCtrl, bool admin);
 bool asTeller(System::Windows::Forms::TabControl^ tabCtrl, bool admin);
-bool asCargoManager(System::Windows::Forms::TabControl^ tabCtrl, bool admin);
+bool asCargoManager(System::Windows::Forms::DataGridView^ tableCargo,
+					System::Windows::Forms::TabControl^ tabCtrl, bool admin);
 bool asAdmin(System::Windows::Forms::DataGridView^ ctrlUsersTable);
 
 #endif
