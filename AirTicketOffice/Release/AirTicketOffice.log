@@ -1,17 +1,1 @@
-﻿  stdafx.cpp
-  AirTicketOffice.cpp
-  AssemblyInfo.cpp
-  code.cpp
-  common.cpp
-common.cpp(72): warning C4101: myReader: неиспользованная локальная переменная
-  mainForm.cpp
-  registrationForm.cpp
-  reg_check.cpp
-reg_check.cpp(78): warning C4244: аргумент: преобразование "wchar_t" в "char", возможна потеря данных
-  work_with_tables.cpp
-  Создание кода...
-d:\!универ\обд\aitticketoffice-project\airticketoffice\work_with_tables.cpp(62): warning C4700: использована неинициализированная локальная переменная "check"
-d:\!универ\обд\aitticketoffice-project\airticketoffice\work_with_tables.cpp(74): warning C4700: использована неинициализированная локальная переменная "check"
-d:\!универ\обд\aitticketoffice-project\airticketoffice\work_with_tables.cpp(88): warning C4700: использована неинициализированная локальная переменная "check"
-  .NETFramework,Version=v4.0.AssemblyAttributes.cpp
-  AirTicketOffice.vcxproj -> D:\!универ\ОБД\AitTicketOffice-Project\Release\AirTicketOffice.exe
+﻿  AirTicketOffice.vcxproj -> D:\!универ\ОБД\AitTicketOffice-Project\Release\AirTicketOffice.exe

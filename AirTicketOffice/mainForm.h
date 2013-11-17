@@ -260,6 +260,8 @@ private: System::Windows::Forms::GroupBox^  groupBox16;
 private: System::Windows::Forms::Label^  label46;
 private: System::Windows::Forms::ComboBox^  delCargoId;
 private: System::Windows::Forms::Button^  delCargoButton;
+private: System::Windows::Forms::Label^  label48;
+private: System::Windows::Forms::Label^  label47;
 
 
 
@@ -420,6 +422,8 @@ private: System::Windows::Forms::Button^  delCargoButton;
 			this->updPasspText = (gcnew System::Windows::Forms::TextBox());
 			this->updRulesBox = (gcnew System::Windows::Forms::ComboBox());
 			this->ctrlUsersTable = (gcnew System::Windows::Forms::DataGridView());
+			this->label47 = (gcnew System::Windows::Forms::Label());
+			this->label48 = (gcnew System::Windows::Forms::Label());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->mainGrid))->BeginInit();
 			this->tabControl1->SuspendLayout();
 			this->usersPage->SuspendLayout();
@@ -575,6 +579,7 @@ private: System::Windows::Forms::Button^  delCargoButton;
 			// 
 			// groupBox14
 			// 
+			this->groupBox14->Controls->Add(this->label48);
 			this->groupBox14->Controls->Add(this->label45);
 			this->groupBox14->Controls->Add(this->updCargoId);
 			this->groupBox14->Controls->Add(this->updCargoButton);
@@ -775,6 +780,7 @@ private: System::Windows::Forms::Button^  delCargoButton;
 			// 
 			// groupBox12
 			// 
+			this->groupBox12->Controls->Add(this->label47);
 			this->groupBox12->Controls->Add(this->addCargoButton);
 			this->groupBox12->Controls->Add(this->addCargoWeight);
 			this->groupBox12->Controls->Add(this->label34);
@@ -1997,6 +2003,24 @@ private: System::Windows::Forms::Button^  delCargoButton;
 			this->ctrlUsersTable->Size = System::Drawing::Size(374, 192);
 			this->ctrlUsersTable->TabIndex = 2;
 			this->ctrlUsersTable->CellClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &mainForm::ctrlUsersTable_CellClick);
+			// 
+			// label47
+			// 
+			this->label47->AutoSize = true;
+			this->label47->Location = System::Drawing::Point(81, 184);
+			this->label47->Name = L"label47";
+			this->label47->Size = System::Drawing::Size(60, 13);
+			this->label47->TabIndex = 11;
+			this->label47->Text = L"в граммах";
+			// 
+			// label48
+			// 
+			this->label48->AutoSize = true;
+			this->label48->Location = System::Drawing::Point(81, 184);
+			this->label48->Name = L"label48";
+			this->label48->Size = System::Drawing::Size(60, 13);
+			this->label48->TabIndex = 23;
+			this->label48->Text = L"в граммах";
 			// 
 			// mainForm
 			// 
