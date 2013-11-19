@@ -10,6 +10,7 @@ using namespace System;
 bool asMainManager (System::Windows::Forms::DataGridView^ tableFlights, 
 					System::Windows::Forms::DataGridView^ tablePlanes,
 					System::Windows::Forms::DataGridView^ tablePlaneParam,
+					System::Windows::Forms::DataGridView^ tableTariffs,
 					System::Windows::Forms::TabControl^   tabCtrl, bool admin);
 
 bool asUser(System::Windows::Forms::TabControl^ tabCtrl, bool admin);

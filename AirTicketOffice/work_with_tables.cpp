@@ -7,6 +7,7 @@
 bool asMainManager (System::Windows::Forms::DataGridView^ tableFlights, 
 					System::Windows::Forms::DataGridView^ tablePlanes,
 					System::Windows::Forms::DataGridView^ tablePlaneParam,
+					System::Windows::Forms::DataGridView^ tableTariffs,
 					System::Windows::Forms::TabControl^   tabCtrl, bool admin)
 {
 	
@@ -22,6 +23,7 @@ bool asMainManager (System::Windows::Forms::DataGridView^ tableFlights,
 	check = loadData("select * from "+PREFIX+".flights", tableFlights);
 	check = loadData("select * from "+PREFIX+".planes", tablePlanes);
 	check = loadData("select * from "+PREFIX+".plane_parametrs", tablePlaneParam);
+	check = loadData("select * from "+PREFIX+".tariffs",tableTariffs);
 
 	tableFlights->Columns[0]->HeaderText = "№ рейса";
 	tableFlights->Columns[1]->HeaderText = "№ самолета";
@@ -50,6 +52,12 @@ bool asMainManager (System::Windows::Forms::DataGridView^ tableFlights,
 	tablePlaneParam->Columns[0]->Width = 90;
 	tablePlaneParam->Columns[1]->Width = 80;
 
+	tableTariffs->Columns[0]->HeaderText = "№ рейса";
+	tableTariffs->Columns[1]->HeaderText = "Класс";
+	tableTariffs->Columns[2]->HeaderText = "Цена";
+	tableTariffs->Columns[0]->Width = 59;
+	tableTariffs->Columns[1]->Width = 59;
+	tableTariffs->Columns[2]->Width = 75;
 	return check;
 }
 

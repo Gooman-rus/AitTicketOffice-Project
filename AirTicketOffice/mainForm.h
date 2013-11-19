@@ -40,7 +40,7 @@ namespace AirTicketOffice {
 					break;
 				case 4:
 					r = "Организационный менеджер"; 
-					asMainManager (flightsTable, planesTable, planeParamTable, tabControl1, false);
+					asMainManager (flightsTable, planesTable, planeParamTable,tariffsTable, tabControl1, false);
 					FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",
 						delPlaneParamModelComboBox);
 					CopyCombo(updPlanesParamModelComboBox,delPlaneParamModelComboBox);
@@ -57,7 +57,7 @@ namespace AirTicketOffice {
 					r = "Администратор";
 					asAdmin(ctrlUsersTable);
 					asMainManager(flightsTable, planesTable, 
-								   planeParamTable, tabControl1, true);
+								   planeParamTable,tariffsTable, tabControl1, true);
 					asCargoManager(cargoTable,tabControl1, true);
 					FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",
 						delPlaneParamModelComboBox);
@@ -262,6 +262,12 @@ private: System::Windows::Forms::ComboBox^  delCargoId;
 private: System::Windows::Forms::Button^  delCargoButton;
 private: System::Windows::Forms::Label^  label48;
 private: System::Windows::Forms::Label^  label47;
+private: System::Windows::Forms::Label^  label52;
+private: System::Windows::Forms::TextBox^  updFlightPrice;
+private: System::Windows::Forms::Label^  label50;
+private: System::Windows::Forms::Label^  label49;
+private: System::Windows::Forms::TextBox^  addFlightPrice;
+private: System::Windows::Forms::DataGridView^  tariffsTable;
 
 
 
@@ -296,6 +302,7 @@ private: System::Windows::Forms::Label^  label47;
 			this->label46 = (gcnew System::Windows::Forms::Label());
 			this->delCargoId = (gcnew System::Windows::Forms::ComboBox());
 			this->groupBox14 = (gcnew System::Windows::Forms::GroupBox());
+			this->label48 = (gcnew System::Windows::Forms::Label());
 			this->label45 = (gcnew System::Windows::Forms::Label());
 			this->updCargoId = (gcnew System::Windows::Forms::ComboBox());
 			this->updCargoButton = (gcnew System::Windows::Forms::Button());
@@ -315,6 +322,7 @@ private: System::Windows::Forms::Label^  label47;
 			this->updCargoName = (gcnew System::Windows::Forms::TextBox());
 			this->label42 = (gcnew System::Windows::Forms::Label());
 			this->groupBox12 = (gcnew System::Windows::Forms::GroupBox());
+			this->label47 = (gcnew System::Windows::Forms::Label());
 			this->addCargoButton = (gcnew System::Windows::Forms::Button());
 			this->addCargoWeight = (gcnew System::Windows::Forms::NumericUpDown());
 			this->label34 = (gcnew System::Windows::Forms::Label());
@@ -342,6 +350,8 @@ private: System::Windows::Forms::Label^  label47;
 			this->delFlightId = (gcnew System::Windows::Forms::ComboBox());
 			this->groupBox8 = (gcnew System::Windows::Forms::GroupBox());
 			this->label25 = (gcnew System::Windows::Forms::Label());
+			this->label52 = (gcnew System::Windows::Forms::Label());
+			this->updFlightPrice = (gcnew System::Windows::Forms::TextBox());
 			this->updFlightId = (gcnew System::Windows::Forms::ComboBox());
 			this->label24 = (gcnew System::Windows::Forms::Label());
 			this->label23 = (gcnew System::Windows::Forms::Label());
@@ -356,6 +366,9 @@ private: System::Windows::Forms::Label^  label47;
 			this->updFlightDepDate = (gcnew System::Windows::Forms::DateTimePicker());
 			this->updFlightPlaneId = (gcnew System::Windows::Forms::ComboBox());
 			this->groupBox7 = (gcnew System::Windows::Forms::GroupBox());
+			this->label50 = (gcnew System::Windows::Forms::Label());
+			this->label49 = (gcnew System::Windows::Forms::Label());
+			this->addFlightPrice = (gcnew System::Windows::Forms::TextBox());
 			this->addFlightButton = (gcnew System::Windows::Forms::Button());
 			this->addFlightArrivalTime = (gcnew System::Windows::Forms::DateTimePicker());
 			this->label18 = (gcnew System::Windows::Forms::Label());
@@ -422,8 +435,7 @@ private: System::Windows::Forms::Label^  label47;
 			this->updPasspText = (gcnew System::Windows::Forms::TextBox());
 			this->updRulesBox = (gcnew System::Windows::Forms::ComboBox());
 			this->ctrlUsersTable = (gcnew System::Windows::Forms::DataGridView());
-			this->label47 = (gcnew System::Windows::Forms::Label());
-			this->label48 = (gcnew System::Windows::Forms::Label());
+			this->tariffsTable = (gcnew System::Windows::Forms::DataGridView());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->mainGrid))->BeginInit();
 			this->tabControl1->SuspendLayout();
 			this->usersPage->SuspendLayout();
@@ -467,6 +479,7 @@ private: System::Windows::Forms::Label^  label47;
 			this->adminsPage->SuspendLayout();
 			this->groupBox10->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->ctrlUsersTable))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->tariffsTable))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// mainGrid
@@ -598,6 +611,15 @@ private: System::Windows::Forms::Label^  label47;
 			this->groupBox14->TabIndex = 1;
 			this->groupBox14->TabStop = false;
 			this->groupBox14->Text = L"Редактирование";
+			// 
+			// label48
+			// 
+			this->label48->AutoSize = true;
+			this->label48->Location = System::Drawing::Point(81, 184);
+			this->label48->Name = L"label48";
+			this->label48->Size = System::Drawing::Size(60, 13);
+			this->label48->TabIndex = 23;
+			this->label48->Text = L"в граммах";
 			// 
 			// label45
 			// 
@@ -798,6 +820,15 @@ private: System::Windows::Forms::Label^  label47;
 			this->groupBox12->TabStop = false;
 			this->groupBox12->Text = L"Добавление";
 			// 
+			// label47
+			// 
+			this->label47->AutoSize = true;
+			this->label47->Location = System::Drawing::Point(81, 184);
+			this->label47->Name = L"label47";
+			this->label47->Size = System::Drawing::Size(60, 13);
+			this->label47->TabIndex = 11;
+			this->label47->Text = L"в граммах";
+			// 
 			// addCargoButton
 			// 
 			this->addCargoButton->Location = System::Drawing::Point(187, 175);
@@ -997,6 +1028,7 @@ private: System::Windows::Forms::Label^  label47;
 			// 
 			// manageFlights
 			// 
+			this->manageFlights->Controls->Add(this->tariffsTable);
 			this->manageFlights->Controls->Add(this->groupBox6);
 			this->manageFlights->Controls->Add(this->flightsTable);
 			this->manageFlights->Location = System::Drawing::Point(4, 22);
@@ -1063,6 +1095,8 @@ private: System::Windows::Forms::Label^  label47;
 			// groupBox8
 			// 
 			this->groupBox8->Controls->Add(this->label25);
+			this->groupBox8->Controls->Add(this->label52);
+			this->groupBox8->Controls->Add(this->updFlightPrice);
 			this->groupBox8->Controls->Add(this->updFlightId);
 			this->groupBox8->Controls->Add(this->label24);
 			this->groupBox8->Controls->Add(this->label23);
@@ -1091,6 +1125,23 @@ private: System::Windows::Forms::Label^  label47;
 			this->label25->Size = System::Drawing::Size(132, 13);
 			this->label25->TabIndex = 17;
 			this->label25->Text = L"№ Рейса для изменения";
+			// 
+			// label52
+			// 
+			this->label52->AutoSize = true;
+			this->label52->Location = System::Drawing::Point(156, 100);
+			this->label52->Name = L"label52";
+			this->label52->Size = System::Drawing::Size(33, 13);
+			this->label52->TabIndex = 16;
+			this->label52->Text = L"Цена";
+			// 
+			// updFlightPrice
+			// 
+			this->updFlightPrice->Location = System::Drawing::Point(156, 116);
+			this->updFlightPrice->Name = L"updFlightPrice";
+			this->updFlightPrice->Size = System::Drawing::Size(64, 20);
+			this->updFlightPrice->TabIndex = 15;
+			this->updFlightPrice->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &mainForm::newSpotNumericUpDown_KeyPress);
 			// 
 			// updFlightId
 			// 
@@ -1212,6 +1263,9 @@ private: System::Windows::Forms::Label^  label47;
 			// 
 			// groupBox7
 			// 
+			this->groupBox7->Controls->Add(this->label50);
+			this->groupBox7->Controls->Add(this->label49);
+			this->groupBox7->Controls->Add(this->addFlightPrice);
 			this->groupBox7->Controls->Add(this->addFlightButton);
 			this->groupBox7->Controls->Add(this->addFlightArrivalTime);
 			this->groupBox7->Controls->Add(this->label18);
@@ -1230,6 +1284,32 @@ private: System::Windows::Forms::Label^  label47;
 			this->groupBox7->TabIndex = 0;
 			this->groupBox7->TabStop = false;
 			this->groupBox7->Text = L"Добавление";
+			// 
+			// label50
+			// 
+			this->label50->AutoSize = true;
+			this->label50->Location = System::Drawing::Point(219, 44);
+			this->label50->Name = L"label50";
+			this->label50->Size = System::Drawing::Size(49, 13);
+			this->label50->TabIndex = 14;
+			this->label50->Text = L"Ден. ед.";
+			// 
+			// label49
+			// 
+			this->label49->AutoSize = true;
+			this->label49->Location = System::Drawing::Point(148, 20);
+			this->label49->Name = L"label49";
+			this->label49->Size = System::Drawing::Size(33, 13);
+			this->label49->TabIndex = 13;
+			this->label49->Text = L"Цена";
+			// 
+			// addFlightPrice
+			// 
+			this->addFlightPrice->Location = System::Drawing::Point(148, 36);
+			this->addFlightPrice->Name = L"addFlightPrice";
+			this->addFlightPrice->Size = System::Drawing::Size(64, 20);
+			this->addFlightPrice->TabIndex = 12;
+			this->addFlightPrice->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &mainForm::newSpotNumericUpDown_KeyPress);
 			// 
 			// addFlightButton
 			// 
@@ -1346,13 +1426,13 @@ private: System::Windows::Forms::Label^  label47;
 			this->flightsTable->AllowUserToResizeRows = false;
 			this->flightsTable->BackgroundColor = System::Drawing::SystemColors::ButtonHighlight;
 			this->flightsTable->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::DisableResizing;
-			this->flightsTable->Location = System::Drawing::Point(211, 6);
+			this->flightsTable->Location = System::Drawing::Point(226, 6);
 			this->flightsTable->MultiSelect = false;
 			this->flightsTable->Name = L"flightsTable";
 			this->flightsTable->ReadOnly = true;
 			this->flightsTable->RowHeadersVisible = false;
 			this->flightsTable->RowHeadersWidthSizeMode = System::Windows::Forms::DataGridViewRowHeadersWidthSizeMode::DisableResizing;
-			this->flightsTable->Size = System::Drawing::Size(603, 192);
+			this->flightsTable->Size = System::Drawing::Size(588, 192);
 			this->flightsTable->TabIndex = 1;
 			this->flightsTable->CellClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &mainForm::flightsTable_CellClick);
 			// 
@@ -2004,23 +2084,21 @@ private: System::Windows::Forms::Label^  label47;
 			this->ctrlUsersTable->TabIndex = 2;
 			this->ctrlUsersTable->CellClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &mainForm::ctrlUsersTable_CellClick);
 			// 
-			// label47
+			// tariffsTable
 			// 
-			this->label47->AutoSize = true;
-			this->label47->Location = System::Drawing::Point(81, 184);
-			this->label47->Name = L"label47";
-			this->label47->Size = System::Drawing::Size(60, 13);
-			this->label47->TabIndex = 11;
-			this->label47->Text = L"в граммах";
-			// 
-			// label48
-			// 
-			this->label48->AutoSize = true;
-			this->label48->Location = System::Drawing::Point(81, 184);
-			this->label48->Name = L"label48";
-			this->label48->Size = System::Drawing::Size(60, 13);
-			this->label48->TabIndex = 23;
-			this->label48->Text = L"в граммах";
+			this->tariffsTable->AllowUserToAddRows = false;
+			this->tariffsTable->AllowUserToDeleteRows = false;
+			this->tariffsTable->AllowUserToResizeRows = false;
+			this->tariffsTable->BackgroundColor = System::Drawing::SystemColors::ButtonHighlight;
+			this->tariffsTable->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::DisableResizing;
+			this->tariffsTable->Location = System::Drawing::Point(5, 6);
+			this->tariffsTable->MultiSelect = false;
+			this->tariffsTable->Name = L"tariffsTable";
+			this->tariffsTable->ReadOnly = true;
+			this->tariffsTable->RowHeadersVisible = false;
+			this->tariffsTable->RowHeadersWidthSizeMode = System::Windows::Forms::DataGridViewRowHeadersWidthSizeMode::DisableResizing;
+			this->tariffsTable->Size = System::Drawing::Size(215, 192);
+			this->tariffsTable->TabIndex = 3;
 			// 
 			// mainForm
 			// 
@@ -2093,6 +2171,7 @@ private: System::Windows::Forms::Label^  label47;
 			this->groupBox10->ResumeLayout(false);
 			this->groupBox10->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->ctrlUsersTable))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->tariffsTable))->EndInit();
 			this->ResumeLayout(false);
 
 		}
@@ -2360,11 +2439,24 @@ private: System::Void addFlightButton_Click(System::Object^  sender, System::Eve
 				 addFlightButton->Enabled = true;
 				 return;
 			 }
+			 if(addFlightPrice->Text->Length==0)
+			 {
+				 MessageBox::Show("Поле 'Цена' не может быть пустым", "Ошибка",
+					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
+				 addFlightButton->Enabled = true;
+				 return;
+			 }
 			 MySqlDataReader^ myReader;
 			 numTab = 4;
 			 myReader = executeReq("INSERT INTO "+PREFIX+".flights (id_plane,departure,destination,departure_date,arrival_date) VALUES("+
 				 addFlightPlaneId->Text+",'"+addFlightDepart->Text+"','"+addFlightArrive->Text+"','"+addFlightDepartTime->Text+"','"+addFlightArrivalTime->Text+"')");
+			 myReader = executeReq("select max(id_flight) from "+PREFIX+".flights");
+			 myReader->Read();
+			 String^ addFlightId = myReader->GetString(0);
+			 myReader = executeReq("INSERT INTO "+PREFIX+".tariffs (id_flight,class,price) VALUES("+addFlightId+",'B',"+Convert::ToInt32(addFlightPrice->Text,10)+")");
+			 myReader = executeReq("INSERT INTO "+PREFIX+".tariffs (id_flight,class,price) VALUES("+addFlightId+",'A',"+(Convert::ToInt32(addFlightPrice->Text,10)*1.15).ToString()+")");
 			 loadData("select * from "+PREFIX+".flights", flightsTable);
+			 loadData("select * from "+PREFIX+".tariffs",tariffsTable);
 			 FillCombo("SELECT id_flight FROM "+PREFIX+".flights","id_flight",
 				 updFlightId);
 			 CopyCombo(delFlightId,updFlightId);
@@ -2411,13 +2503,25 @@ private: System::Void updFlightButton_Click(System::Object^  sender, System::Eve
 				 updFlightButton->Enabled = true;
 				 return;
 			 }
+			 if(updFlightPrice->Text->Length == 0)
+			 {
+				 MessageBox::Show("Поле 'Цена' не может быть пустым", "Ошибка",
+					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
+				 updFlightButton->Enabled = true;
+				 return;
+			 }
 			 MySqlDataReader^ myReader;
 			 numTab = 4;
 			 myReader = executeReq("UPDATE "+PREFIX+".flights SET id_plane="+updFlightPlaneId->Text+
 				 ", departure ='"+updFlightDep->Text+"', destination ='"+updFlightDest->Text+
 				 "', departure_date = '"+updFlightDepDate->Text+
 				 "', arrival_date ='"+updFlightArrivalDate->Text+"' WHERE id_flight = "+updFlightId->Text+";");
+			 myReader = executeReq("UPDATE "+PREFIX+".tariffs SET price="+updFlightPrice->Text+
+				 " WHERE id_flight = "+updFlightId->Text+" AND class='B';");
+			 myReader = executeReq("UPDATE "+PREFIX+".tariffs SET price="+(Convert::ToInt32(updFlightPrice->Text)*1.15).ToString()+
+				 " WHERE id_flight = "+updFlightId->Text+" AND class='A';");
 			 loadData("select * from "+PREFIX+".flights", flightsTable);
+			 loadData("select * from "+PREFIX+".tariffs",tariffsTable);
 			 //FillCombo("SELECT id_plane FROM "+PREFIX+".planes","id_plane",delPlaneIdComboBox);
 			 FillCombo("SELECT id_flight FROM "+PREFIX+".flights WHERE departure_date>curdate() AND departure_date>curtime()","id_flight",
 				 addCargoFlight);
@@ -2432,6 +2536,10 @@ private: System::Void flightsTable_CellClick(System::Object^  sender, System::Wi
 			 updFlightDepDate->Text = flightsTable->CurrentRow->Cells[4]->Value->ToString();
 			 updFlightArrivalDate->Text = flightsTable->CurrentRow->Cells[5]->Value->ToString();
 			 delFlightId->Text = flightsTable->CurrentRow->Cells[0]->Value->ToString();
+			 MySqlDataReader^ myReader = executeReq("SELECT price FROM "+PREFIX+".tariffs WHERE class='B' AND id_flight="+updFlightId->Text+";");
+			 myReader->Read();
+			 updFlightPrice->Text = myReader->GetString(0);
+
 		 }
 private: System::Void delFlightButton_Click(System::Object^  sender, System::EventArgs^  e) {
 			 delFlightButton->Enabled = false;
@@ -2445,7 +2553,9 @@ private: System::Void delFlightButton_Click(System::Object^  sender, System::Eve
 			 numTab = 4;
 			 MySqlDataReader^ myReader;
 			 myReader = executeReq("DELETE FROM "+PREFIX+".flights where id_flight="+delFlightId->Text+";");
+			 myReader = executeReq("DELETE FROM "+PREFIX+".tariffs where id_flight="+delFlightId->Text+";");
 			 loadData("select * from "+PREFIX+".flights", flightsTable);
+			 loadData("select * from "+PREFIX+".tariffs",tariffsTable);
 			 FillCombo("SELECT id_flight FROM "+PREFIX+".flights","id_flight",
 				 updFlightId);
 			 CopyCombo(delFlightId,updFlightId);
