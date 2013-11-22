@@ -25,7 +25,7 @@ bool asMainManager (System::Windows::Forms::DataGridView^ tableFlights,
 	check = loadData("select * from "+PREFIX+".planes", tablePlanes);
 	check = loadData("select * from "+PREFIX+".plane_parametrs", tablePlaneParam);
 	check = loadData("select * from "+PREFIX+".tariffs",tableTariffs);
-	check - loadData("select * from "+PREFIX+".tickets",tableTickets);
+	check = loadData("select * from "+PREFIX+".tickets",tableTickets);
 
 	tableFlights->Columns[0]->HeaderText = "№ рейса";
 	tableFlights->Columns[1]->HeaderText = "№ самолета";
@@ -83,15 +83,25 @@ bool asUser(System::Windows::Forms::TabControl^ tabCtrl, bool admin) {
 	return check;
 }
 
-bool asTeller(System::Windows::Forms::TabControl^ tabCtrl, bool admin) {
+bool asTeller(System::Windows::Forms::TabControl^ tabCtrl,System::Windows::Forms::DataGridView^ tableTickets, bool admin) {
 	bool check;
 
 	if (!admin) {
 	//tabCtrl->TabPages->Remove(tabCtrl->TabPages[0]);
 	for (int i=0;i<3;i++) tabCtrl->TabPages->Remove(tabCtrl->TabPages[2]);
 	}
+	check = loadData("select * from "+PREFIX+".tickets",tableTickets);
 
-
+	tableTickets->Columns[0]->HeaderText = "№ билета";
+	tableTickets->Columns[1]->HeaderText = "№ рейса";
+	tableTickets->Columns[2]->HeaderText = "№ паспорта";
+	tableTickets->Columns[3]->HeaderText = "Класс";
+	tableTickets->Columns[4]->HeaderText = "Дата продажи";
+	tableTickets->Columns[0]->Width = 70;
+	tableTickets->Columns[1]->Width = 60;
+	tableTickets->Columns[2]->Width = 90;
+	tableTickets->Columns[3]->Width = 50;
+	tableTickets->Columns[4]->Width = 90;
 	return check;
 }
 

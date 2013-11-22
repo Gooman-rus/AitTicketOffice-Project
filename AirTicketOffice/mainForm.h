@@ -32,11 +32,28 @@ namespace AirTicketOffice {
 					break;
 				case 2:
 					r = "Менеджер по билетам"; 
-					asTeller(tabControl1, false);
+					asTeller(tabControl1,ticketsTable, false);
+					FillCombo("SELECT id_pass FROM "+PREFIX+".passengers","id_pass",addTicketPass);
+					FillCombo("SELECT distinct departure FROM "+PREFIX+".flights","departure",addTicketDep);
+					FillCombo("SELECT distinct destination FROM "+PREFIX+".flights","destination",addTicketDest);
+					CopyCombo(updTicketDep,addTicketDep);
+					CopyCombo(updTicketDest,addTicketDest);
+					addTicketClass->Items->Add("A");
+					addTicketClass->Items->Add("B");
+					CopyCombo(updTicketClass,addTicketClass);
+					FillCombo("SELECT distinct id_pass FROM "+PREFIX+".tickets","id_pass",updTicketPass);
+					CopyCombo(delTicketPass,updTicketPass);
 					break;
 				case 3:
 					r = "Менеджер грузов"; 
 					asCargoManager(cargoTable,tabControl1, false);
+					FillCombo("SELECT id_flight FROM "+PREFIX+".flights WHERE departure_date>curdate() AND departure_date>curtime()","id_flight",
+						addCargoFlight);
+					CopyCombo(updCargoFlight,addCargoFlight);
+					FillCombo("SELECT id_pass FROM "+PREFIX+".passengers","id_pass",
+						addCargoPass);
+					FillCombo("SELECT id_cargo FROM "+PREFIX+".cargo","id_cargo",updCargoId);
+					CopyCombo(delCargoId,updCargoId);
 					break;
 				case 4:
 					r = "Организационный менеджер"; 
@@ -50,8 +67,27 @@ namespace AirTicketOffice {
 						updPlaneIdComboBox);
 					CopyCombo(delPlaneIdComboBox,updPlaneIdComboBox);
 					CopyCombo(addFlightPlaneId,updPlaneIdComboBox);
+					CopyCombo(updFlightPlaneId,updPlaneIdComboBox);
 					FillCombo("SELECT id_flight FROM "+PREFIX+".flights","id_flight",
 						updFlightId);
+					CopyCombo(delFlightId,updFlightId);
+					FillCombo("SELECT id_flight FROM "+PREFIX+".flights WHERE departure_date>curdate() AND departure_date>curtime()","id_flight",
+						addCargoFlight);
+					CopyCombo(updCargoFlight,addCargoFlight);
+					FillCombo("SELECT id_pass FROM "+PREFIX+".passengers","id_pass",
+						addCargoPass);
+					FillCombo("SELECT id_cargo FROM "+PREFIX+".cargo","id_cargo",updCargoId);
+					CopyCombo(delCargoId,updCargoId);
+					FillCombo("SELECT id_pass FROM "+PREFIX+".passengers","id_pass",addTicketPass);
+					FillCombo("SELECT distinct departure FROM "+PREFIX+".flights","departure",addTicketDep);
+					FillCombo("SELECT distinct destination FROM "+PREFIX+".flights","destination",addTicketDest);
+					CopyCombo(updTicketDep,addTicketDep);
+					CopyCombo(updTicketDest,addTicketDest);
+					addTicketClass->Items->Add("A");
+					addTicketClass->Items->Add("B");
+					CopyCombo(updTicketClass,addTicketClass);
+					FillCombo("SELECT distinct id_pass FROM "+PREFIX+".tickets","id_pass",updTicketPass);
+					CopyCombo(delTicketPass,updTicketPass);
 					break;
 				case 5:
 					r = "Администратор";
@@ -3458,6 +3494,8 @@ private: System::Void addTicketButton_Click(System::Object^  sender, System::Eve
 			 myReader = executeReq("INSERT INTO "+PREFIX+".tickets (id_pass,id_flight,class,sale_date) VALUES('"+
 				 addTicketPass->Text+"',"+idFlight+",'"+addTicketClass->Text+"',curdate())");
 			 loadData("select * from "+PREFIX+".tickets", ticketsTable);
+			 FillCombo("SELECT distinct id_pass FROM "+PREFIX+".tickets","id_pass",updTicketPass);
+			 CopyCombo(delTicketPass,updTicketPass);
 			 addTicketButton->Enabled = true;
 		 }
 		 private: System::Void addTicketDep_KeyPress(System::Object^  sender, System::Windows::Forms::KeyPressEventArgs^  e) {
@@ -3592,14 +3630,6 @@ private: System::Void button1_Click_2(System::Object^  sender, System::EventArgs
 				 return;
 			 }
 			 String^ idFlight=myReader->GetString(0);
-			 myReader = executeReq("SELECT * FROM "+PREFIX+".tickets WHERE id_flight="+idFlight+" AND id_pass='"+updTicketPass->Text+"';");
-			 if(myReader->HasRows)
-			 {
-				 MessageBox::Show("Пользователь с данным паспортом уже заказал билет на данный рейс", "Ошибка",
-					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
-				 updTicketButton->Enabled = true;
-				 return;
-			 }
 			 myReader = executeReq("UPDATE "+PREFIX+".tickets SET id_pass='"+updTicketPass->Text+
 				 "', id_flight ="+idFlight+", class ='"+updTicketClass->Text+
 				 "', sale_date = curdate() WHERE id_ticket = "+updTicketId->Text+";");
@@ -3608,7 +3638,8 @@ private: System::Void button1_Click_2(System::Object^  sender, System::EventArgs
 		 }
 private: System::Void delTicketPass_TextChanged(System::Object^  sender, System::EventArgs^  e) {
 			 delTicketId->Text="";
-			 FillCombo("SELECT id_ticket FROM "+PREFIX+".tickets WHERE id_pass="+delTicketPass->Text+";","id_ticket",delTicketId);
+			 if(delTicketPass->Text->Length!=0)
+				FillCombo("SELECT id_ticket FROM "+PREFIX+".tickets WHERE id_pass="+delTicketPass->Text+";","id_ticket",delTicketId);
 		 }
 private: System::Void delTicketButton_Click(System::Object^  sender, System::EventArgs^  e) {
 			 delTicketButton->Enabled = false;
@@ -3632,6 +3663,8 @@ private: System::Void delTicketButton_Click(System::Object^  sender, System::Eve
 			 loadData("select * from "+PREFIX+".tickets", ticketsTable);
 			 FillCombo("Select distinct id_pass from "+PREFIX+".tickets","id_pass",updTicketPass);
 			 CopyCombo(delTicketPass,updTicketPass);
+			 delTicketPass->Text = "";
+			 delTicketId->Text = "";
 			 delTicketButton->Enabled = true;
 		 }
 };

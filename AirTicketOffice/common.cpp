@@ -69,7 +69,6 @@ bool loadData(String^ request, System::Windows::Forms::DataGridView^ dataGrid)
 	String^ constring = L"datasource="+SERVER+";port="+PORT+";username="+USER+";password="+PASSWD;
 	MySqlConnection^ conDataBase = gcnew MySqlConnection(constring);
 	MySqlCommand^ cmdDataBase = gcnew MySqlCommand(request, conDataBase);
-	MySqlDataReader^ myReader;
 	try
 	{
 		MySqlDataAdapter^ sda = gcnew MySqlDataAdapter();
