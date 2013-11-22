@@ -8,7 +8,8 @@ bool asMainManager (System::Windows::Forms::DataGridView^ tableFlights,
 					System::Windows::Forms::DataGridView^ tablePlanes,
 					System::Windows::Forms::DataGridView^ tablePlaneParam,
 					System::Windows::Forms::DataGridView^ tableTariffs,
-					System::Windows::Forms::TabControl^   tabCtrl, bool admin)
+					System::Windows::Forms::TabControl^   tabCtrl,
+					System::Windows::Forms::DataGridView^ tableTickets,bool admin)
 {
 	
 	// после удаления одной вкладки индекс меняется
@@ -24,6 +25,7 @@ bool asMainManager (System::Windows::Forms::DataGridView^ tableFlights,
 	check = loadData("select * from "+PREFIX+".planes", tablePlanes);
 	check = loadData("select * from "+PREFIX+".plane_parametrs", tablePlaneParam);
 	check = loadData("select * from "+PREFIX+".tariffs",tableTariffs);
+	check - loadData("select * from "+PREFIX+".tickets",tableTickets);
 
 	tableFlights->Columns[0]->HeaderText = "№ рейса";
 	tableFlights->Columns[1]->HeaderText = "№ самолета";
@@ -58,6 +60,17 @@ bool asMainManager (System::Windows::Forms::DataGridView^ tableFlights,
 	tableTariffs->Columns[0]->Width = 59;
 	tableTariffs->Columns[1]->Width = 59;
 	tableTariffs->Columns[2]->Width = 75;
+
+	tableTickets->Columns[0]->HeaderText = "№ билета";
+	tableTickets->Columns[1]->HeaderText = "№ рейса";
+	tableTickets->Columns[2]->HeaderText = "№ паспорта";
+	tableTickets->Columns[3]->HeaderText = "Класс";
+	tableTickets->Columns[4]->HeaderText = "Дата продажи";
+	tableTickets->Columns[0]->Width = 70;
+	tableTickets->Columns[1]->Width = 60;
+	tableTickets->Columns[2]->Width = 90;
+	tableTickets->Columns[3]->Width = 50;
+	tableTickets->Columns[4]->Width = 90;
 	return check;
 }
 

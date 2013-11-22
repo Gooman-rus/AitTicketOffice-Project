@@ -11,7 +11,8 @@ bool asMainManager (System::Windows::Forms::DataGridView^ tableFlights,
 					System::Windows::Forms::DataGridView^ tablePlanes,
 					System::Windows::Forms::DataGridView^ tablePlaneParam,
 					System::Windows::Forms::DataGridView^ tableTariffs,
-					System::Windows::Forms::TabControl^   tabCtrl, bool admin);
+					System::Windows::Forms::TabControl^   tabCtrl,
+					System::Windows::Forms::DataGridView^ tableTickets,bool admin);
 
 bool asUser(System::Windows::Forms::TabControl^ tabCtrl, bool admin);
 bool asTeller(System::Windows::Forms::TabControl^ tabCtrl, bool admin);
