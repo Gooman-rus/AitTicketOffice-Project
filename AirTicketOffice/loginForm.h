@@ -13,6 +13,7 @@ namespace AirTicketOffice {
 	using namespace System::Data;
 	using namespace System::Drawing;
 	using namespace MySql::Data::MySqlClient;
+	using namespace System::Runtime::InteropServices;
 
 	/// <summary>
 	/// Сводка для loginForm
@@ -172,7 +173,7 @@ namespace AirTicketOffice {
 						if (myReader->GetString(4) == "1") currRole = 3; // cargoManager
 						if (myReader->GetString(5) == "1") currRole = 4; // mainManager
 						if (myReader->GetString(6) == "1") currRole = 5; // admin
-					
+						idPass = toCharArray(loginTextBox->Text);
 						this->Hide();
 						mainForm^ secondForm = gcnew mainForm();
 						secondForm->ShowDialog();

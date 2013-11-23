@@ -9,7 +9,8 @@ bool asMainManager (System::Windows::Forms::DataGridView^ tableFlights,
 					System::Windows::Forms::DataGridView^ tablePlaneParam,
 					System::Windows::Forms::DataGridView^ tableTariffs,
 					System::Windows::Forms::TabControl^   tabCtrl,
-					System::Windows::Forms::DataGridView^ tableTickets,bool admin)
+					System::Windows::Forms::DataGridView^ tableTickets,
+					System::Windows::Forms::DataGridView^ tableOrdTickets,bool admin)
 {
 	
 	// после удаления одной вкладки индекс меняется
@@ -19,13 +20,15 @@ bool asMainManager (System::Windows::Forms::DataGridView^ tableFlights,
 		tabCtrl->TabPages->Remove(tabCtrl->TabPages[2]);
 		//tabCtrl->TabPages->Remove(tabCtrl->TabPages[1]);
 	}
-
 	bool check;
 	check = loadData("select * from "+PREFIX+".flights", tableFlights);
 	check = loadData("select * from "+PREFIX+".planes", tablePlanes);
 	check = loadData("select * from "+PREFIX+".plane_parametrs", tablePlaneParam);
 	check = loadData("select * from "+PREFIX+".tariffs",tableTariffs);
 	check = loadData("select * from "+PREFIX+".tickets",tableTickets);
+	check = loadData("select flights.departure,flights.destination,DATE_FORMAT(flights.departure_date,'%Y-%m-%d %H:%i:%s'),DATE_FORMAT(flights.arrival_date,'%Y-%m-%d %H:%i:%s'),tariffs.price from  "+PREFIX+
+		".flights join "+PREFIX+".tariffs on flights.id_flight=tariffs.id_flight where tariffs.class='B' AND flights.departure_date>curdate();",tableOrdTickets);
+
 
 	tableFlights->Columns[0]->HeaderText = "№ рейса";
 	tableFlights->Columns[1]->HeaderText = "№ самолета";
@@ -71,6 +74,13 @@ bool asMainManager (System::Windows::Forms::DataGridView^ tableFlights,
 	tableTickets->Columns[2]->Width = 90;
 	tableTickets->Columns[3]->Width = 50;
 	tableTickets->Columns[4]->Width = 90;
+
+	tableOrdTickets->Columns[0]->HeaderText = "Пункт отправления";
+	tableOrdTickets->Columns[1]->HeaderText = "Пункт назначения";
+	tableOrdTickets->Columns[2]->HeaderText = "Время отправления";
+	tableOrdTickets->Columns[3]->HeaderText = "Время прибытия";
+	tableOrdTickets->Columns[4]->HeaderText = "Цена";
+
 	return check;
 }
 
@@ -137,7 +147,7 @@ bool asAdmin(System::Windows::Forms::DataGridView^ ctrlUsersTable)
 {
 	bool check;
 
-	String^ querry = "select passengers.id_pass, passengers.Name, users.password ";
+	String^ querry = "select passengers.id_pass, passengers.full_name, users.password ";
 	querry += "from "+PREFIX+".passengers join "+PREFIX+".users where passengers.id_pass = users.passport"; 
 	check = loadData(querry, ctrlUsersTable);
 

@@ -4,9 +4,11 @@
 using namespace System;
 using namespace System::Windows::Forms;
 //using namespace MySql::Data::MySqlClient;
+using namespace System::Runtime::InteropServices;
 
 int numTab = 1;
 int currRole;  // текущая роль
+char* idPass;
 
 String^ getError()
 {
@@ -115,4 +117,21 @@ void CopyCombo(System::Windows::Forms::ComboBox^ box1,System::Windows::Forms::Co
 	box1->Items->Clear();
 	for(int i=0;i<box2->Items->Count;i++)
 		box1->Items->Add(box2->Items[i]);
+}
+
+char * toCharArray(System::String^ string) 
+{
+	return (char*)(void*)Marshal::StringToHGlobalAnsi(string);
+}
+
+// char* to String^
+String^ charArrayToString(char* ch) 
+{
+	char * chr=new char[]=ch;
+	System::String^ str;
+	for(int i=0;chr[i]!='\0';i++)
+	{
+		str+=wchar_t(ch[i]);
+	}
+	return str;
 }

@@ -11,6 +11,7 @@ namespace AirTicketOffice {
 	using namespace System::Data;
 	using namespace System::Drawing;
 	using namespace System::Text::RegularExpressions;
+	using namespace System::Runtime::InteropServices;
 
 	/// <summary>
 	/// Сводка для mainForm
@@ -24,6 +25,15 @@ namespace AirTicketOffice {
 			// todo: вызов нужной функции в зависимости от роли
 			
 			String^ r;
+			MySqlDataReader^ myReader;
+			myReader = executeReq("SELECT full_name FROM "+PREFIX+".passengers WHERE id_pass='"+(gcnew String(idPass))+"';");
+			if(myReader->Read())
+				name->Text = myReader->GetString(0);
+			else 
+				name->Text = gcnew String(idPass);
+			loadData("SELECT tickets.id_ticket,tickets.id_flight,flights.departure,flights.destination,flights.departure_date,flights.arrival_date,tariffs.price,tickets.sale_date from "+
+				PREFIX+".tickets join "+PREFIX+".tariffs on tariffs.id_flight=tickets.id_flight join "+PREFIX+
+				".flights on flights.id_flight=tickets.id_flight where tariffs.class=tickets.class AND tickets.id_pass='"+(gcnew String(idPass))+"';",mainGrid);
 			switch(currRole)
 			{
 				case 1:
@@ -57,7 +67,7 @@ namespace AirTicketOffice {
 					break;
 				case 4:
 					r = "Организационный менеджер"; 
-					asMainManager (flightsTable, planesTable, planeParamTable,tariffsTable, tabControl1,ticketsTable, false);
+					asMainManager (flightsTable, planesTable, planeParamTable,tariffsTable, tabControl1,ticketsTable,ordTable, false);
 					FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",
 						delPlaneParamModelComboBox);
 					CopyCombo(updPlanesParamModelComboBox,delPlaneParamModelComboBox);
@@ -93,7 +103,7 @@ namespace AirTicketOffice {
 					r = "Администратор";
 					asAdmin(ctrlUsersTable);
 					asMainManager(flightsTable, planesTable, 
-								   planeParamTable,tariffsTable, tabControl1,ticketsTable, true);
+								   planeParamTable,tariffsTable, tabControl1,ticketsTable,ordTable, true);
 					asCargoManager(cargoTable,tabControl1, true);
 					FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",
 						delPlaneParamModelComboBox);
@@ -120,9 +130,12 @@ namespace AirTicketOffice {
 					FillCombo("SELECT distinct destination FROM "+PREFIX+".flights","destination",addTicketDest);
 					CopyCombo(updTicketDep,addTicketDep);
 					CopyCombo(updTicketDest,addTicketDest);
+					CopyCombo(ordTicketDep,addTicketDep);
+					CopyCombo(ordTicketDest,addTicketDest);
 					addTicketClass->Items->Add("A");
 					addTicketClass->Items->Add("B");
 					CopyCombo(updTicketClass,addTicketClass);
+					CopyCombo(ordTicketClass,addTicketClass);
 					FillCombo("SELECT distinct id_pass FROM "+PREFIX+".tickets","id_pass",updTicketPass);
 					CopyCombo(delTicketPass,updTicketPass);
 					break;
@@ -142,7 +155,7 @@ namespace AirTicketOffice {
 				delete components;
 			}
 		}
-	private: System::Windows::Forms::DataGridView^  mainGrid;
+
 	private: System::Windows::Forms::TabControl^  tabControl1;
 	private: System::Windows::Forms::TabPage^  usersPage;
 	private: System::Windows::Forms::TabPage^  tellersPage;
@@ -356,6 +369,29 @@ private: System::Windows::Forms::Label^  label65;
 private: System::Windows::Forms::Label^  label66;
 private: System::Windows::Forms::ComboBox^  delTicketPass;
 private: System::Windows::Forms::ComboBox^  delTicketId;
+private: System::Windows::Forms::Label^  label73;
+
+private: System::Windows::Forms::GroupBox^  groupBox21;
+
+private: System::Windows::Forms::Label^  label67;
+private: System::Windows::Forms::ComboBox^  ordTicketDate;
+private: System::Windows::Forms::Button^  ordTicketButton;
+
+
+private: System::Windows::Forms::Label^  label68;
+private: System::Windows::Forms::ComboBox^  ordTicketClass;
+
+private: System::Windows::Forms::Label^  label69;
+private: System::Windows::Forms::Label^  label70;
+private: System::Windows::Forms::Label^  label71;
+private: System::Windows::Forms::ComboBox^  ordTicketDest;
+private: System::Windows::Forms::ComboBox^  ordTicketDep;
+private: System::Windows::Forms::Label^  label74;
+private: System::Windows::Forms::Label^  name;
+
+private: System::Windows::Forms::DataGridView^  mainGrid;
+private: System::Windows::Forms::DataGridView^  ordTable;
+private: System::Windows::Forms::Label^  label72;
 
 
 
@@ -380,9 +416,24 @@ private: System::Windows::Forms::ComboBox^  delTicketId;
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			this->mainGrid = (gcnew System::Windows::Forms::DataGridView());
 			this->tabControl1 = (gcnew System::Windows::Forms::TabControl());
 			this->usersPage = (gcnew System::Windows::Forms::TabPage());
+			this->mainGrid = (gcnew System::Windows::Forms::DataGridView());
+			this->name = (gcnew System::Windows::Forms::Label());
+			this->label73 = (gcnew System::Windows::Forms::Label());
+			this->groupBox21 = (gcnew System::Windows::Forms::GroupBox());
+			this->ordTable = (gcnew System::Windows::Forms::DataGridView());
+			this->label74 = (gcnew System::Windows::Forms::Label());
+			this->label67 = (gcnew System::Windows::Forms::Label());
+			this->ordTicketDate = (gcnew System::Windows::Forms::ComboBox());
+			this->ordTicketButton = (gcnew System::Windows::Forms::Button());
+			this->label68 = (gcnew System::Windows::Forms::Label());
+			this->ordTicketClass = (gcnew System::Windows::Forms::ComboBox());
+			this->label69 = (gcnew System::Windows::Forms::Label());
+			this->label70 = (gcnew System::Windows::Forms::Label());
+			this->label71 = (gcnew System::Windows::Forms::Label());
+			this->ordTicketDest = (gcnew System::Windows::Forms::ComboBox());
+			this->ordTicketDep = (gcnew System::Windows::Forms::ComboBox());
 			this->tellersPage = (gcnew System::Windows::Forms::TabPage());
 			this->groupBox17 = (gcnew System::Windows::Forms::GroupBox());
 			this->groupBox20 = (gcnew System::Windows::Forms::GroupBox());
@@ -561,9 +612,12 @@ private: System::Windows::Forms::ComboBox^  delTicketId;
 			this->updPasspText = (gcnew System::Windows::Forms::TextBox());
 			this->updRulesBox = (gcnew System::Windows::Forms::ComboBox());
 			this->ctrlUsersTable = (gcnew System::Windows::Forms::DataGridView());
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->mainGrid))->BeginInit();
+			this->label72 = (gcnew System::Windows::Forms::Label());
 			this->tabControl1->SuspendLayout();
 			this->usersPage->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->mainGrid))->BeginInit();
+			this->groupBox21->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->ordTable))->BeginInit();
 			this->tellersPage->SuspendLayout();
 			this->groupBox17->SuspendLayout();
 			this->groupBox20->SuspendLayout();
@@ -613,15 +667,6 @@ private: System::Windows::Forms::ComboBox^  delTicketId;
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->ctrlUsersTable))->BeginInit();
 			this->SuspendLayout();
 			// 
-			// mainGrid
-			// 
-			this->mainGrid->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
-			this->mainGrid->Location = System::Drawing::Point(31, 16);
-			this->mainGrid->Name = L"mainGrid";
-			this->mainGrid->Size = System::Drawing::Size(240, 150);
-			this->mainGrid->TabIndex = 0;
-			this->mainGrid->CellContentClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &mainForm::mainGrid_CellContentClick);
-			// 
 			// tabControl1
 			// 
 			this->tabControl1->Controls->Add(this->usersPage);
@@ -639,6 +684,10 @@ private: System::Windows::Forms::ComboBox^  delTicketId;
 			// usersPage
 			// 
 			this->usersPage->Controls->Add(this->mainGrid);
+			this->usersPage->Controls->Add(this->name);
+			this->usersPage->Controls->Add(this->label73);
+			this->usersPage->Controls->Add(this->label72);
+			this->usersPage->Controls->Add(this->groupBox21);
 			this->usersPage->Location = System::Drawing::Point(4, 22);
 			this->usersPage->Name = L"usersPage";
 			this->usersPage->Padding = System::Windows::Forms::Padding(3);
@@ -646,6 +695,185 @@ private: System::Windows::Forms::ComboBox^  delTicketId;
 			this->usersPage->TabIndex = 0;
 			this->usersPage->Text = L"Заказ билета";
 			this->usersPage->UseVisualStyleBackColor = true;
+			// 
+			// mainGrid
+			// 
+			this->mainGrid->AllowUserToAddRows = false;
+			this->mainGrid->AllowUserToDeleteRows = false;
+			this->mainGrid->AllowUserToResizeRows = false;
+			this->mainGrid->BackgroundColor = System::Drawing::SystemColors::ButtonHighlight;
+			this->mainGrid->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::DisableResizing;
+			this->mainGrid->Location = System::Drawing::Point(13, 53);
+			this->mainGrid->MultiSelect = false;
+			this->mainGrid->Name = L"mainGrid";
+			this->mainGrid->ReadOnly = true;
+			this->mainGrid->RowHeadersVisible = false;
+			this->mainGrid->RowHeadersWidthSizeMode = System::Windows::Forms::DataGridViewRowHeadersWidthSizeMode::DisableResizing;
+			this->mainGrid->Size = System::Drawing::Size(801, 166);
+			this->mainGrid->TabIndex = 5;
+			// 
+			// name
+			// 
+			this->name->AutoSize = true;
+			this->name->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
+			this->name->Location = System::Drawing::Point(146, 3);
+			this->name->Name = L"name";
+			this->name->Size = System::Drawing::Size(20, 24);
+			this->name->TabIndex = 4;
+			this->name->Text = L". ";
+			// 
+			// label73
+			// 
+			this->label73->AutoSize = true;
+			this->label73->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
+			this->label73->Location = System::Drawing::Point(6, 3);
+			this->label73->Name = L"label73";
+			this->label73->Size = System::Drawing::Size(149, 24);
+			this->label73->TabIndex = 3;
+			this->label73->Text = L"Здравствуйте, ";
+			// 
+			// groupBox21
+			// 
+			this->groupBox21->Controls->Add(this->ordTable);
+			this->groupBox21->Controls->Add(this->label74);
+			this->groupBox21->Controls->Add(this->label67);
+			this->groupBox21->Controls->Add(this->ordTicketDate);
+			this->groupBox21->Controls->Add(this->ordTicketButton);
+			this->groupBox21->Controls->Add(this->label68);
+			this->groupBox21->Controls->Add(this->ordTicketClass);
+			this->groupBox21->Controls->Add(this->label69);
+			this->groupBox21->Controls->Add(this->label70);
+			this->groupBox21->Controls->Add(this->label71);
+			this->groupBox21->Controls->Add(this->ordTicketDest);
+			this->groupBox21->Controls->Add(this->ordTicketDep);
+			this->groupBox21->Location = System::Drawing::Point(9, 220);
+			this->groupBox21->Name = L"groupBox21";
+			this->groupBox21->Size = System::Drawing::Size(811, 232);
+			this->groupBox21->TabIndex = 1;
+			this->groupBox21->TabStop = false;
+			this->groupBox21->Text = L"Заказ билета";
+			// 
+			// ordTable
+			// 
+			this->ordTable->AllowUserToAddRows = false;
+			this->ordTable->AllowUserToDeleteRows = false;
+			this->ordTable->AllowUserToResizeRows = false;
+			this->ordTable->BackgroundColor = System::Drawing::SystemColors::ButtonHighlight;
+			this->ordTable->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::DisableResizing;
+			this->ordTable->Location = System::Drawing::Point(261, 36);
+			this->ordTable->MultiSelect = false;
+			this->ordTable->Name = L"ordTable";
+			this->ordTable->ReadOnly = true;
+			this->ordTable->RowHeadersVisible = false;
+			this->ordTable->RowHeadersWidthSizeMode = System::Windows::Forms::DataGridViewRowHeadersWidthSizeMode::DisableResizing;
+			this->ordTable->Size = System::Drawing::Size(544, 190);
+			this->ordTable->TabIndex = 25;
+			this->ordTable->CellClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &mainForm::ordTable_CellClick);
+			// 
+			// label74
+			// 
+			this->label74->AutoSize = true;
+			this->label74->Location = System::Drawing::Point(270, 20);
+			this->label74->Name = L"label74";
+			this->label74->Size = System::Drawing::Size(40, 13);
+			this->label74->TabIndex = 4;
+			this->label74->Text = L"Рейсы";
+			// 
+			// label67
+			// 
+			this->label67->AutoSize = true;
+			this->label67->Location = System::Drawing::Point(6, 60);
+			this->label67->Name = L"label67";
+			this->label67->Size = System::Drawing::Size(103, 13);
+			this->label67->TabIndex = 24;
+			this->label67->Text = L"Дата Отправления";
+			// 
+			// ordTicketDate
+			// 
+			this->ordTicketDate->FormattingEnabled = true;
+			this->ordTicketDate->Location = System::Drawing::Point(4, 76);
+			this->ordTicketDate->Name = L"ordTicketDate";
+			this->ordTicketDate->Size = System::Drawing::Size(189, 21);
+			this->ordTicketDate->TabIndex = 23;
+			this->ordTicketDate->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &mainForm::addPlaneModelComboBox_KeyPress);
+			// 
+			// ordTicketButton
+			// 
+			this->ordTicketButton->Location = System::Drawing::Point(180, 203);
+			this->ordTicketButton->Name = L"ordTicketButton";
+			this->ordTicketButton->Size = System::Drawing::Size(75, 23);
+			this->ordTicketButton->TabIndex = 22;
+			this->ordTicketButton->Text = L"Заказать";
+			this->ordTicketButton->UseVisualStyleBackColor = true;
+			this->ordTicketButton->Click += gcnew System::EventHandler(this, &mainForm::ordButton_Click);
+			// 
+			// label68
+			// 
+			this->label68->AutoSize = true;
+			this->label68->Location = System::Drawing::Point(6, 100);
+			this->label68->Name = L"label68";
+			this->label68->Size = System::Drawing::Size(38, 13);
+			this->label68->TabIndex = 21;
+			this->label68->Text = L"Класс";
+			// 
+			// ordTicketClass
+			// 
+			this->ordTicketClass->FormattingEnabled = true;
+			this->ordTicketClass->Location = System::Drawing::Point(4, 116);
+			this->ordTicketClass->Name = L"ordTicketClass";
+			this->ordTicketClass->Size = System::Drawing::Size(47, 21);
+			this->ordTicketClass->TabIndex = 20;
+			this->ordTicketClass->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &mainForm::addPlaneModelComboBox_KeyPress);
+			// 
+			// label69
+			// 
+			this->label69->AutoSize = true;
+			this->label69->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
+			this->label69->Location = System::Drawing::Point(116, 31);
+			this->label69->Name = L"label69";
+			this->label69->Size = System::Drawing::Size(19, 25);
+			this->label69->TabIndex = 19;
+			this->label69->Text = L"-";
+			// 
+			// label70
+			// 
+			this->label70->AutoSize = true;
+			this->label70->Location = System::Drawing::Point(138, 20);
+			this->label70->Name = L"label70";
+			this->label70->Size = System::Drawing::Size(101, 13);
+			this->label70->TabIndex = 18;
+			this->label70->Text = L"Пункт Назначения";
+			// 
+			// label71
+			// 
+			this->label71->AutoSize = true;
+			this->label71->Location = System::Drawing::Point(6, 20);
+			this->label71->Name = L"label71";
+			this->label71->Size = System::Drawing::Size(105, 13);
+			this->label71->TabIndex = 17;
+			this->label71->Text = L"Пункт отправления";
+			// 
+			// ordTicketDest
+			// 
+			this->ordTicketDest->FormattingEnabled = true;
+			this->ordTicketDest->Location = System::Drawing::Point(141, 36);
+			this->ordTicketDest->Name = L"ordTicketDest";
+			this->ordTicketDest->Size = System::Drawing::Size(107, 21);
+			this->ordTicketDest->TabIndex = 16;
+			this->ordTicketDest->TextChanged += gcnew System::EventHandler(this, &mainForm::ordTicketDest_TextChanged);
+			// 
+			// ordTicketDep
+			// 
+			this->ordTicketDep->FormattingEnabled = true;
+			this->ordTicketDep->Location = System::Drawing::Point(4, 36);
+			this->ordTicketDep->Name = L"ordTicketDep";
+			this->ordTicketDep->Size = System::Drawing::Size(107, 21);
+			this->ordTicketDep->TabIndex = 15;
+			this->ordTicketDep->TextChanged += gcnew System::EventHandler(this, &mainForm::ordTicketDep_TextChanged);
+			this->ordTicketDep->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &mainForm::ordTicketDep_KeyPress);
 			// 
 			// tellersPage
 			// 
@@ -1034,7 +1262,7 @@ private: System::Windows::Forms::ComboBox^  delTicketId;
 			this->ticketsTable->ReadOnly = true;
 			this->ticketsTable->RowHeadersVisible = false;
 			this->ticketsTable->RowHeadersWidthSizeMode = System::Windows::Forms::DataGridViewRowHeadersWidthSizeMode::DisableResizing;
-			this->ticketsTable->Size = System::Drawing::Size(526, 192);
+			this->ticketsTable->Size = System::Drawing::Size(526, 196);
 			this->ticketsTable->TabIndex = 3;
 			this->ticketsTable->CellClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &mainForm::ticketsTable_CellClick);
 			// 
@@ -2053,9 +2281,9 @@ private: System::Windows::Forms::ComboBox^  delTicketId;
 			this->groupBox1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(204)));
 			this->groupBox1->ForeColor = System::Drawing::SystemColors::MenuHighlight;
-			this->groupBox1->Location = System::Drawing::Point(144, 19);
+			this->groupBox1->Location = System::Drawing::Point(175, 19);
 			this->groupBox1->Name = L"groupBox1";
-			this->groupBox1->Size = System::Drawing::Size(200, 169);
+			this->groupBox1->Size = System::Drawing::Size(170, 169);
 			this->groupBox1->TabIndex = 7;
 			this->groupBox1->TabStop = false;
 			this->groupBox1->Text = L"Редактирование";
@@ -2143,7 +2371,7 @@ private: System::Windows::Forms::ComboBox^  delTicketId;
 			this->addPlanesParametrsGroupBox->ForeColor = System::Drawing::SystemColors::MenuHighlight;
 			this->addPlanesParametrsGroupBox->Location = System::Drawing::Point(6, 19);
 			this->addPlanesParametrsGroupBox->Name = L"addPlanesParametrsGroupBox";
-			this->addPlanesParametrsGroupBox->Size = System::Drawing::Size(131, 169);
+			this->addPlanesParametrsGroupBox->Size = System::Drawing::Size(163, 169);
 			this->addPlanesParametrsGroupBox->TabIndex = 6;
 			this->addPlanesParametrsGroupBox->TabStop = false;
 			this->addPlanesParametrsGroupBox->Text = L"Добавление";
@@ -2161,7 +2389,7 @@ private: System::Windows::Forms::ComboBox^  delTicketId;
 			// spotNumericUpDown
 			// 
 			this->spotNumericUpDown->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
-			this->spotNumericUpDown->Location = System::Drawing::Point(9, 79);
+			this->spotNumericUpDown->Location = System::Drawing::Point(109, 78);
 			this->spotNumericUpDown->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) {500, 0, 0, 0});
 			this->spotNumericUpDown->Name = L"spotNumericUpDown";
 			this->spotNumericUpDown->Size = System::Drawing::Size(41, 20);
@@ -2191,7 +2419,7 @@ private: System::Windows::Forms::ComboBox^  delTicketId;
 			// 
 			this->label2->AutoSize = true;
 			this->label2->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
-			this->label2->Location = System::Drawing::Point(6, 63);
+			this->label2->Location = System::Drawing::Point(6, 81);
 			this->label2->Name = L"label2";
 			this->label2->Size = System::Drawing::Size(97, 13);
 			this->label2->TabIndex = 3;
@@ -2612,6 +2840,15 @@ private: System::Windows::Forms::ComboBox^  delTicketId;
 			this->ctrlUsersTable->TabIndex = 2;
 			this->ctrlUsersTable->CellClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &mainForm::ctrlUsersTable_CellClick);
 			// 
+			// label72
+			// 
+			this->label72->AutoSize = true;
+			this->label72->Location = System::Drawing::Point(15, 37);
+			this->label72->Name = L"label72";
+			this->label72->Size = System::Drawing::Size(75, 13);
+			this->label72->TabIndex = 2;
+			this->label72->Text = L"Ваши заказы";
+			// 
 			// mainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -2625,9 +2862,13 @@ private: System::Windows::Forms::ComboBox^  delTicketId;
 			this->Text = L"mainForm";
 			this->FormClosed += gcnew System::Windows::Forms::FormClosedEventHandler(this, &mainForm::mainForm_FormClosed);
 			this->Load += gcnew System::EventHandler(this, &mainForm::mainForm_Load);
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->mainGrid))->EndInit();
 			this->tabControl1->ResumeLayout(false);
 			this->usersPage->ResumeLayout(false);
+			this->usersPage->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->mainGrid))->EndInit();
+			this->groupBox21->ResumeLayout(false);
+			this->groupBox21->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->ordTable))->EndInit();
 			this->tellersPage->ResumeLayout(false);
 			this->groupBox17->ResumeLayout(false);
 			this->groupBox20->ResumeLayout(false);
@@ -2978,6 +3219,9 @@ private: System::Void addFlightButton_Click(System::Object^  sender, System::Eve
 			 myReader = executeReq("INSERT INTO "+PREFIX+".tariffs (id_flight,class,price) VALUES("+addFlightId+",'A',"+(Convert::ToInt32(addFlightPrice->Text,10)*1.15).ToString()+")");
 			 loadData("select * from "+PREFIX+".flights", flightsTable);
 			 loadData("select * from "+PREFIX+".tariffs",tariffsTable);
+			 loadData("select flights.departure,flights.destination,DATE_FORMAT(flights.departure_date,'%Y-%m-%d %H:%i:%s'),DATE_FORMAT(flights.arrival_date,'%Y-%m-%d %H:%i:%s'),tariffs.price from  "+PREFIX+
+				 ".flights join "+PREFIX+".tariffs on flights.id_flight=tariffs.id_flight where tariffs.class='B' AND flights.departure_date>curdate();",ordTable);
+			 loadData("SELECT * FROM "+PREFIX+".tickets WHERE id_pass='"+(gcnew String(idPass))+"';",mainGrid);
 			 FillCombo("SELECT id_flight FROM "+PREFIX+".flights","id_flight",
 				 updFlightId);
 			 CopyCombo(delFlightId,updFlightId);
@@ -2989,6 +3233,8 @@ private: System::Void addFlightButton_Click(System::Object^  sender, System::Eve
 			 FillCombo("SELECT distinct destination FROM "+PREFIX+".flights","destination",addTicketDest);
 			 CopyCombo(updTicketDep,addTicketDep);
 			 CopyCombo(updTicketDest,addTicketDest);
+			 CopyCombo(ordTicketDep,addTicketDep);
+			 CopyCombo(ordTicketDest,addTicketDest);
 			 CopyCombo(updCargoFlight,addCargoFlight);
 			 addFlightButton->Enabled = true;
 		 }
@@ -3049,6 +3295,10 @@ private: System::Void updFlightButton_Click(System::Object^  sender, System::Eve
 				 " WHERE id_flight = "+updFlightId->Text+" AND class='A';");
 			 loadData("select * from "+PREFIX+".flights", flightsTable);
 			 loadData("select * from "+PREFIX+".tariffs",tariffsTable);
+			 loadData("select flights.departure,flights.destination,DATE_FORMAT(flights.departure_date,'%Y-%m-%d %H:%i:%s'),DATE_FORMAT(flights.arrival_date,'%Y-%m-%d %H:%i:%s'),tariffs.price from  "+PREFIX+
+				 ".flights join "+PREFIX+".tariffs on flights.id_flight=tariffs.id_flight where tariffs.class='B' AND flights.departure_date>curdate();",ordTable);
+			 loadData("SELECT * FROM "+PREFIX+".tickets WHERE id_pass='"+(gcnew String(idPass))+"';",mainGrid);
+			 loadData("select * from "+PREFIX+".cargo", cargoTable);
 			 //FillCombo("SELECT id_plane FROM "+PREFIX+".planes","id_plane",delPlaneIdComboBox);
 			 FillCombo("SELECT id_flight FROM "+PREFIX+".flights WHERE departure_date>curdate() AND departure_date>curtime()","id_flight",
 				 addCargoFlight);
@@ -3059,6 +3309,8 @@ private: System::Void updFlightButton_Click(System::Object^  sender, System::Eve
 			 FillCombo("SELECT distinct destination FROM "+PREFIX+".flights","destination",addTicketDest);
 			 CopyCombo(updTicketDep,addTicketDep);
 			 CopyCombo(updTicketDest,addTicketDest);
+			 CopyCombo(ordTicketDep,addTicketDep);
+			 CopyCombo(ordTicketDest,addTicketDest);
 			 updFlightButton->Enabled = true;
 		 }
 private: System::Void flightsTable_CellClick(System::Object^  sender, System::Windows::Forms::DataGridViewCellEventArgs^  e) {
@@ -3086,9 +3338,13 @@ private: System::Void delFlightButton_Click(System::Object^  sender, System::Eve
 			 numTab = 4;
 			 MySqlDataReader^ myReader;
 			 myReader = executeReq("DELETE FROM "+PREFIX+".flights where id_flight="+delFlightId->Text+";");
-			 myReader = executeReq("DELETE FROM "+PREFIX+".tariffs where id_flight="+delFlightId->Text+";");
+//			 myReader = executeReq("DELETE FROM "+PREFIX+".tariffs where id_flight="+delFlightId->Text+";");
 			 loadData("select * from "+PREFIX+".flights", flightsTable);
 			 loadData("select * from "+PREFIX+".tariffs",tariffsTable);
+			 loadData("select flights.departure,flights.destination,DATE_FORMAT(flights.departure_date,'%Y-%m-%d %H:%i:%s'),DATE_FORMAT(flights.arrival_date,'%Y-%m-%d %H:%i:%s'),tariffs.price from  "+PREFIX+
+				 ".flights join "+PREFIX+".tariffs on flights.id_flight=tariffs.id_flight where tariffs.class='B' AND flights.departure_date>curdate();",ordTable);
+			 loadData("SELECT * FROM "+PREFIX+".tickets WHERE id_pass='"+(gcnew String(idPass))+"';",mainGrid);
+			 loadData("select * from "+PREFIX+".cargo", cargoTable);
 			 FillCombo("SELECT id_flight FROM "+PREFIX+".flights","id_flight",
 				 updFlightId);
 			 CopyCombo(delFlightId,updFlightId);
@@ -3101,6 +3357,8 @@ private: System::Void delFlightButton_Click(System::Object^  sender, System::Eve
 			 FillCombo("SELECT distinct destination FROM "+PREFIX+".flights","destination",addTicketDest);
 			 CopyCombo(updTicketDep,addTicketDep);
 			 CopyCombo(updTicketDest,addTicketDest);
+			 CopyCombo(ordTicketDep,addTicketDep);
+			 CopyCombo(ordTicketDest,addTicketDest);
 			 delFlightButton->Enabled = true;
 		 }
 private: System::Void ctrlUsersTable_CellClick(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^  e) {
@@ -3199,7 +3457,7 @@ private: System::Void updUserButton_Click(System::Object^  sender, System::Event
 				 "', cargo_rules ='"+cargo+"', manager_rules ='"+manager+
 				 "', admin_rules ='"+admin+"' WHERE passport = '"+updPasspText->Text+"';");
 
-			 executeReq("update "+PREFIX+".passengers SET Name='"+updNameText->Text+
+			 executeReq("update "+PREFIX+".passengers SET full_name='"+updNameText->Text+
 				 "' where id_pass='"+updPasspText->Text+"';");
 
 			 asAdmin(ctrlUsersTable);
@@ -3494,6 +3752,9 @@ private: System::Void addTicketButton_Click(System::Object^  sender, System::Eve
 			 myReader = executeReq("INSERT INTO "+PREFIX+".tickets (id_pass,id_flight,class,sale_date) VALUES('"+
 				 addTicketPass->Text+"',"+idFlight+",'"+addTicketClass->Text+"',curdate())");
 			 loadData("select * from "+PREFIX+".tickets", ticketsTable);
+			 loadData("SELECT tickets.id_ticket,tickets.id_flight,flights.departure,flights.destination,flights.departure_date,flights.arrival_date,tariffs.price,tickets.sale_date from "+
+				 PREFIX+".tickets join "+PREFIX+".tariffs on tariffs.id_flight=tickets.id_flight join "+PREFIX+
+				 ".flights on flights.id_flight=tickets.id_flight where tariffs.class=tickets.class AND tickets.id_pass='"+(gcnew String(idPass))+"';",mainGrid);
 			 FillCombo("SELECT distinct id_pass FROM "+PREFIX+".tickets","id_pass",updTicketPass);
 			 CopyCombo(delTicketPass,updTicketPass);
 			 addTicketButton->Enabled = true;
@@ -3634,6 +3895,9 @@ private: System::Void button1_Click_2(System::Object^  sender, System::EventArgs
 				 "', id_flight ="+idFlight+", class ='"+updTicketClass->Text+
 				 "', sale_date = curdate() WHERE id_ticket = "+updTicketId->Text+";");
 			 loadData("select * from "+PREFIX+".tickets", ticketsTable);
+			 loadData("SELECT tickets.id_ticket,tickets.id_flight,flights.departure,flights.destination,flights.departure_date,flights.arrival_date,tariffs.price,tickets.sale_date from "+
+				 PREFIX+".tickets join "+PREFIX+".tariffs on tariffs.id_flight=tickets.id_flight join "+PREFIX+
+				 ".flights on flights.id_flight=tickets.id_flight where tariffs.class=tickets.class AND tickets.id_pass='"+(gcnew String(idPass))+"';",mainGrid);
 			 updTicketButton->Enabled = true;
 		 }
 private: System::Void delTicketPass_TextChanged(System::Object^  sender, System::EventArgs^  e) {
@@ -3661,11 +3925,153 @@ private: System::Void delTicketButton_Click(System::Object^  sender, System::Eve
 			 numTab = 6;
 			 myReader = executeReq("DELETE FROM "+PREFIX+".tickets WHERE id_ticket="+delTicketId->Text+";");
 			 loadData("select * from "+PREFIX+".tickets", ticketsTable);
+			 loadData("SELECT * FROM "+PREFIX+".tickets WHERE id_pass='"+(gcnew String(idPass))+"';",ordTable);
+			 loadData("SELECT tickets.id_ticket,tickets.id_flight,flights.departure,flights.destination,flights.departure_date,flights.arrival_date,tariffs.price,tickets.sale_date from "+
+				 PREFIX+".tickets join "+PREFIX+".tariffs on tariffs.id_flight=tickets.id_flight join "+PREFIX+
+				 ".flights on flights.id_flight=tickets.id_flight where tariffs.class=tickets.class AND tickets.id_pass='"+(gcnew String(idPass))+"';",mainGrid);
 			 FillCombo("Select distinct id_pass from "+PREFIX+".tickets","id_pass",updTicketPass);
 			 CopyCombo(delTicketPass,updTicketPass);
 			 delTicketPass->Text = "";
 			 delTicketId->Text = "";
 			 delTicketButton->Enabled = true;
+		 }
+private: System::Void ordTicketDep_TextChanged(System::Object^  sender, System::EventArgs^  e) {
+			 if(ordTicketDep->Text->Length!=0)
+				 FillCombo("SELECT distinct destination FROM "+PREFIX+".flights WHERE departure='"+ordTicketDep->Text+"';","destination",ordTicketDest);
+			 else
+			 {
+				 FillCombo("SELECT distinct destination FROM "+PREFIX+".flights;","destination",ordTicketDest);
+				 ordTicketDate->Items->Clear();
+			 }
+			 if(ordTicketDep->Text->Length!=0 && ordTicketDest->Text->Length!=0)
+			 {
+				 FillCombo("SELECT DATE_FORMAT(departure_date,'%Y-%m-%d %H:%i:%s') FROM "+PREFIX+".flights WHERE destination='"
+					 +ordTicketDest->Text+"' AND departure='"+ordTicketDep->Text+"' AND departure_date>curdate();","DATE_FORMAT(departure_date,'%Y-%m-%d %H:%i:%s')",ordTicketDate);
+				 if(ordTicketDate->Items->Count==0)
+					 ordTicketDate->Text = "На данный момент рейсов нет";
+				 else ordTicketDate->Text = "";
+		 }
+		 }
+private: System::Void ordTicketDest_TextChanged(System::Object^  sender, System::EventArgs^  e) {
+			 if(ordTicketDest->Text->Length!=0)
+				 FillCombo("SELECT distinct departure FROM "+PREFIX+".flights WHERE destination='"+ordTicketDest->Text+"';","departure",ordTicketDep);
+			 else
+			 {
+				 FillCombo("SELECT distinct departure FROM "+PREFIX+".flights;","departure",ordTicketDep);
+				 ordTicketDate->Items->Clear();
+			 }
+			 if(ordTicketDep->Text->Length!=0 && ordTicketDest->Text->Length!=0)
+			 {
+				 FillCombo("SELECT DATE_FORMAT(departure_date,'%Y-%m-%d %H:%i:%s') FROM "+PREFIX+".flights WHERE destination='"
+					 +ordTicketDest->Text+"' AND departure='"+ordTicketDep->Text+"' AND departure_date>curdate();","DATE_FORMAT(departure_date,'%Y-%m-%d %H:%i:%s')",ordTicketDate);
+				 if(ordTicketDate->Items->Count==0)
+					 ordTicketDate->Text = "На данный момент рейсов нет";
+				 else ordTicketDate->Text = "";
+			 }
+		 }
+private: System::Void ordTicketDep_KeyPress(System::Object^  sender, System::Windows::Forms::KeyPressEventArgs^  e) {
+			 int i = (int)e->KeyChar;
+			 if (!(i == 8))
+				 e->Handled = true;
+			 else ordTicketDep->Text="";
+		 }
+private: System::Void ordButton_Click(System::Object^  sender, System::EventArgs^  e) {
+			 ordTicketButton->Enabled = false;
+			 if(ordTicketDep->Text->Length == 0)
+			 {
+				 MessageBox::Show("Поле 'Пункт Отправления' не может быть пустым.", "Ошибка",
+					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
+				 ordTicketButton->Enabled = true;
+				 return;
+			 }
+			 if(ordTicketDest->Text->Length == 0)
+			 {
+				 MessageBox::Show("Поле 'Пункт Назначения' не может быть пустым.", "Ошибка",
+					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
+				 ordTicketButton->Enabled = true;
+				 return;
+			 }
+			 if(ordTicketClass->Text->Length == 0)
+			 {
+				 MessageBox::Show("Поле 'Класс' не может быть пустым.", "Ошибка",
+					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
+				 ordTicketButton->Enabled = true;
+				 return;
+			 }
+			 if(ordTicketDate->Text->Length==0 || ordTicketDate->Items->Count==0)
+			 {
+				 MessageBox::Show("Поле 'Дата отправления' не может быть пустым.", "Ошибка",
+			     MessageBoxButtons::OK,MessageBoxIcon::Error);	
+				 ordTicketButton->Enabled = true;
+				 return;
+			 }
+			 MySqlDataReader^ myReader;
+			 numTab = 6;
+			 myReader = executeReq("SELECT id_flight FROM "+PREFIX+".flights WHERE departure='"+ordTicketDep->Text+
+				 "' AND destination='"+ordTicketDest->Text+"' AND departure_date='"+ordTicketDate->Text+"';");
+			 //SELECT id_flight FROM airlines.flights WHERE departure='Москва' AND destination='Киев' AND departure_date='2013-11-22 21:42:58';
+			 if(!myReader->Read())
+			 {
+				 MessageBox::Show("Такого рейса не существует", "Ошибка",
+					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
+				 ordTicketButton->Enabled = true;
+				 return;
+			 }
+			 String^ idFlight=myReader->GetString(0);
+			 String^ idPassStr = gcnew String(idPass);
+			 myReader = executeReq("SELECT * FROM "+PREFIX+".tickets WHERE id_flight="+idFlight+" AND id_pass='"+idPassStr+"';");
+			 if(myReader->HasRows)
+			 {
+				 MessageBox::Show("Пользователь с данным паспортом уже заказал билет на данный рейс", "Ошибка",
+					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
+				 ordTicketButton->Enabled = true;
+				 return;
+			 }
+			 myReader = executeReq("SELECT spot_num FROM "+PREFIX+".plane_parametrs WHERE model=(SELECT model FROM "+
+				 PREFIX+".planes WHERE id_plane=(SELECT id_plane FROM "+PREFIX+".flights WHERE id_flight="+idFlight+"))");
+			 if(!myReader->Read())
+			 {
+				 MessageBox::Show("Невозможно найти самолет рейса №"+idFlight, "Ошибка",
+					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
+				 ordTicketButton->Enabled = true;
+				 return;
+			 }
+			 int spotAmount = myReader->GetUInt32(0);
+			 myReader = executeReq("SELECT count(*) FROM "+PREFIX+".tickets WHERE id_flight="+idFlight+";");
+			 if(!myReader->Read())
+			 {
+				 MessageBox::Show("Невозможно найти билеты рейса №"+idFlight, "Ошибка",
+					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
+				 ordTicketButton->Enabled = true;
+				 return;
+			 }
+			 int ticketAmount = myReader->GetUInt32(0);
+			 if(ticketAmount>=spotAmount)
+			 {
+				 MessageBox::Show("Все билеты на рейс № "+idFlight+" проданы", "Ошибка",
+					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
+				 ordTicketButton->Enabled = true;
+				 return;
+			 }	 
+			 /*else  MessageBox::Show(ticketAmount.ToString()+" "+spotAmount.ToString(), "Ошибка",
+				 MessageBoxButtons::OK,MessageBoxIcon::Error);	*/
+			 myReader = executeReq("INSERT INTO "+PREFIX+".tickets (id_pass,id_flight,class,sale_date) VALUES('"+
+				 idPassStr+"',"+idFlight+",'"+ordTicketClass->Text+"',curdate())");
+			 loadData("select * from "+PREFIX+".tickets", ticketsTable);
+			 loadData("select flights.departure,flights.destination,DATE_FORMAT(flights.departure_date,'%Y-%m-%d %H:%i:%s'),DATE_FORMAT(flights.arrival_date,'%Y-%m-%d %H:%i:%s'),tariffs.price from  "+PREFIX+
+				 ".flights join "+PREFIX+".tariffs on flights.id_flight=tariffs.id_flight where tariffs.class='B' AND flights.departure_date>curdate();",ordTable);
+			 FillCombo("SELECT distinct id_pass FROM "+PREFIX+".tickets","id_pass",updTicketPass);
+			 loadData("SELECT tickets.id_ticket,tickets.id_flight,flights.departure,flights.destination,flights.departure_date,flights.arrival_date,tariffs.price,tickets.sale_date from "+
+				 PREFIX+".tickets join "+PREFIX+".tariffs on tariffs.id_flight=tickets.id_flight join "+PREFIX+
+				 ".flights on flights.id_flight=tickets.id_flight where tariffs.class=tickets.class AND tickets.id_pass='"+(gcnew String(idPass))+"';",mainGrid);
+			 CopyCombo(delTicketPass,updTicketPass);
+			 ordTicketButton->Enabled = true;
+		 }
+private: System::Void ordTable_CellClick(System::Object^  sender, System::Windows::Forms::DataGridViewCellEventArgs^  e) {
+			 ordTicketDep->Text = ordTable->CurrentRow->Cells[0]->Value->ToString();
+			 ordTicketDest->Text = ordTable->CurrentRow->Cells[1]->Value->ToString();
+			 ordTicketDate->Text = ordTable->CurrentRow->Cells[2]->Value->ToString();
+
 		 }
 };
 }
