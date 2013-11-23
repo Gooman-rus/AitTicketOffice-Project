@@ -1,5 +1,9 @@
 ﻿  AirTicketOffice.cpp
   code.cpp
+  common.cpp
+  mainForm.cpp
   registrationForm.cpp
+  work_with_tables.cpp
   Создание кода...
+d:\!универ\обд\aitticketoffice-project\airticketoffice\work_with_tables.cpp(93): warning C4700: использована неинициализированная локальная переменная "check"
   AirTicketOffice.vcxproj -> D:\!универ\ОБД\AitTicketOffice-Project\Debug\AirTicketOffice.exe

@@ -34,6 +34,23 @@ namespace AirTicketOffice {
 			loadData("SELECT tickets.id_ticket,tickets.id_flight,flights.departure,flights.destination,flights.departure_date,flights.arrival_date,tariffs.price,tickets.sale_date from "+
 				PREFIX+".tickets join "+PREFIX+".tariffs on tariffs.id_flight=tickets.id_flight join "+PREFIX+
 				".flights on flights.id_flight=tickets.id_flight where tariffs.class=tickets.class AND tickets.id_pass='"+(gcnew String(idPass))+"';",mainGrid);
+			mainGrid->Columns[0]->HeaderText = "Номер билета";
+			mainGrid->Columns[1]->HeaderText = "Номер рейса";
+			mainGrid->Columns[2]->HeaderText = "Пункт отправления";
+			mainGrid->Columns[3]->HeaderText = "Пункт назначения";
+			mainGrid->Columns[4]->HeaderText = "Время отправления";
+			mainGrid->Columns[5]->HeaderText = "Время прибытия";
+			mainGrid->Columns[6]->HeaderText = "Цена";
+			mainGrid->Columns[7]->HeaderText = "Дата продажи";
+			mainGrid->Columns[0]->Width = 85;
+			mainGrid->Columns[1]->Width = 85;
+			mainGrid->Columns[2]->Width = 120;
+			mainGrid->Columns[3]->Width = 120;
+			mainGrid->Columns[4]->Width = 115;
+			mainGrid->Columns[5]->Width = 115;
+			mainGrid->Columns[6]->Width = 73;
+			mainGrid->Columns[7]->Width = 85;
+
 			switch(currRole)
 			{
 				case 1:
@@ -138,6 +155,7 @@ namespace AirTicketOffice {
 					CopyCombo(ordTicketClass,addTicketClass);
 					FillCombo("SELECT distinct id_pass FROM "+PREFIX+".tickets","id_pass",updTicketPass);
 					CopyCombo(delTicketPass,updTicketPass);
+					CopyCombo(addRulesBox,updRulesBox);
 					break;
 				default: r = "Stop hacking my programm!";break;
 			}
@@ -392,6 +410,22 @@ private: System::Windows::Forms::Label^  name;
 private: System::Windows::Forms::DataGridView^  mainGrid;
 private: System::Windows::Forms::DataGridView^  ordTable;
 private: System::Windows::Forms::Label^  label72;
+private: System::Windows::Forms::GroupBox^  groupBox22;
+private: System::Windows::Forms::Label^  label75;
+private: System::Windows::Forms::Label^  label78;
+private: System::Windows::Forms::TextBox^  addPasswText;
+private: System::Windows::Forms::ComboBox^  addRulesBox;
+private: System::Windows::Forms::Label^  label76;
+private: System::Windows::Forms::TextBox^  addPasspText;
+private: System::Windows::Forms::Label^  label77;
+private: System::Windows::Forms::TextBox^  addNameText;
+private: System::Windows::Forms::Button^  addUserButton;
+private: System::Windows::Forms::Label^  label79;
+private: System::Windows::Forms::TextBox^  updNewPassp;
+private: System::Windows::Forms::GroupBox^  groupBox23;
+private: System::Windows::Forms::Button^  delUserButton;
+private: System::Windows::Forms::Label^  label80;
+private: System::Windows::Forms::TextBox^  delUserPassp;
 
 
 
@@ -421,6 +455,7 @@ private: System::Windows::Forms::Label^  label72;
 			this->mainGrid = (gcnew System::Windows::Forms::DataGridView());
 			this->name = (gcnew System::Windows::Forms::Label());
 			this->label73 = (gcnew System::Windows::Forms::Label());
+			this->label72 = (gcnew System::Windows::Forms::Label());
 			this->groupBox21 = (gcnew System::Windows::Forms::GroupBox());
 			this->ordTable = (gcnew System::Windows::Forms::DataGridView());
 			this->label74 = (gcnew System::Windows::Forms::Label());
@@ -601,7 +636,23 @@ private: System::Windows::Forms::Label^  label72;
 			this->planeParamTable = (gcnew System::Windows::Forms::DataGridView());
 			this->planesTable = (gcnew System::Windows::Forms::DataGridView());
 			this->adminsPage = (gcnew System::Windows::Forms::TabPage());
+			this->groupBox23 = (gcnew System::Windows::Forms::GroupBox());
+			this->delUserButton = (gcnew System::Windows::Forms::Button());
+			this->label80 = (gcnew System::Windows::Forms::Label());
+			this->delUserPassp = (gcnew System::Windows::Forms::TextBox());
+			this->groupBox22 = (gcnew System::Windows::Forms::GroupBox());
+			this->label75 = (gcnew System::Windows::Forms::Label());
+			this->label78 = (gcnew System::Windows::Forms::Label());
+			this->addPasswText = (gcnew System::Windows::Forms::TextBox());
+			this->addRulesBox = (gcnew System::Windows::Forms::ComboBox());
+			this->label76 = (gcnew System::Windows::Forms::Label());
+			this->addPasspText = (gcnew System::Windows::Forms::TextBox());
+			this->label77 = (gcnew System::Windows::Forms::Label());
+			this->addNameText = (gcnew System::Windows::Forms::TextBox());
+			this->addUserButton = (gcnew System::Windows::Forms::Button());
 			this->groupBox10 = (gcnew System::Windows::Forms::GroupBox());
+			this->label79 = (gcnew System::Windows::Forms::Label());
+			this->updNewPassp = (gcnew System::Windows::Forms::TextBox());
 			this->label27 = (gcnew System::Windows::Forms::Label());
 			this->updPasswText = (gcnew System::Windows::Forms::TextBox());
 			this->label28 = (gcnew System::Windows::Forms::Label());
@@ -612,7 +663,6 @@ private: System::Windows::Forms::Label^  label72;
 			this->updPasspText = (gcnew System::Windows::Forms::TextBox());
 			this->updRulesBox = (gcnew System::Windows::Forms::ComboBox());
 			this->ctrlUsersTable = (gcnew System::Windows::Forms::DataGridView());
-			this->label72 = (gcnew System::Windows::Forms::Label());
 			this->tabControl1->SuspendLayout();
 			this->usersPage->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->mainGrid))->BeginInit();
@@ -663,6 +713,8 @@ private: System::Windows::Forms::Label^  label72;
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->planeParamTable))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->planesTable))->BeginInit();
 			this->adminsPage->SuspendLayout();
+			this->groupBox23->SuspendLayout();
+			this->groupBox22->SuspendLayout();
 			this->groupBox10->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->ctrlUsersTable))->BeginInit();
 			this->SuspendLayout();
@@ -733,6 +785,15 @@ private: System::Windows::Forms::Label^  label72;
 			this->label73->Size = System::Drawing::Size(149, 24);
 			this->label73->TabIndex = 3;
 			this->label73->Text = L"Здравствуйте, ";
+			// 
+			// label72
+			// 
+			this->label72->AutoSize = true;
+			this->label72->Location = System::Drawing::Point(15, 37);
+			this->label72->Name = L"label72";
+			this->label72->Size = System::Drawing::Size(75, 13);
+			this->label72->TabIndex = 2;
+			this->label72->Text = L"Ваши заказы";
 			// 
 			// groupBox21
 			// 
@@ -1538,7 +1599,7 @@ private: System::Windows::Forms::Label^  label72;
 			this->label42->Name = L"label42";
 			this->label42->Size = System::Drawing::Size(83, 13);
 			this->label42->TabIndex = 15;
-			this->label42->Text = L"Наимнеование";
+			this->label42->Text = L"Наименование";
 			// 
 			// groupBox12
 			// 
@@ -1689,7 +1750,7 @@ private: System::Windows::Forms::Label^  label72;
 			this->label33->Name = L"label33";
 			this->label33->Size = System::Drawing::Size(83, 13);
 			this->label33->TabIndex = 4;
-			this->label33->Text = L"Наимнеование";
+			this->label33->Text = L"Наименование";
 			// 
 			// label32
 			// 
@@ -2684,6 +2745,8 @@ private: System::Windows::Forms::Label^  label72;
 			// 
 			// adminsPage
 			// 
+			this->adminsPage->Controls->Add(this->groupBox23);
+			this->adminsPage->Controls->Add(this->groupBox22);
 			this->adminsPage->Controls->Add(this->groupBox10);
 			this->adminsPage->Controls->Add(this->ctrlUsersTable);
 			this->adminsPage->Location = System::Drawing::Point(4, 22);
@@ -2693,8 +2756,193 @@ private: System::Windows::Forms::Label^  label72;
 			this->adminsPage->Text = L"Управление пользователями";
 			this->adminsPage->UseVisualStyleBackColor = true;
 			// 
+			// groupBox23
+			// 
+			this->groupBox23->Controls->Add(this->delUserButton);
+			this->groupBox23->Controls->Add(this->label80);
+			this->groupBox23->Controls->Add(this->delUserPassp);
+			this->groupBox23->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
+			this->groupBox23->ForeColor = System::Drawing::SystemColors::HotTrack;
+			this->groupBox23->Location = System::Drawing::Point(552, 250);
+			this->groupBox23->Name = L"groupBox23";
+			this->groupBox23->Size = System::Drawing::Size(268, 197);
+			this->groupBox23->TabIndex = 5;
+			this->groupBox23->TabStop = false;
+			this->groupBox23->Text = L"Удаление";
+			// 
+			// delUserButton
+			// 
+			this->delUserButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
+			this->delUserButton->ForeColor = System::Drawing::SystemColors::WindowText;
+			this->delUserButton->Location = System::Drawing::Point(191, 162);
+			this->delUserButton->Name = L"delUserButton";
+			this->delUserButton->Size = System::Drawing::Size(71, 23);
+			this->delUserButton->TabIndex = 17;
+			this->delUserButton->Text = L"Удалить";
+			this->delUserButton->UseVisualStyleBackColor = true;
+			this->delUserButton->Click += gcnew System::EventHandler(this, &mainForm::delUserButton_Click);
+			// 
+			// label80
+			// 
+			this->label80->AutoSize = true;
+			this->label80->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
+			this->label80->ForeColor = System::Drawing::SystemColors::WindowText;
+			this->label80->Location = System::Drawing::Point(6, 26);
+			this->label80->Name = L"label80";
+			this->label80->Size = System::Drawing::Size(71, 13);
+			this->label80->TabIndex = 18;
+			this->label80->Text = L"№ паспорта:";
+			// 
+			// delUserPassp
+			// 
+			this->delUserPassp->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
+			this->delUserPassp->ForeColor = System::Drawing::SystemColors::WindowText;
+			this->delUserPassp->Location = System::Drawing::Point(6, 42);
+			this->delUserPassp->MaxLength = 11;
+			this->delUserPassp->Name = L"delUserPassp";
+			this->delUserPassp->Size = System::Drawing::Size(116, 20);
+			this->delUserPassp->TabIndex = 17;
+			this->delUserPassp->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &mainForm::newSpotNumericUpDown_KeyPress);
+			// 
+			// groupBox22
+			// 
+			this->groupBox22->Controls->Add(this->label75);
+			this->groupBox22->Controls->Add(this->label78);
+			this->groupBox22->Controls->Add(this->addPasswText);
+			this->groupBox22->Controls->Add(this->addRulesBox);
+			this->groupBox22->Controls->Add(this->label76);
+			this->groupBox22->Controls->Add(this->addPasspText);
+			this->groupBox22->Controls->Add(this->label77);
+			this->groupBox22->Controls->Add(this->addNameText);
+			this->groupBox22->Controls->Add(this->addUserButton);
+			this->groupBox22->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
+			this->groupBox22->ForeColor = System::Drawing::SystemColors::HotTrack;
+			this->groupBox22->Location = System::Drawing::Point(10, 249);
+			this->groupBox22->Name = L"groupBox22";
+			this->groupBox22->Size = System::Drawing::Size(270, 197);
+			this->groupBox22->TabIndex = 4;
+			this->groupBox22->TabStop = false;
+			this->groupBox22->Text = L"Добавление";
+			// 
+			// label75
+			// 
+			this->label75->AutoSize = true;
+			this->label75->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
+			this->label75->ForeColor = System::Drawing::SystemColors::WindowText;
+			this->label75->Location = System::Drawing::Point(6, 149);
+			this->label75->Name = L"label75";
+			this->label75->Size = System::Drawing::Size(48, 13);
+			this->label75->TabIndex = 23;
+			this->label75->Text = L"Пароль:";
+			// 
+			// label78
+			// 
+			this->label78->AutoSize = true;
+			this->label78->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
+			this->label78->ForeColor = System::Drawing::SystemColors::WindowText;
+			this->label78->Location = System::Drawing::Point(6, 27);
+			this->label78->Name = L"label78";
+			this->label78->Size = System::Drawing::Size(71, 13);
+			this->label78->TabIndex = 19;
+			this->label78->Text = L"№ паспорта:";
+			// 
+			// addPasswText
+			// 
+			this->addPasswText->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
+			this->addPasswText->ForeColor = System::Drawing::SystemColors::WindowText;
+			this->addPasswText->Location = System::Drawing::Point(6, 165);
+			this->addPasswText->MaxLength = 25;
+			this->addPasswText->Name = L"addPasswText";
+			this->addPasswText->Size = System::Drawing::Size(181, 20);
+			this->addPasswText->TabIndex = 22;
+			// 
+			// addRulesBox
+			// 
+			this->addRulesBox->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
+			this->addRulesBox->ForeColor = System::Drawing::SystemColors::WindowText;
+			this->addRulesBox->FormattingEnabled = true;
+			this->addRulesBox->Items->AddRange(gcnew cli::array< System::Object^  >(5) {L"Администратор", L"Орг. менеджер", L"Пользователь", 
+				L"Редактор билетов", L"Редактор грузов"});
+			this->addRulesBox->Location = System::Drawing::Point(6, 86);
+			this->addRulesBox->Name = L"addRulesBox";
+			this->addRulesBox->Size = System::Drawing::Size(121, 21);
+			this->addRulesBox->Sorted = true;
+			this->addRulesBox->TabIndex = 16;
+			this->addRulesBox->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &mainForm::addPlaneModelComboBox_KeyPress);
+			// 
+			// label76
+			// 
+			this->label76->AutoSize = true;
+			this->label76->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
+			this->label76->ForeColor = System::Drawing::SystemColors::WindowText;
+			this->label76->Location = System::Drawing::Point(6, 70);
+			this->label76->Name = L"label76";
+			this->label76->Size = System::Drawing::Size(42, 13);
+			this->label76->TabIndex = 20;
+			this->label76->Text = L"Права:";
+			// 
+			// addPasspText
+			// 
+			this->addPasspText->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
+			this->addPasspText->ForeColor = System::Drawing::SystemColors::WindowText;
+			this->addPasspText->Location = System::Drawing::Point(6, 43);
+			this->addPasspText->MaxLength = 11;
+			this->addPasspText->Name = L"addPasspText";
+			this->addPasspText->Size = System::Drawing::Size(116, 20);
+			this->addPasspText->TabIndex = 17;
+			this->addPasspText->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &mainForm::newSpotNumericUpDown_KeyPress);
+			// 
+			// label77
+			// 
+			this->label77->AutoSize = true;
+			this->label77->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
+			this->label77->ForeColor = System::Drawing::SystemColors::WindowText;
+			this->label77->Location = System::Drawing::Point(6, 110);
+			this->label77->Name = L"label77";
+			this->label77->Size = System::Drawing::Size(37, 13);
+			this->label77->TabIndex = 21;
+			this->label77->Text = L"ФИО:";
+			// 
+			// addNameText
+			// 
+			this->addNameText->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
+			this->addNameText->ForeColor = System::Drawing::SystemColors::WindowText;
+			this->addNameText->Location = System::Drawing::Point(6, 126);
+			this->addNameText->MaxLength = 50;
+			this->addNameText->Name = L"addNameText";
+			this->addNameText->Size = System::Drawing::Size(244, 20);
+			this->addNameText->TabIndex = 18;
+			// 
+			// addUserButton
+			// 
+			this->addUserButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
+			this->addUserButton->ForeColor = System::Drawing::SystemColors::WindowText;
+			this->addUserButton->Location = System::Drawing::Point(193, 165);
+			this->addUserButton->Name = L"addUserButton";
+			this->addUserButton->Size = System::Drawing::Size(71, 23);
+			this->addUserButton->TabIndex = 15;
+			this->addUserButton->Text = L"Добавить";
+			this->addUserButton->UseVisualStyleBackColor = true;
+			this->addUserButton->Click += gcnew System::EventHandler(this, &mainForm::addUserButton_Click);
+			// 
 			// groupBox10
 			// 
+			this->groupBox10->Controls->Add(this->label79);
+			this->groupBox10->Controls->Add(this->updNewPassp);
 			this->groupBox10->Controls->Add(this->label27);
 			this->groupBox10->Controls->Add(this->updPasswText);
 			this->groupBox10->Controls->Add(this->label28);
@@ -2714,13 +2962,36 @@ private: System::Windows::Forms::Label^  label72;
 			this->groupBox10->TabStop = false;
 			this->groupBox10->Text = L"Редактирование";
 			// 
+			// label79
+			// 
+			this->label79->AutoSize = true;
+			this->label79->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
+			this->label79->ForeColor = System::Drawing::SystemColors::WindowText;
+			this->label79->Location = System::Drawing::Point(125, 27);
+			this->label79->Name = L"label79";
+			this->label79->Size = System::Drawing::Size(108, 13);
+			this->label79->TabIndex = 16;
+			this->label79->Text = L"Новый № паспорта:";
+			// 
+			// updNewPassp
+			// 
+			this->updNewPassp->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
+			this->updNewPassp->ForeColor = System::Drawing::SystemColors::WindowText;
+			this->updNewPassp->Location = System::Drawing::Point(128, 43);
+			this->updNewPassp->MaxLength = 11;
+			this->updNewPassp->Name = L"updNewPassp";
+			this->updNewPassp->Size = System::Drawing::Size(122, 20);
+			this->updNewPassp->TabIndex = 15;
+			// 
 			// label27
 			// 
 			this->label27->AutoSize = true;
 			this->label27->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(204)));
 			this->label27->ForeColor = System::Drawing::SystemColors::WindowText;
-			this->label27->Location = System::Drawing::Point(6, 123);
+			this->label27->Location = System::Drawing::Point(6, 149);
 			this->label27->Name = L"label27";
 			this->label27->Size = System::Drawing::Size(48, 13);
 			this->label27->TabIndex = 14;
@@ -2731,10 +3002,10 @@ private: System::Windows::Forms::Label^  label72;
 			this->updPasswText->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(204)));
 			this->updPasswText->ForeColor = System::Drawing::SystemColors::WindowText;
-			this->updPasswText->Location = System::Drawing::Point(7, 139);
+			this->updPasswText->Location = System::Drawing::Point(6, 165);
 			this->updPasswText->MaxLength = 25;
 			this->updPasswText->Name = L"updPasswText";
-			this->updPasswText->Size = System::Drawing::Size(244, 20);
+			this->updPasswText->Size = System::Drawing::Size(162, 20);
 			this->updPasswText->TabIndex = 13;
 			// 
 			// label28
@@ -2743,7 +3014,7 @@ private: System::Windows::Forms::Label^  label72;
 			this->label28->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(204)));
 			this->label28->ForeColor = System::Drawing::SystemColors::WindowText;
-			this->label28->Location = System::Drawing::Point(129, 27);
+			this->label28->Location = System::Drawing::Point(6, 70);
 			this->label28->Name = L"label28";
 			this->label28->Size = System::Drawing::Size(42, 13);
 			this->label28->TabIndex = 12;
@@ -2755,7 +3026,7 @@ private: System::Windows::Forms::Label^  label72;
 			this->label29->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(204)));
 			this->label29->ForeColor = System::Drawing::SystemColors::WindowText;
-			this->label29->Location = System::Drawing::Point(6, 72);
+			this->label29->Location = System::Drawing::Point(6, 110);
 			this->label29->Name = L"label29";
 			this->label29->Size = System::Drawing::Size(37, 13);
 			this->label29->TabIndex = 12;
@@ -2778,7 +3049,7 @@ private: System::Windows::Forms::Label^  label72;
 			this->updUserButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(204)));
 			this->updUserButton->ForeColor = System::Drawing::SystemColors::WindowText;
-			this->updUserButton->Location = System::Drawing::Point(94, 168);
+			this->updUserButton->Location = System::Drawing::Point(179, 165);
 			this->updUserButton->Name = L"updUserButton";
 			this->updUserButton->Size = System::Drawing::Size(71, 23);
 			this->updUserButton->TabIndex = 12;
@@ -2791,7 +3062,7 @@ private: System::Windows::Forms::Label^  label72;
 			this->updNameText->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(204)));
 			this->updNameText->ForeColor = System::Drawing::SystemColors::WindowText;
-			this->updNameText->Location = System::Drawing::Point(7, 88);
+			this->updNameText->Location = System::Drawing::Point(6, 126);
 			this->updNameText->MaxLength = 50;
 			this->updNameText->Name = L"updNameText";
 			this->updNameText->Size = System::Drawing::Size(244, 20);
@@ -2805,9 +3076,9 @@ private: System::Windows::Forms::Label^  label72;
 			this->updPasspText->Location = System::Drawing::Point(6, 43);
 			this->updPasspText->MaxLength = 11;
 			this->updPasspText->Name = L"updPasspText";
-			this->updPasspText->ReadOnly = true;
 			this->updPasspText->Size = System::Drawing::Size(116, 20);
 			this->updPasspText->TabIndex = 12;
+			this->updPasspText->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &mainForm::newSpotNumericUpDown_KeyPress);
 			// 
 			// updRulesBox
 			// 
@@ -2817,11 +3088,12 @@ private: System::Windows::Forms::Label^  label72;
 			this->updRulesBox->FormattingEnabled = true;
 			this->updRulesBox->Items->AddRange(gcnew cli::array< System::Object^  >(5) {L"Администратор", L"Орг. менеджер", L"Пользователь", 
 				L"Редактор билетов", L"Редактор грузов"});
-			this->updRulesBox->Location = System::Drawing::Point(132, 43);
+			this->updRulesBox->Location = System::Drawing::Point(6, 86);
 			this->updRulesBox->Name = L"updRulesBox";
 			this->updRulesBox->Size = System::Drawing::Size(121, 21);
 			this->updRulesBox->Sorted = true;
 			this->updRulesBox->TabIndex = 12;
+			this->updRulesBox->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &mainForm::addPlaneModelComboBox_KeyPress);
 			// 
 			// ctrlUsersTable
 			// 
@@ -2836,18 +3108,9 @@ private: System::Windows::Forms::Label^  label72;
 			this->ctrlUsersTable->ReadOnly = true;
 			this->ctrlUsersTable->RowHeadersVisible = false;
 			this->ctrlUsersTable->RowHeadersWidthSizeMode = System::Windows::Forms::DataGridViewRowHeadersWidthSizeMode::DisableResizing;
-			this->ctrlUsersTable->Size = System::Drawing::Size(374, 192);
+			this->ctrlUsersTable->Size = System::Drawing::Size(374, 231);
 			this->ctrlUsersTable->TabIndex = 2;
 			this->ctrlUsersTable->CellClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &mainForm::ctrlUsersTable_CellClick);
-			// 
-			// label72
-			// 
-			this->label72->AutoSize = true;
-			this->label72->Location = System::Drawing::Point(15, 37);
-			this->label72->Name = L"label72";
-			this->label72->Size = System::Drawing::Size(75, 13);
-			this->label72->TabIndex = 2;
-			this->label72->Text = L"Ваши заказы";
 			// 
 			// mainForm
 			// 
@@ -2931,6 +3194,10 @@ private: System::Windows::Forms::Label^  label72;
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->planeParamTable))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->planesTable))->EndInit();
 			this->adminsPage->ResumeLayout(false);
+			this->groupBox23->ResumeLayout(false);
+			this->groupBox23->PerformLayout();
+			this->groupBox22->ResumeLayout(false);
+			this->groupBox22->PerformLayout();
 			this->groupBox10->ResumeLayout(false);
 			this->groupBox10->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->ctrlUsersTable))->EndInit();
@@ -3365,6 +3632,8 @@ private: System::Void ctrlUsersTable_CellClick(System::Object^ sender, System::W
 			  updPasspText->Text = ctrlUsersTable->CurrentRow->Cells[0]->Value->ToString();
 			  updNameText->Text  = ctrlUsersTable->CurrentRow->Cells[1]->Value->ToString();
 			  updPasswText->Text  = ctrlUsersTable->CurrentRow->Cells[2]->Value->ToString();
+			  updNewPassp->Text = ctrlUsersTable->CurrentRow->Cells[0]->Value->ToString();
+			  delUserPassp->Text = ctrlUsersTable->CurrentRow->Cells[0]->Value->ToString();
 
 			  String^ querry;
 			  querry = "select user_rules, teller_rules, cargo_rules, manager_rules, admin_rules";
@@ -3404,6 +3673,27 @@ private: System::Void updUserButton_Click(System::Object^  sender, System::Event
 			 if(updPasspText->Text->Length==0)
 			 {
 				 MessageBox::Show("Поле '№ паспорта' не может быть пустым.", "Ошибка",
+					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
+				 updUserButton->Enabled = true;
+				 return;
+			 }
+			 /*if(updPasspText->Text->Length!=11)
+			 {
+				 MessageBox::Show("Поле '№ паспорта' введено неверно. Проверьте что введено 11 цифр", "Ошибка",
+					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
+				 updUserButton->Enabled = true;
+				 return;
+			 }*/
+			 if(updNewPassp->Text->Length==0)
+			 {
+				 MessageBox::Show("Поле 'Новый № паспорта' не может быть пустым.", "Ошибка",
+					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
+				 updUserButton->Enabled = true;
+				 return;
+			 }
+			 if(updNewPassp->Text->Length!=11)
+			 {
+				 MessageBox::Show("Поле 'Новый № паспорта' введено неверно. Проверьте что введено 11 цифр", "Ошибка",
 					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
 				 updUserButton->Enabled = true;
 				 return;
@@ -3451,17 +3741,16 @@ private: System::Void updUserButton_Click(System::Object^  sender, System::Event
 				 manager = teller = user = admin = "0";
 			 }
 
-			 executeReq("UPDATE "+PREFIX+".users SET password ='"
+			 executeReq("UPDATE "+PREFIX+".users SET passport ='"+updNewPassp->Text+"', password ='"
 				 +updPasswText->Text+"', user_rules ='"+user+
 				 "', teller_rules = '"+teller+
 				 "', cargo_rules ='"+cargo+"', manager_rules ='"+manager+
 				 "', admin_rules ='"+admin+"' WHERE passport = '"+updPasspText->Text+"';");
 
 			 executeReq("update "+PREFIX+".passengers SET full_name='"+updNameText->Text+
-				 "' where id_pass='"+updPasspText->Text+"';");
+				 "', id_pass='"+updNewPassp->Text+"' where id_pass='"+updPasspText->Text+"';");
 
 			 asAdmin(ctrlUsersTable);
-
 			 updUserButton->Enabled = true;
 		 }
 private: System::Void addCargoButton_Click(System::Object^  sender, System::EventArgs^  e) {
@@ -3925,7 +4214,6 @@ private: System::Void delTicketButton_Click(System::Object^  sender, System::Eve
 			 numTab = 6;
 			 myReader = executeReq("DELETE FROM "+PREFIX+".tickets WHERE id_ticket="+delTicketId->Text+";");
 			 loadData("select * from "+PREFIX+".tickets", ticketsTable);
-			 loadData("SELECT * FROM "+PREFIX+".tickets WHERE id_pass='"+(gcnew String(idPass))+"';",ordTable);
 			 loadData("SELECT tickets.id_ticket,tickets.id_flight,flights.departure,flights.destination,flights.departure_date,flights.arrival_date,tariffs.price,tickets.sale_date from "+
 				 PREFIX+".tickets join "+PREFIX+".tariffs on tariffs.id_flight=tickets.id_flight join "+PREFIX+
 				 ".flights on flights.id_flight=tickets.id_flight where tariffs.class=tickets.class AND tickets.id_pass='"+(gcnew String(idPass))+"';",mainGrid);
@@ -4072,6 +4360,92 @@ private: System::Void ordTable_CellClick(System::Object^  sender, System::Window
 			 ordTicketDest->Text = ordTable->CurrentRow->Cells[1]->Value->ToString();
 			 ordTicketDate->Text = ordTable->CurrentRow->Cells[2]->Value->ToString();
 
+		 }
+private: System::Void addUserButton_Click(System::Object^  sender, System::EventArgs^  e) {
+			 addUserButton->Enabled = false;
+			 if(addPasspText->Text->Length==0)
+			 {
+				 MessageBox::Show("Поле '№ паспорта' не может быть пустым.", "Ошибка",
+					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
+				 addUserButton->Enabled = true;
+				 return;
+			 }
+			 if(addPasswText->Text->Length!=11)
+			 {
+				 MessageBox::Show("Поле '№ паспорта' введено неверно. Проверьте что введено 11 цифр", "Ошибка",
+					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
+				 addUserButton->Enabled = true;
+				 return;
+			 }
+			 if(addRulesBox->Text->Length==0)
+			 {
+				 MessageBox::Show("Поле 'Права' не может быть пустым.", "Ошибка",
+					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
+				 addUserButton->Enabled = true;
+				 return;
+			 }
+			 if(addNameText->Text->Length == 0)
+			 {
+				 MessageBox::Show("Поле 'ФИО' не может быть пустым", "Ошибка",
+					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
+				 addUserButton->Enabled = true;
+				 return;
+			 }
+			 if(addPasswText->Text->Length == 0)
+			 {
+				 MessageBox::Show("Поле 'Пароль' не может быть пустым", "Ошибка",
+					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
+				 addUserButton->Enabled = true;
+				 return;
+			 }
+
+			 String ^user, ^teller, ^cargo, ^admin, ^manager;
+			 if (addRulesBox->Text == "Администратор")
+				 user = teller = cargo = manager = admin = "1";
+
+			 if (addRulesBox->Text == "Пользователь"){
+				 user = "1";
+				 teller = cargo = manager = admin = "0";
+			 }
+			 if (addRulesBox->Text == "Орг. менеджер"){
+				 manager = "1";
+				 teller = cargo = user = admin = "0";
+			 }
+			 if (addRulesBox->Text == "Редактор билетов"){
+				 teller = "1";
+				 manager = cargo = user = admin = "0";
+			 }
+			 if (addRulesBox->Text == "Редактор грузов"){
+				 cargo = "1";
+				 manager = teller = user = admin = "0";
+			 }
+
+			 executeReq("INSERT INTO "+PREFIX+".users (passport,password,user_rules,teller_rules,cargo_rules,manager_rules,admin_rules) VALUES('"+
+				 addPasspText->Text+"','"+addPasswText->Text+"','"+user+"','"+teller+"','"+cargo+"','"+manager+"','"+admin+"')");
+			 executeReq("INSERT INTO "+PREFIX+".passengers (id_pass,full_name) VALUES('"+addPasspText->Text+"','"+addNameText->Text+"')");
+			 asAdmin(ctrlUsersTable);
+			 addUserButton->Enabled = true;
+		 }
+private: System::Void delUserButton_Click(System::Object^  sender, System::EventArgs^  e) {
+			 delUserButton->Enabled = false;
+			 if(delUserPassp->Text->Length==0)
+			 {
+				 MessageBox::Show("Поле '№ паспорта' не может быть пустым.", "Ошибка",
+					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
+				 delUserButton->Enabled = true;
+				 return;
+			 }
+			 if(delUserPassp->Text->Length!=11)
+			 {
+				 MessageBox::Show("Поле '№ паспорта' введено неверно. Проверьте что введено 11 цифр", "Ошибка",
+					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
+				 delUserButton->Enabled = true;
+				 return;
+			 }
+			 executeReq("DELETE FROM "+PREFIX+".users where passport='"+delUserPassp->Text+"';");
+			 executeReq("DELETE FROM "+PREFIX+".passengers where id_pass='"+delUserPassp->Text+"';");
+			 asAdmin(ctrlUsersTable);
+			 delUserButton->Enabled = true;
 		 }
 };
 }
