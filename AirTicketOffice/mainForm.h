@@ -3197,10 +3197,10 @@ private: System::Void updUserButton_Click(System::Object^  sender, System::Event
 				 +updPasswText->Text+"', user_rules ='"+user+
 				 "', teller_rules = '"+teller+
 				 "', cargo_rules ='"+cargo+"', manager_rules ='"+manager+
-				 "', admin_rules ='"+admin+"' WHERE passport = "+updPasspText->Text+";");
+				 "', admin_rules ='"+admin+"' WHERE passport = '"+updPasspText->Text+"';");
 
 			 executeReq("update "+PREFIX+".passengers SET Name='"+updNameText->Text+
-				 "' where id_pass="+updPasspText->Text+";");
+				 "' where id_pass='"+updPasspText->Text+"';");
 
 			 asAdmin(ctrlUsersTable);
 

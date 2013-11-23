@@ -286,15 +286,15 @@ private: System::Void registerButton_Click(System::Object^  sender, System::Even
 			 //MySqlConnection^ conDataBase = gcnew MySqlConnection(constring);
 			 MySqlDataReader^ myReader;
 			 numTab =  1;
-			myReader = executeReq("INSERT INTO "+PREFIX+".users (passport,password) VALUES("+
-				        inputPassport->Text+","+inputPassword->Text+")");
+			myReader = executeReq("INSERT INTO "+PREFIX+".users (passport,password) VALUES('"+
+				        inputPassport->Text+"',"+inputPassword->Text+")");
 			 if (!myReader) 
 			 {
 				 registerButton->Enabled = true;
 				 return;
 			 }
-			 myReader = executeReq("INSERT INTO "+PREFIX+".passengers VALUES("+
-				        inputPassport->Text+",'"+nameInput->Text+"')");
+			 myReader = executeReq("INSERT INTO "+PREFIX+".passengers VALUES('"+
+				        inputPassport->Text+"','"+nameInput->Text+"')");
 			 if (!myReader) 
 			 {
 				 registerButton->Enabled = true;
