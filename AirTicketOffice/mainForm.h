@@ -27,19 +27,22 @@ namespace AirTicketOffice {
 	private: System::Windows::Forms::Button^  previewButton;
 	private: System::Windows::Forms::PrintPreviewDialog^  printPreviewDialog1;
 			 System::Drawing::Font^ printFont;
+	public: static String^ constring = L"datasource="+SERVER+";port="+PORT+";username="+USER+";password="+PASSWD;
+	public: static MySqlConnection^ conDataBase  = gcnew MySqlConnection(constring);
+	public: static MySqlCommand^ cmdDataBase;
+	public: static MySqlDataReader^ myReader;
 	public:
 		mainForm(void)
 		{
 			InitializeComponent();
 			// todo: вызов нужной функции в зависимости от роли
-			
 			String^ r;
-			MySqlDataReader^ myReader;
-			myReader = executeReq("SELECT full_name FROM "+PREFIX+".passengers WHERE id_pass='"+(gcnew String(idPass))+"';");
+			myReader = executeReq("SELECT full_name FROM "+PREFIX+".passengers WHERE id_pass='"+(gcnew String(idPass))+"';",conDataBase,myReader);
 			if(myReader->Read())
 				name->Text = myReader->GetString(0);
 			else 
 				name->Text = gcnew String(idPass);
+			conDataBase->Close();
 			loadData("SELECT tickets.id_ticket,tickets.id_flight,flights.departure,flights.destination,flights.departure_date,flights.arrival_date,tariffs.price,tickets.sale_date from "+
 				PREFIX+".tickets join "+PREFIX+".tariffs on tariffs.id_flight=tickets.id_flight join "+PREFIX+
 				".flights on flights.id_flight=tickets.id_flight where tariffs.class=tickets.class AND tickets.id_pass='"+(gcnew String(idPass))+"';",mainGrid);
@@ -67,77 +70,77 @@ namespace AirTicketOffice {
 					asUser(tabControl1,ordTable, false);
 					ordTicketClass->Items->Add("A");
 					ordTicketClass->Items->Add("B");
-					FillCombo("SELECT distinct departure FROM "+PREFIX+".flights WHERE departure_date>curdate()","departure",ordTicketDep);
-					FillCombo("SELECT distinct destination FROM "+PREFIX+".flights WHERE departure_date>curdate()","destination",ordTicketDest);
+					FillCombo("SELECT distinct departure FROM "+PREFIX+".flights WHERE departure_date>curdate()","departure",ordTicketDep,conDataBase,myReader);
+					FillCombo("SELECT distinct destination FROM "+PREFIX+".flights WHERE departure_date>curdate()","destination",ordTicketDest,conDataBase,myReader);
 					break;
 				case 2:
 					r = "Менеджер по билетам"; 
 					asTeller(tabControl1,ticketsTable,ordTable, false);
-					FillCombo("SELECT id_pass FROM "+PREFIX+".passengers","id_pass",addTicketPass);
-					FillCombo("SELECT distinct departure FROM "+PREFIX+".flights","departure",addTicketDep);
-					FillCombo("SELECT distinct destination FROM "+PREFIX+".flights","destination",addTicketDest);
+					FillCombo("SELECT id_pass FROM "+PREFIX+".passengers","id_pass",addTicketPass,conDataBase,myReader);
+					FillCombo("SELECT distinct departure FROM "+PREFIX+".flights","departure",addTicketDep,conDataBase,myReader);
+					FillCombo("SELECT distinct destination FROM "+PREFIX+".flights","destination",addTicketDest,conDataBase,myReader);
 					CopyCombo(updTicketDep,addTicketDep);
 					CopyCombo(updTicketDest,addTicketDest);
 					addTicketClass->Items->Add("A");
 					addTicketClass->Items->Add("B");
 					CopyCombo(updTicketClass,addTicketClass);
-					FillCombo("SELECT distinct id_pass FROM "+PREFIX+".tickets","id_pass",updTicketPass);
+					FillCombo("SELECT distinct id_pass FROM "+PREFIX+".tickets","id_pass",updTicketPass,conDataBase,myReader);
 					CopyCombo(delTicketPass,updTicketPass);
 					ordTicketClass->Items->Add("A");
 					ordTicketClass->Items->Add("B");
-					FillCombo("SELECT distinct departure FROM "+PREFIX+".flights WHERE departure_date>curdate()","departure",ordTicketDep);
-					FillCombo("SELECT distinct destination FROM "+PREFIX+".flights WHERE departure_date>curdate()","destination",ordTicketDest);
+					FillCombo("SELECT distinct departure FROM "+PREFIX+".flights WHERE departure_date>curdate()","departure",ordTicketDep,conDataBase,myReader);
+					FillCombo("SELECT distinct destination FROM "+PREFIX+".flights WHERE departure_date>curdate()","destination",ordTicketDest,conDataBase,myReader);
 					break;
 				case 3:
 					r = "Менеджер грузов"; 
 					asCargoManager(cargoTable,tabControl1,ordTable, false);
 					FillCombo("SELECT id_flight FROM "+PREFIX+".flights WHERE departure_date>curdate() AND departure_date>curtime()","id_flight",
-						addCargoFlight);
+						addCargoFlight,conDataBase,myReader);
 					CopyCombo(updCargoFlight,addCargoFlight);
 					FillCombo("SELECT id_pass FROM "+PREFIX+".passengers","id_pass",
-						addCargoPass);
+						addCargoPass,conDataBase,myReader);
 					CopyCombo(updCargoPass,addCargoPass);
-					FillCombo("SELECT id_cargo FROM "+PREFIX+".cargo","id_cargo",updCargoId);
+					FillCombo("SELECT id_cargo FROM "+PREFIX+".cargo","id_cargo",updCargoId,conDataBase,myReader);
 					CopyCombo(delCargoId,updCargoId);
 					ordTicketClass->Items->Add("A");
 					ordTicketClass->Items->Add("B");
-					FillCombo("SELECT distinct departure FROM "+PREFIX+".flights WHERE departure_date>curdate()","departure",ordTicketDep);
-					FillCombo("SELECT distinct destination FROM "+PREFIX+".flights WHERE departure_date>curdate()","destination",ordTicketDest);
+					FillCombo("SELECT distinct departure FROM "+PREFIX+".flights WHERE departure_date>curdate()","departure",ordTicketDep,conDataBase,myReader);
+					FillCombo("SELECT distinct destination FROM "+PREFIX+".flights WHERE departure_date>curdate()","destination",ordTicketDest,conDataBase,myReader);
 					break;
 				case 4:
 					r = "Организационный менеджер"; 
 					asMainManager (flightsTable, planesTable, planeParamTable,tariffsTable, tabControl1,ticketsTable,ordTable, false);
 					FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",
-						delPlaneParamModelComboBox);
+						delPlaneParamModelComboBox,conDataBase,myReader);
 					CopyCombo(updPlanesParamModelComboBox,delPlaneParamModelComboBox);
 					CopyCombo(updPlaneModelComboBox,delPlaneParamModelComboBox);
 					CopyCombo(addPlaneModelComboBox,delPlaneParamModelComboBox);
 					FillCombo("SELECT id_plane FROM "+PREFIX+".planes","id_plane",
-						updPlaneIdComboBox);
+						updPlaneIdComboBox,conDataBase,myReader);
 					CopyCombo(delPlaneIdComboBox,updPlaneIdComboBox);
 					CopyCombo(addFlightPlaneId,updPlaneIdComboBox);
 					CopyCombo(updFlightPlaneId,updPlaneIdComboBox);
 					FillCombo("SELECT id_flight FROM "+PREFIX+".flights","id_flight",
-						updFlightId);
+						updFlightId,conDataBase,myReader);
 					CopyCombo(delFlightId,updFlightId);
 					FillCombo("SELECT id_flight FROM "+PREFIX+".flights WHERE departure_date>curdate() AND departure_date>curtime()","id_flight",
-						addCargoFlight);
+						addCargoFlight,conDataBase,myReader);
 					CopyCombo(updCargoFlight,addCargoFlight);
 					FillCombo("SELECT id_pass FROM "+PREFIX+".passengers","id_pass",
-						addCargoPass);
+						addCargoPass,conDataBase,myReader);
 					CopyCombo(updCargoPass,addCargoPass);
-					FillCombo("SELECT id_cargo FROM "+PREFIX+".cargo","id_cargo",updCargoId);
+					FillCombo("SELECT id_cargo FROM "+PREFIX+".cargo","id_cargo",updCargoId,conDataBase,myReader);
 					CopyCombo(delCargoId,updCargoId);
-					FillCombo("SELECT id_pass FROM "+PREFIX+".passengers","id_pass",addTicketPass);
-					FillCombo("SELECT distinct departure FROM "+PREFIX+".flights","departure",addTicketDep);
-					FillCombo("SELECT distinct destination FROM "+PREFIX+".flights","destination",addTicketDest);
+					FillCombo("SELECT id_pass FROM "+PREFIX+".passengers","id_pass",addTicketPass,conDataBase,myReader);
+					FillCombo("SELECT distinct departure FROM "+PREFIX+".flights","departure",addTicketDep,conDataBase,myReader);
+					FillCombo("SELECT distinct destination FROM "+PREFIX+".flights","destination",addTicketDest,conDataBase,myReader);
 					CopyCombo(updTicketDep,addTicketDep);
 					CopyCombo(updTicketDest,addTicketDest);
 					addTicketClass->Items->Add("A");
 					addTicketClass->Items->Add("B");
 					CopyCombo(ordTicketClass,addTicketClass);
 					CopyCombo(updTicketClass,addTicketClass);
-					FillCombo("SELECT distinct id_pass FROM "+PREFIX+".tickets","id_pass",updTicketPass);
+					FillCombo("SELECT distinct id_pass FROM "+PREFIX+".tickets","id_pass",updTicketPass,conDataBase,myReader);
 					CopyCombo(delTicketPass,updTicketPass);
 					break;
 				case 5:
@@ -147,29 +150,29 @@ namespace AirTicketOffice {
 								   planeParamTable,tariffsTable, tabControl1,ticketsTable,ordTable, true);
 					asCargoManager(cargoTable,tabControl1,ordTable, true);
 					FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",
-						delPlaneParamModelComboBox);
+						delPlaneParamModelComboBox,conDataBase,myReader);
 					CopyCombo(updPlanesParamModelComboBox,delPlaneParamModelComboBox);
 					CopyCombo(updPlaneModelComboBox,delPlaneParamModelComboBox);
 					CopyCombo(addPlaneModelComboBox,delPlaneParamModelComboBox);
 					FillCombo("SELECT id_plane FROM "+PREFIX+".planes","id_plane",
-						updPlaneIdComboBox);
+						updPlaneIdComboBox,conDataBase,myReader);
 					CopyCombo(delPlaneIdComboBox,updPlaneIdComboBox);
 					CopyCombo(addFlightPlaneId,updPlaneIdComboBox);
 					CopyCombo(updFlightPlaneId,updPlaneIdComboBox);
 					FillCombo("SELECT id_flight FROM "+PREFIX+".flights WHERE departure_date>curdate() AND departure_date>curtime()","id_flight",
-						addCargoFlight);
+						addCargoFlight,conDataBase,myReader);
 					CopyCombo(updCargoFlight,addCargoFlight);
 					FillCombo("SELECT id_pass FROM "+PREFIX+".passengers","id_pass",
-						addCargoPass);
+						addCargoPass,conDataBase,myReader);
 					CopyCombo(updCargoPass,addCargoPass);
 					FillCombo("SELECT id_flight FROM "+PREFIX+".flights","id_flight",
-						updFlightId);
+						updFlightId,conDataBase,myReader);
 					CopyCombo(delFlightId,updFlightId);
-					FillCombo("SELECT id_cargo FROM "+PREFIX+".cargo","id_cargo",updCargoId);
+					FillCombo("SELECT id_cargo FROM "+PREFIX+".cargo","id_cargo",updCargoId,conDataBase,myReader);
 					CopyCombo(delCargoId,updCargoId);
-					FillCombo("SELECT id_pass FROM "+PREFIX+".passengers","id_pass",addTicketPass);
-					FillCombo("SELECT distinct departure FROM "+PREFIX+".flights","departure",addTicketDep);
-					FillCombo("SELECT distinct destination FROM "+PREFIX+".flights","destination",addTicketDest);
+					FillCombo("SELECT id_pass FROM "+PREFIX+".passengers","id_pass",addTicketPass,conDataBase,myReader);
+					FillCombo("SELECT distinct departure FROM "+PREFIX+".flights","departure",addTicketDep,conDataBase,myReader);
+					FillCombo("SELECT distinct destination FROM "+PREFIX+".flights","destination",addTicketDest,conDataBase,myReader);
 					CopyCombo(updTicketDep,addTicketDep);
 					CopyCombo(updTicketDest,addTicketDest);
 					CopyCombo(ordTicketDep,addTicketDep);
@@ -178,7 +181,7 @@ namespace AirTicketOffice {
 					addTicketClass->Items->Add("B");
 					CopyCombo(updTicketClass,addTicketClass);
 					CopyCombo(ordTicketClass,addTicketClass);
-					FillCombo("SELECT distinct id_pass FROM "+PREFIX+".tickets","id_pass",updTicketPass);
+					FillCombo("SELECT distinct id_pass FROM "+PREFIX+".tickets","id_pass",updTicketPass,conDataBase,myReader);
 					CopyCombo(delTicketPass,updTicketPass);
 					CopyCombo(addRulesBox,updRulesBox);
 					break;
@@ -3384,9 +3387,9 @@ private: System::Void addPlanesParamButton_Click(System::Object^  sender, System
 			 }
 			 numTab = 2;
 			 executeReq("INSERT INTO "+PREFIX+".plane_parametrs (model,spot_num) VALUES('"
-								   +planesParamModelTextBox->Text+"',"+spotNumericUpDown->Value+")");
+								   +planesParamModelTextBox->Text+"',"+spotNumericUpDown->Value+")",conDataBase,myReader);
 			 loadData("select * from "+PREFIX+".plane_parametrs", planeParamTable);
-			 FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",delPlaneParamModelComboBox);
+			 FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",delPlaneParamModelComboBox,conDataBase,myReader);
 			 CopyCombo(updPlanesParamModelComboBox,delPlaneParamModelComboBox);
 			 CopyCombo(addPlaneModelComboBox,delPlaneParamModelComboBox);
 			 CopyCombo(updPlaneModelComboBox,delPlaneParamModelComboBox);
@@ -3439,10 +3442,10 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 				 return;
 			 }
 			 numTab = 2;
-			 executeReq("UPDATE "+PREFIX+".plane_parametrs SET model='"+newPlanesParamModelTextBox->Text+"', spot_num ="+newSpotNumericUpDown->Value+" WHERE model = '"+updPlanesParamModelComboBox->Text+"';");
+			 executeReq("UPDATE "+PREFIX+".plane_parametrs SET model='"+newPlanesParamModelTextBox->Text+"', spot_num ="+newSpotNumericUpDown->Value+" WHERE model = '"+updPlanesParamModelComboBox->Text+"';",conDataBase,myReader);
 			 loadData("select * from "+PREFIX+".plane_parametrs", planeParamTable);
 			 loadData("select * from "+PREFIX+".planes", planesTable);
-			 FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",delPlaneParamModelComboBox);
+			 FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",delPlaneParamModelComboBox,conDataBase,myReader);
 			 CopyCombo(updPlanesParamModelComboBox,delPlaneParamModelComboBox);
 			 CopyCombo(updPlaneModelComboBox,delPlaneParamModelComboBox);
 			 CopyCombo(addPlaneModelComboBox,delPlaneParamModelComboBox);
@@ -3466,10 +3469,10 @@ private: System::Void deletePlanesParametrsButton_Click(System::Object^  sender,
 				 return;
 			 }
 			 numTab = 2;
-			 executeReq("DELETE FROM "+PREFIX+".plane_parametrs where model='"+delPlaneParamModelComboBox->Text+"';");
+			 executeReq("DELETE FROM "+PREFIX+".plane_parametrs where model='"+delPlaneParamModelComboBox->Text+"';",conDataBase,myReader);
 			 loadData("select * from "+PREFIX+".plane_parametrs", planeParamTable);
 			 loadData("select * from "+PREFIX+".planes", planesTable);
-			 FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",delPlaneParamModelComboBox);
+			 FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",delPlaneParamModelComboBox,conDataBase,myReader);
 			 CopyCombo(updPlanesParamModelComboBox,delPlaneParamModelComboBox);
 			 CopyCombo(updPlaneModelComboBox,delPlaneParamModelComboBox);
 			 CopyCombo(addPlaneModelComboBox,delPlaneParamModelComboBox);
@@ -3501,9 +3504,9 @@ private: System::Void addPlaneButton_Click(System::Object^  sender, System::Even
 			 }
 			 numTab = 3;
 			 executeReq("INSERT INTO "+PREFIX+".planes (model,company) VALUES('"+
-								   addPlaneModelComboBox->Text+"','"+addPlaneCompanyTextBox->Text+"')");
+								   addPlaneModelComboBox->Text+"','"+addPlaneCompanyTextBox->Text+"')",conDataBase,myReader);
 			 loadData("select * from "+PREFIX+".planes", planesTable);
-			 FillCombo("SELECT id_plane FROM "+PREFIX+".planes","id_plane",updPlaneIdComboBox);
+			 FillCombo("SELECT id_plane FROM "+PREFIX+".planes","id_plane",updPlaneIdComboBox,conDataBase,myReader);
 			 CopyCombo(delPlaneIdComboBox,updPlaneIdComboBox);
 			 CopyCombo(addFlightPlaneId,updPlaneIdComboBox);
 			 CopyCombo(updFlightPlaneId,updPlaneIdComboBox);
@@ -3535,7 +3538,7 @@ private: System::Void button1_Click_1(System::Object^  sender, System::EventArgs
 			 numTab = 3;
 			 executeReq("UPDATE "+PREFIX+".planes SET model='"+
 						updPlaneModelComboBox->Text+"', company ='"+
-						updPlaneCompanyTextBox->Text+"' WHERE id_plane = '"+updPlaneIdComboBox->Text+"';");
+						updPlaneCompanyTextBox->Text+"' WHERE id_plane = '"+updPlaneIdComboBox->Text+"';",conDataBase,myReader);
 			 loadData("select * from "+PREFIX+".planes", planesTable);
 			 updPlaneButton->Enabled = true;
 		 }
@@ -3562,9 +3565,9 @@ private: System::Void deletePlaneButton_Click(System::Object^  sender, System::E
 			 }
 			 deletePlaneButton->Enabled = true;
 			 numTab = 3;
-			 executeReq("DELETE FROM "+PREFIX+".planes where id_plane='"+delPlaneIdComboBox->Text+"';");
+			 executeReq("DELETE FROM "+PREFIX+".planes where id_plane='"+delPlaneIdComboBox->Text+"';",conDataBase,myReader);
 			 loadData("select * from "+PREFIX+".planes", planesTable);
-			 FillCombo("SELECT id_plane FROM "+PREFIX+".planes","id_plane",updPlaneIdComboBox);
+			 FillCombo("SELECT id_plane FROM "+PREFIX+".planes","id_plane",updPlaneIdComboBox,conDataBase,myReader);
 			 CopyCombo(delPlaneIdComboBox,updPlaneIdComboBox);
 			 CopyCombo(addFlightPlaneId,updPlaneIdComboBox);
 			 CopyCombo(updFlightPlaneId,updPlaneIdComboBox);
@@ -3615,12 +3618,13 @@ private: System::Void addFlightButton_Click(System::Object^  sender, System::Eve
 			 MySqlDataReader^ myReader;
 			 numTab = 4;
 			 executeReq("INSERT INTO "+PREFIX+".flights (id_plane,departure,destination,departure_date,arrival_date) VALUES("+
-				 addFlightPlaneId->Text+",'"+addFlightDepart->Text+"','"+addFlightArrive->Text+"','"+addFlightDepartTime->Text+"','"+addFlightArrivalTime->Text+"')");
-			 myReader = executeReq("select max(id_flight) from "+PREFIX+".flights");
+				 addFlightPlaneId->Text+",'"+addFlightDepart->Text+"','"+addFlightArrive->Text+"','"+addFlightDepartTime->Text+"','"+addFlightArrivalTime->Text+"')",conDataBase,myReader);
+			 myReader = executeReq("select max(id_flight) from "+PREFIX+".flights",conDataBase,myReader);
 			 myReader->Read();
 			 String^ addFlightId = myReader->GetString(0);
-			 executeReq("INSERT INTO "+PREFIX+".tariffs (id_flight,class,price) VALUES("+addFlightId+",'B',"+Convert::ToInt32(addFlightPrice->Text,10)+")");
-			 executeReq("INSERT INTO "+PREFIX+".tariffs (id_flight,class,price) VALUES("+addFlightId+",'A',"+(Convert::ToInt32(addFlightPrice->Text,10)*1.15).ToString()+")");
+			 conDataBase->Close();
+			 executeReq("INSERT INTO "+PREFIX+".tariffs (id_flight,class,price) VALUES("+addFlightId+",'B',"+Convert::ToInt32(addFlightPrice->Text,10)+")",conDataBase,myReader);
+			 executeReq("INSERT INTO "+PREFIX+".tariffs (id_flight,class,price) VALUES("+addFlightId+",'A',"+(Convert::ToInt32(addFlightPrice->Text,10)*1.15).ToString()+")",conDataBase,myReader);
 			 loadData("select * from "+PREFIX+".flights", flightsTable);
 			 loadData("select * from "+PREFIX+".tariffs",tariffsTable);
 			 loadData("select flights.departure,flights.destination,DATE_FORMAT(flights.departure_date,'%Y-%m-%d %H:%i:%s'),DATE_FORMAT(flights.arrival_date,'%Y-%m-%d %H:%i:%s'),tariffs.price from  "+PREFIX+
@@ -3630,14 +3634,14 @@ private: System::Void addFlightButton_Click(System::Object^  sender, System::Eve
 				 ".flights on flights.id_flight=tickets.id_flight where tariffs.class=tickets.class AND tickets.id_pass='"+(gcnew String(idPass))+"';",mainGrid);
 			 loadData("select * from "+PREFIX+".tickets",ticketsTable);
 			 FillCombo("SELECT id_flight FROM "+PREFIX+".flights","id_flight",
-				 updFlightId);
+				 updFlightId,conDataBase,myReader);
 			 CopyCombo(delFlightId,updFlightId);
 			 FillCombo("SELECT id_flight FROM "+PREFIX+".flights WHERE departure_date>curdate() AND departure_date>curtime()","id_flight",
-				 addCargoFlight);
+				 addCargoFlight,conDataBase,myReader);
 			 addTicketDep->Text="";
 			 addTicketDest->Text="";
-			 FillCombo("SELECT distinct departure FROM "+PREFIX+".flights","departure",addTicketDep);
-			 FillCombo("SELECT distinct destination FROM "+PREFIX+".flights","destination",addTicketDest);
+			 FillCombo("SELECT distinct departure FROM "+PREFIX+".flights","departure",addTicketDep,conDataBase,myReader);
+			 FillCombo("SELECT distinct destination FROM "+PREFIX+".flights","destination",addTicketDest,conDataBase,myReader);
 			 CopyCombo(updTicketDep,addTicketDep);
 			 CopyCombo(updTicketDest,addTicketDest);
 			 CopyCombo(ordTicketDep,addTicketDep);
@@ -3694,11 +3698,11 @@ private: System::Void updFlightButton_Click(System::Object^  sender, System::Eve
 			 executeReq("UPDATE "+PREFIX+".flights SET id_plane="+updFlightPlaneId->Text+
 				 ", departure ='"+updFlightDep->Text+"', destination ='"+updFlightDest->Text+
 				 "', departure_date = '"+updFlightDepDate->Text+
-				 "', arrival_date ='"+updFlightArrivalDate->Text+"' WHERE id_flight = "+updFlightId->Text+";");
+				 "', arrival_date ='"+updFlightArrivalDate->Text+"' WHERE id_flight = "+updFlightId->Text+";",conDataBase,myReader);
 			 executeReq("UPDATE "+PREFIX+".tariffs SET price="+updFlightPrice->Text+
-				 " WHERE id_flight = "+updFlightId->Text+" AND class='B';");
+				 " WHERE id_flight = "+updFlightId->Text+" AND class='B';",conDataBase,myReader);
 			 executeReq("UPDATE "+PREFIX+".tariffs SET price="+(Convert::ToInt32(updFlightPrice->Text)*1.15).ToString()+
-				 " WHERE id_flight = "+updFlightId->Text+" AND class='A';");
+				 " WHERE id_flight = "+updFlightId->Text+" AND class='A';",conDataBase,myReader);
 			 loadData("select * from "+PREFIX+".flights", flightsTable);
 			 loadData("select * from "+PREFIX+".tariffs",tariffsTable);
 			 loadData("select flights.departure,flights.destination,DATE_FORMAT(flights.departure_date,'%Y-%m-%d %H:%i:%s'),DATE_FORMAT(flights.arrival_date,'%Y-%m-%d %H:%i:%s'),tariffs.price from  "+PREFIX+
@@ -3708,12 +3712,12 @@ private: System::Void updFlightButton_Click(System::Object^  sender, System::Eve
 				 ".flights on flights.id_flight=tickets.id_flight where tariffs.class=tickets.class AND tickets.id_pass='"+(gcnew String(idPass))+"';",mainGrid);
 			 loadData("select * from "+PREFIX+".tickets",ticketsTable);
 			 FillCombo("SELECT id_flight FROM "+PREFIX+".flights WHERE departure_date>curdate() AND departure_date>curtime()","id_flight",
-				 addCargoFlight);
+				 addCargoFlight,conDataBase,myReader);
 			 CopyCombo(updCargoFlight,addCargoFlight);
 			 addTicketDep->Text="";
 			 addTicketDest->Text="";
-			 FillCombo("SELECT distinct departure FROM "+PREFIX+".flights","departure",addTicketDep);
-			 FillCombo("SELECT distinct destination FROM "+PREFIX+".flights","destination",addTicketDest);
+			 FillCombo("SELECT distinct departure FROM "+PREFIX+".flights","departure",addTicketDep,conDataBase,myReader);
+			 FillCombo("SELECT distinct destination FROM "+PREFIX+".flights","destination",addTicketDest,conDataBase,myReader);
 			 CopyCombo(updTicketDep,addTicketDep);
 			 CopyCombo(updTicketDest,addTicketDest);
 			 CopyCombo(ordTicketDep,addTicketDep);
@@ -3729,9 +3733,10 @@ private: System::Void flightsTable_CellClick(System::Object^  sender, System::Wi
 			 updFlightDepDate->Text = flightsTable->CurrentRow->Cells[4]->Value->ToString();
 			 updFlightArrivalDate->Text = flightsTable->CurrentRow->Cells[5]->Value->ToString();
 			 delFlightId->Text = flightsTable->CurrentRow->Cells[0]->Value->ToString();
-			 MySqlDataReader^ myReader = executeReq("SELECT price FROM "+PREFIX+".tariffs WHERE class='B' AND id_flight="+updFlightId->Text+";");
+			 MySqlDataReader^ myReader = executeReq("SELECT price FROM "+PREFIX+".tariffs WHERE class='B' AND id_flight="+updFlightId->Text+";",conDataBase,myReader);
 			 myReader->Read();
 			 updFlightPrice->Text = myReader->GetString(0);
+			 conDataBase->Close();
 			 loadData("select * from "+PREFIX+".tariffs WHERE id_flight="+updFlightId->Text+";",tariffsTable);
 			 flightsTable->Enabled=true;
 		 }
@@ -3745,7 +3750,7 @@ private: System::Void delFlightButton_Click(System::Object^  sender, System::Eve
 				 return;
 			 }
 			 numTab = 4;
-			 executeReq("DELETE FROM "+PREFIX+".flights where id_flight="+delFlightId->Text+";");
+			 executeReq("DELETE FROM "+PREFIX+".flights where id_flight="+delFlightId->Text+";",conDataBase,myReader);
 			 loadData("select * from "+PREFIX+".flights", flightsTable);
 			 loadData("select * from "+PREFIX+".tariffs",tariffsTable);
 			 loadData("select flights.departure,flights.destination,DATE_FORMAT(flights.departure_date,'%Y-%m-%d %H:%i:%s'),DATE_FORMAT(flights.arrival_date,'%Y-%m-%d %H:%i:%s'),tariffs.price from  "+PREFIX+
@@ -3755,15 +3760,15 @@ private: System::Void delFlightButton_Click(System::Object^  sender, System::Eve
 				 ".flights on flights.id_flight=tickets.id_flight where tariffs.class=tickets.class AND tickets.id_pass='"+(gcnew String(idPass))+"';",mainGrid);
 			 loadData("select * from "+PREFIX+".tickets",ticketsTable);
 			 FillCombo("SELECT id_flight FROM "+PREFIX+".flights","id_flight",
-				 updFlightId);
+				 updFlightId,conDataBase,myReader);
 			 CopyCombo(delFlightId,updFlightId);
 			 FillCombo("SELECT id_flight FROM "+PREFIX+".flights WHERE departure_date>curdate() AND departure_date>curtime()","id_flight",
-				 addCargoFlight);
+				 addCargoFlight,conDataBase,myReader);
 			 CopyCombo(updCargoFlight,addCargoFlight);
 			 addTicketDep->Text="";
 			 addTicketDest->Text="";
-			 FillCombo("SELECT distinct departure FROM "+PREFIX+".flights","departure",addTicketDep);
-			 FillCombo("SELECT distinct destination FROM "+PREFIX+".flights","destination",addTicketDest);
+			 FillCombo("SELECT distinct departure FROM "+PREFIX+".flights","departure",addTicketDep,conDataBase,myReader);
+			 FillCombo("SELECT distinct destination FROM "+PREFIX+".flights","destination",addTicketDest,conDataBase,myReader);
 			 CopyCombo(updTicketDep,addTicketDep);
 			 CopyCombo(updTicketDest,addTicketDest);
 			 CopyCombo(ordTicketDep,addTicketDep);
@@ -3781,10 +3786,13 @@ private: System::Void ctrlUsersTable_CellClick(System::Object^ sender, System::W
 			  querry = "select user_rules, teller_rules, cargo_rules, manager_rules, admin_rules";
 			  querry += " from "+PREFIX+".users where passport="+updPasspText->Text+";";
 			  MySqlDataReader^ myReader;
-			  myReader = executeReq(querry);
+			  myReader = executeReq(querry,conDataBase,myReader);
 			  myReader->Read();
-			  if (!myReader) return;
-
+			  if (!myReader) 
+			  {
+				conDataBase->Close();
+				return;
+			  }
 			  if (myReader->GetString(0) == "1")
 			  {
 				  updRulesBox->Text = "Пользователь";
@@ -3809,6 +3817,7 @@ private: System::Void ctrlUsersTable_CellClick(System::Object^ sender, System::W
 				  updRulesBox->SelectedItem = 4;
 				  updRulesBox->Text = "Администратор";
 			  }
+			  conDataBase->Close();
 		 }
 private: System::Void updUserButton_Click(System::Object^  sender, System::EventArgs^  e) {
 			 updUserButton->Enabled = false;
@@ -3887,10 +3896,10 @@ private: System::Void updUserButton_Click(System::Object^  sender, System::Event
 				 +updPasswText->Text+"', user_rules ='"+user+
 				 "', teller_rules = '"+teller+
 				 "', cargo_rules ='"+cargo+"', manager_rules ='"+manager+
-				 "', admin_rules ='"+admin+"' WHERE passport = '"+updPasspText->Text+"';");
+				 "', admin_rules ='"+admin+"' WHERE passport = '"+updPasspText->Text+"';",conDataBase,myReader);
 
 			 executeReq("update "+PREFIX+".passengers SET full_name='"+updNameText->Text+
-				 "', id_pass='"+updNewPassp->Text+"' where id_pass='"+updPasspText->Text+"';");
+				 "', id_pass='"+updNewPassp->Text+"' where id_pass='"+updPasspText->Text+"';",conDataBase,myReader);
 
 			 asAdmin(ctrlUsersTable);
 			 updUserButton->Enabled = true;
@@ -3949,9 +3958,9 @@ private: System::Void addCargoButton_Click(System::Object^  sender, System::Even
 			 numTab = 5;
 			 executeReq("INSERT INTO "+PREFIX+".cargo (id_pass,id_flight,name,dimensions,weight) VALUES('"+
 				 addCargoPass->Text+"',"+addCargoFlight->Text+",'"+addCargoName->Text+"','"
-				 +addCargoDimX->Text+"x"+addCargoDimY->Text+"x"+addCargoDimZ->Text+"','"+addCargoWeight->Text+"')");
+				 +addCargoDimX->Text+"x"+addCargoDimY->Text+"x"+addCargoDimZ->Text+"','"+addCargoWeight->Text+"')",conDataBase,myReader);
 			 loadData("select * from "+PREFIX+".cargo", cargoTable);
-			 FillCombo("SELECT id_cargo FROM "+PREFIX+".cargo","id_cargo",updCargoId);
+			 FillCombo("SELECT id_cargo FROM "+PREFIX+".cargo","id_cargo",updCargoId,conDataBase,myReader);
 			 CopyCombo(delCargoId,updCargoId);
 			 addCargoButton->Enabled = true;
 		 }
@@ -4017,7 +4026,7 @@ private: System::Void updCargoButton_Click(System::Object^  sender, System::Even
 			 executeReq("UPDATE "+PREFIX+".cargo SET id_pass='"+updCargoPass->Text+
 				 "', id_flight ="+updCargoFlight->Text+", name ='"+updCargoName->Text+
 				 "', dimensions = '"+updCargoDimX->Text+"x"+updCargoDimY->Text+"x"+updCargoDimZ->Text+
-				 "', weight ='"+updCargoWeight->Text+"' WHERE id_cargo = "+updCargoId->Text+";");
+				 "', weight ='"+updCargoWeight->Text+"' WHERE id_cargo = "+updCargoId->Text+";",conDataBase,myReader);
 			 loadData("select * from "+PREFIX+".cargo", cargoTable);
 			 updCargoButton->Enabled = true;
 		 }
@@ -4054,24 +4063,24 @@ private: System::Void delCargoButton_Click(System::Object^  sender, System::Even
 				 return;
 			 }
 			 numTab = 5;
-			 executeReq("DELETE FROM "+PREFIX+".cargo where id_cargo="+delCargoId->Text+";");
+			 executeReq("DELETE FROM "+PREFIX+".cargo where id_cargo="+delCargoId->Text+";",conDataBase,myReader);
 			 loadData("select * from "+PREFIX+".cargo", cargoTable);
-			 FillCombo("SELECT id_cargo FROM "+PREFIX+".cargo","id_cargo",updCargoId);
+			 FillCombo("SELECT id_cargo FROM "+PREFIX+".cargo","id_cargo",updCargoId,conDataBase,myReader);
 			 CopyCombo(delCargoId,updCargoId);
 			 delCargoButton->Enabled = true;
 		 }
 private: System::Void addTicketDep_TextChanged(System::Object^  sender, System::EventArgs^  e) {
 			 if(addTicketDep->Text->Length!=0)
-				FillCombo("SELECT distinct destination FROM "+PREFIX+".flights WHERE departure='"+addTicketDep->Text+"';","destination",addTicketDest);
+				FillCombo("SELECT distinct destination FROM "+PREFIX+".flights WHERE departure='"+addTicketDep->Text+"';","destination",addTicketDest,conDataBase,myReader);
 			 else
 			 {
-				FillCombo("SELECT distinct destination FROM "+PREFIX+".flights;","destination",addTicketDest);
+				FillCombo("SELECT distinct destination FROM "+PREFIX+".flights;","destination",addTicketDest,conDataBase,myReader);
 				addTicketDate->Items->Clear();
 			 }
 			 if(addTicketDep->Text->Length!=0 && addTicketDest->Text->Length!=0)
 			 {
 				 FillCombo("SELECT DATE_FORMAT(departure_date,'%Y-%m-%d %H:%i:%s') FROM "+PREFIX+".flights WHERE destination='"
-					 +addTicketDest->Text+"' AND departure='"+addTicketDep->Text+"' AND departure_date>curdate();","DATE_FORMAT(departure_date,'%Y-%m-%d %H:%i:%s')",addTicketDate);
+					 +addTicketDest->Text+"' AND departure='"+addTicketDep->Text+"' AND departure_date>curdate();","DATE_FORMAT(departure_date,'%Y-%m-%d %H:%i:%s')",addTicketDate,conDataBase,myReader);
 				 if(addTicketDate->Items->Count==0)
 					 addTicketDate->Text = "На данный момент рейсов нет";
 				 else addTicketDate->Text = "";
@@ -4079,16 +4088,16 @@ private: System::Void addTicketDep_TextChanged(System::Object^  sender, System::
 		 }
 private: System::Void addTicketDest_TextChanged(System::Object^  sender, System::EventArgs^  e) {
 			 if(addTicketDest->Text->Length!=0)
-				FillCombo("SELECT distinct departure FROM "+PREFIX+".flights WHERE destination='"+addTicketDest->Text+"';","departure",addTicketDep);
+				FillCombo("SELECT distinct departure FROM "+PREFIX+".flights WHERE destination='"+addTicketDest->Text+"';","departure",addTicketDep,conDataBase,myReader);
 			 else
 			 {
-				FillCombo("SELECT distinct departure FROM "+PREFIX+".flights;","departure",addTicketDep);
+				FillCombo("SELECT distinct departure FROM "+PREFIX+".flights;","departure",addTicketDep,conDataBase,myReader);
 				addTicketDate->Items->Clear();
 			 }
 			 if(addTicketDep->Text->Length!=0 && addTicketDest->Text->Length!=0)
 			 {
 				 FillCombo("SELECT DATE_FORMAT(departure_date,'%Y-%m-%d %H:%i:%s') FROM "+PREFIX+".flights WHERE destination='"
-				 +addTicketDest->Text+"' AND departure='"+addTicketDep->Text+"' AND departure_date>curdate();","DATE_FORMAT(departure_date,'%Y-%m-%d %H:%i:%s')",addTicketDate);
+				 +addTicketDest->Text+"' AND departure='"+addTicketDep->Text+"' AND departure_date>curdate();","DATE_FORMAT(departure_date,'%Y-%m-%d %H:%i:%s')",addTicketDate,conDataBase,myReader);
 				 if(addTicketDate->Items->Count==0)
 					addTicketDate->Text = "На данный момент рейсов нет";
 				 else addTicketDate->Text = "";
@@ -4134,42 +4143,50 @@ private: System::Void addTicketButton_Click(System::Object^  sender, System::Eve
 			 MySqlDataReader^ myReader;
 			 numTab = 6;
 			 myReader = executeReq("SELECT id_flight FROM "+PREFIX+".flights WHERE departure='"+addTicketDep->Text+
-				 "' AND destination='"+addTicketDest->Text+"' AND departure_date='"+addTicketDate->Text+"';");
+				 "' AND destination='"+addTicketDest->Text+"' AND departure_date='"+addTicketDate->Text+"';",conDataBase,myReader);
 			 //SELECT id_flight FROM airlines.flights WHERE departure='Москва' AND destination='Киев' AND departure_date='2013-11-22 21:42:58';
 			 if(!myReader->Read())
 			 {
 				 MessageBox::Show("Такого рейса не существует", "Ошибка",
 					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
 				 addTicketButton->Enabled = true;
+				 conDataBase->Close();
 				 return;
 			 }
 			 String^ idFlight=myReader->GetString(0);
-			 myReader = executeReq("SELECT * FROM "+PREFIX+".tickets WHERE id_flight="+idFlight+" AND id_pass='"+addTicketPass->Text+"';");
+			 conDataBase->Close();
+			 myReader = executeReq("SELECT * FROM "+PREFIX+".tickets WHERE id_flight="+idFlight+" AND id_pass='"+addTicketPass->Text+"';",conDataBase,myReader);
 			 if(myReader->HasRows)
 			 {
 				 MessageBox::Show("Пользователь с данным паспортом уже заказал билет на данный рейс", "Ошибка",
 					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
 				 addTicketButton->Enabled = true;
+				 conDataBase->Close();
 				 return;
 			 }
-			 myReader = executeReq("SELECT spot_num FROM "+PREFIX+".plane_parametrs WHERE model=(SELECT model FROM "+PREFIX+".planes WHERE id_plane=(SELECT id_plane FROM "+PREFIX+".flights WHERE id_flight="+idFlight+"))");
+			 conDataBase->Close();
+			 myReader = executeReq("SELECT spot_num FROM "+PREFIX+".plane_parametrs WHERE model=(SELECT model FROM "+PREFIX+".planes WHERE id_plane=(SELECT id_plane FROM "+PREFIX+".flights WHERE id_flight="+idFlight+"))",conDataBase,myReader);
 			 if(!myReader->Read())
 			 {
 				 MessageBox::Show("Невозможно найти самолет рейса №"+idFlight, "Ошибка",
 					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
 				 addTicketButton->Enabled = true;
+				 conDataBase->Close();
 				 return;
 			 }
 			 int spotAmount = myReader->GetUInt32(0);
-			 myReader = executeReq("SELECT count(*) FROM "+PREFIX+".tickets WHERE id_flight="+idFlight+";");
+			 conDataBase->Close();
+			 myReader = executeReq("SELECT count(*) FROM "+PREFIX+".tickets WHERE id_flight="+idFlight+";",conDataBase,myReader);
 			 if(!myReader->Read())
 			 {
 				 MessageBox::Show("Невозможно найти билеты рейса №"+idFlight, "Ошибка",
 					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
 				 addTicketButton->Enabled = true;
+				 conDataBase->Close();
 				 return;
 			 }
 			 int ticketAmount = myReader->GetUInt32(0);
+			 conDataBase->Close();
 			 if(ticketAmount>=spotAmount)
 			 {
 				 MessageBox::Show("Все билеты на рейс № "+idFlight+" проданы", "Ошибка",
@@ -4180,12 +4197,12 @@ private: System::Void addTicketButton_Click(System::Object^  sender, System::Eve
 			 /*else  MessageBox::Show(ticketAmount.ToString()+" "+spotAmount.ToString(), "Ошибка",
 				 MessageBoxButtons::OK,MessageBoxIcon::Error);	*/
 			 myReader = executeReq("INSERT INTO "+PREFIX+".tickets (id_pass,id_flight,class,sale_date) VALUES('"+
-				 addTicketPass->Text+"',"+idFlight+",'"+addTicketClass->Text+"',curdate())");
+				 addTicketPass->Text+"',"+idFlight+",'"+addTicketClass->Text+"',curdate())",conDataBase,myReader);
 			 loadData("select * from "+PREFIX+".tickets", ticketsTable);
 			 loadData("SELECT tickets.id_ticket,tickets.id_flight,flights.departure,flights.destination,flights.departure_date,flights.arrival_date,tariffs.price,tickets.sale_date from "+
 				 PREFIX+".tickets join "+PREFIX+".tariffs on tariffs.id_flight=tickets.id_flight join "+PREFIX+
 				 ".flights on flights.id_flight=tickets.id_flight where tariffs.class=tickets.class AND tickets.id_pass='"+(gcnew String(idPass))+"';",mainGrid);
-			 FillCombo("SELECT distinct id_pass FROM "+PREFIX+".tickets","id_pass",updTicketPass);
+			 FillCombo("SELECT distinct id_pass FROM "+PREFIX+".tickets","id_pass",updTicketPass,conDataBase,myReader);
 			 CopyCombo(delTicketPass,updTicketPass);
 			 addTicketButton->Enabled = true;
 		 }
@@ -4203,7 +4220,7 @@ private: System::Void addTicketDest_KeyPress(System::Object^  sender, System::Wi
 		 }
 private: System::Void updTicketPass_TextChanged(System::Object^  sender, System::EventArgs^  e) {
 			 updTicketId->Text="";
-			 FillCombo("SELECT id_ticket FROM "+PREFIX+".tickets WHERE id_pass="+updTicketPass->Text+";","id_ticket",updTicketId);
+			 FillCombo("SELECT id_ticket FROM "+PREFIX+".tickets WHERE id_pass="+updTicketPass->Text+";","id_ticket",updTicketId,conDataBase,myReader);
 		 }
 private: System::Void updTicketDep_KeyPress(System::Object^  sender, System::Windows::Forms::KeyPressEventArgs^  e) {
 			 int i = (int)e->KeyChar;
@@ -4221,16 +4238,16 @@ private: System::Void updTicketDep_TextChanged(System::Object^  sender, System::
 		if(!isCellClick)
 		{
 			 if(updTicketDep->Text->Length!=0)
-				 FillCombo("SELECT distinct destination FROM "+PREFIX+".flights WHERE departure='"+updTicketDep->Text+"';","destination",updTicketDest);
+				 FillCombo("SELECT distinct destination FROM "+PREFIX+".flights WHERE departure='"+updTicketDep->Text+"';","destination",updTicketDest,conDataBase,myReader);
 			 else
 			 {
-				 FillCombo("SELECT distinct destination FROM "+PREFIX+".flights;","destination",updTicketDest);
+				 FillCombo("SELECT distinct destination FROM "+PREFIX+".flights;","destination",updTicketDest,conDataBase,myReader);
 				 updTicketDate->Items->Clear();
 			 }
 			 if(updTicketDep->Text->Length!=0 && updTicketDest->Text->Length!=0)
 			 {
 				 FillCombo("SELECT DATE_FORMAT(departure_date,'%Y-%m-%d %H:%i:%s') FROM "+PREFIX+".flights WHERE destination='"
-					 +updTicketDest->Text+"' AND departure='"+updTicketDep->Text+"' AND departure_date>curdate();","DATE_FORMAT(departure_date,'%Y-%m-%d %H:%i:%s')",updTicketDate);
+					 +updTicketDest->Text+"' AND departure='"+updTicketDep->Text+"' AND departure_date>curdate();","DATE_FORMAT(departure_date,'%Y-%m-%d %H:%i:%s')",updTicketDate,conDataBase,myReader);
 				 if(updTicketDate->Items->Count==0)
 					 updTicketDate->Text = "На данный момент рейсов нет";
 				 else updTicketDate->Text = "";
@@ -4241,16 +4258,16 @@ private: System::Void updTicketDest_TextChanged(System::Object^  sender, System:
 		if(!isCellClick)
 		{
 			 if(updTicketDest->Text->Length!=0)
-				 FillCombo("SELECT distinct departure FROM "+PREFIX+".flights WHERE destination='"+updTicketDest->Text+"';","departure",updTicketDep);
+				 FillCombo("SELECT distinct departure FROM "+PREFIX+".flights WHERE destination='"+updTicketDest->Text+"';","departure",updTicketDep,conDataBase,myReader);
 			 else
 			 {
-				 FillCombo("SELECT distinct departure FROM "+PREFIX+".flights;","departure",updTicketDep);
+				 FillCombo("SELECT distinct departure FROM "+PREFIX+".flights;","departure",updTicketDep,conDataBase,myReader);
 				 updTicketDate->Items->Clear();
 			 }
 			 if(updTicketDep->Text->Length!=0 && updTicketDest->Text->Length!=0)
 			 {
 				 FillCombo("SELECT DATE_FORMAT(departure_date,'%Y-%m-%d %H:%i:%s') FROM "+PREFIX+".flights WHERE destination='"
-					 +updTicketDest->Text+"' AND departure='"+updTicketDep->Text+"' AND departure_date>curdate();","DATE_FORMAT(departure_date,'%Y-%m-%d %H:%i:%s')",updTicketDate);
+					 +updTicketDest->Text+"' AND departure='"+updTicketDep->Text+"' AND departure_date>curdate();","DATE_FORMAT(departure_date,'%Y-%m-%d %H:%i:%s')",updTicketDate,conDataBase,myReader);
 				 if(updTicketDate->Items->Count==0)
 					 updTicketDate->Text = "На данный момент рейсов нет";
 				 else updTicketDate->Text = "";
@@ -4266,12 +4283,17 @@ private: System::Void ticketsTable_CellClick(System::Object^  sender, System::Wi
 			 delTicketId->Text = ticketsTable->CurrentRow->Cells[0]->Value->ToString();
 			 updTicketClass->Text = ticketsTable->CurrentRow->Cells[3]->Value->ToString();
 			 MySqlDataReader^ myReader;
-			 myReader = executeReq("SELECT departure,destination,DATE_FORMAT(departure_date,'%Y-%m-%d %H:%i:%s') FROM "+PREFIX+".flights WHERE id_flight="+ticketsTable->CurrentRow->Cells[1]->Value->ToString()+";");
+			 myReader = executeReq("SELECT departure,destination,DATE_FORMAT(departure_date,'%Y-%m-%d %H:%i:%s') FROM "+PREFIX+".flights WHERE id_flight="+ticketsTable->CurrentRow->Cells[1]->Value->ToString()+";",conDataBase,myReader);
 			 myReader->Read();
 			 updTicketDate->Items->Clear();
 			 updTicketDep->Text = myReader->GetString(0);
 			 updTicketDest->Text = myReader->GetString(1);
 			 updTicketDate->Text = myReader->GetString(2);
+			 conDataBase->Close();
+			 FillCombo("SELECT DATE_FORMAT(departure_date,'%Y-%m-%d %H:%i:%s') FROM "+PREFIX+".flights WHERE destination='"
+				 +updTicketDest->Text+"' AND departure='"+updTicketDep->Text+"' AND departure_date>curdate();","DATE_FORMAT(departure_date,'%Y-%m-%d %H:%i:%s')",updTicketDate,conDataBase,myReader);
+			 FillCombo("SELECT distinct departure FROM "+PREFIX+".flights WHERE destination='"+updTicketDest->Text+"';","departure",updTicketDep,conDataBase,myReader);
+			 FillCombo("SELECT distinct destination FROM "+PREFIX+".flights WHERE departure='"+updTicketDep->Text+"';","destination",updTicketDest,conDataBase,myReader);
 			 isCellClick = false;
 			 ticketsTable->Enabled = true;
 		 }
@@ -4322,19 +4344,21 @@ private: System::Void button1_Click_2(System::Object^  sender, System::EventArgs
 			 MySqlDataReader^ myReader;
 			 numTab = 6;
 			 myReader = executeReq("SELECT id_flight FROM "+PREFIX+".flights WHERE departure='"+updTicketDep->Text+
-				 "' AND destination='"+updTicketDest->Text+"' AND departure_date='"+updTicketDate->Text+"';");
+				 "' AND destination='"+updTicketDest->Text+"' AND departure_date='"+updTicketDate->Text+"';",conDataBase,myReader);
 			 //SELECT id_flight FROM airlines.flights WHERE departure='Москва' AND destination='Киев' AND departure_date='2013-11-22 21:42:58';
 			 if(!myReader->Read())
 			 {
 				 MessageBox::Show("Такого рейса не существует", "Ошибка",
 					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
 				 updTicketButton->Enabled = true;
+				 conDataBase->Close();
 				 return;
 			 }
 			 String^ idFlight=myReader->GetString(0);
+			 conDataBase->Close();
 			 myReader = executeReq("UPDATE "+PREFIX+".tickets SET id_pass='"+updTicketPass->Text+
 				 "', id_flight ="+idFlight+", class ='"+updTicketClass->Text+
-				 "', sale_date = curdate() WHERE id_ticket = "+updTicketId->Text+";");
+				 "', sale_date = curdate() WHERE id_ticket = "+updTicketId->Text+";",conDataBase,myReader);
 			 loadData("select * from "+PREFIX+".tickets", ticketsTable);
 			 loadData("SELECT tickets.id_ticket,tickets.id_flight,flights.departure,flights.destination,flights.departure_date,flights.arrival_date,tariffs.price,tickets.sale_date from "+
 				 PREFIX+".tickets join "+PREFIX+".tariffs on tariffs.id_flight=tickets.id_flight join "+PREFIX+
@@ -4344,7 +4368,7 @@ private: System::Void button1_Click_2(System::Object^  sender, System::EventArgs
 private: System::Void delTicketPass_TextChanged(System::Object^  sender, System::EventArgs^  e) {
 			 delTicketId->Text="";
 			 if(delTicketPass->Text->Length!=0)
-				FillCombo("SELECT id_ticket FROM "+PREFIX+".tickets WHERE id_pass="+delTicketPass->Text+";","id_ticket",delTicketId);
+				FillCombo("SELECT id_ticket FROM "+PREFIX+".tickets WHERE id_pass="+delTicketPass->Text+";","id_ticket",delTicketId,conDataBase,myReader);
 		 }
 private: System::Void delTicketButton_Click(System::Object^  sender, System::EventArgs^  e) {
 			 delTicketButton->Enabled = false;
@@ -4364,12 +4388,12 @@ private: System::Void delTicketButton_Click(System::Object^  sender, System::Eve
 			 }
 			 MySqlDataReader^ myReader;
 			 numTab = 6;
-			 myReader = executeReq("DELETE FROM "+PREFIX+".tickets WHERE id_ticket="+delTicketId->Text+";");
+			 myReader = executeReq("DELETE FROM "+PREFIX+".tickets WHERE id_ticket="+delTicketId->Text+";",conDataBase,myReader);
 			 loadData("select * from "+PREFIX+".tickets", ticketsTable);
 			 loadData("SELECT tickets.id_ticket,tickets.id_flight,flights.departure,flights.destination,flights.departure_date,flights.arrival_date,tariffs.price,tickets.sale_date from "+
 				 PREFIX+".tickets join "+PREFIX+".tariffs on tariffs.id_flight=tickets.id_flight join "+PREFIX+
 				 ".flights on flights.id_flight=tickets.id_flight where tariffs.class=tickets.class AND tickets.id_pass='"+(gcnew String(idPass))+"';",mainGrid);
-			 FillCombo("Select distinct id_pass from "+PREFIX+".tickets","id_pass",updTicketPass);
+			 FillCombo("Select distinct id_pass from "+PREFIX+".tickets","id_pass",updTicketPass,conDataBase,myReader);
 			 CopyCombo(delTicketPass,updTicketPass);
 			 delTicketPass->Text = "";
 			 delTicketId->Text = "";
@@ -4377,16 +4401,16 @@ private: System::Void delTicketButton_Click(System::Object^  sender, System::Eve
 		 }
 private: System::Void ordTicketDep_TextChanged(System::Object^  sender, System::EventArgs^  e) {
 			 if(ordTicketDep->Text->Length!=0)
-				 FillCombo("SELECT distinct destination FROM "+PREFIX+".flights WHERE departure='"+ordTicketDep->Text+"';","destination",ordTicketDest);
+				 FillCombo("SELECT distinct destination FROM "+PREFIX+".flights WHERE departure='"+ordTicketDep->Text+"';","destination",ordTicketDest,conDataBase,myReader);
 			 else
 			 {
-				 FillCombo("SELECT distinct destination FROM "+PREFIX+".flights;","destination",ordTicketDest);
+				 FillCombo("SELECT distinct destination FROM "+PREFIX+".flights;","destination",ordTicketDest,conDataBase,myReader);
 				 ordTicketDate->Items->Clear();
 			 }
 			 if(ordTicketDep->Text->Length!=0 && ordTicketDest->Text->Length!=0)
 			 {
 				 FillCombo("SELECT DATE_FORMAT(departure_date,'%Y-%m-%d %H:%i:%s') FROM "+PREFIX+".flights WHERE destination='"
-					 +ordTicketDest->Text+"' AND departure='"+ordTicketDep->Text+"' AND departure_date>curdate();","DATE_FORMAT(departure_date,'%Y-%m-%d %H:%i:%s')",ordTicketDate);
+					 +ordTicketDest->Text+"' AND departure='"+ordTicketDep->Text+"' AND departure_date>curdate();","DATE_FORMAT(departure_date,'%Y-%m-%d %H:%i:%s')",ordTicketDate,conDataBase,myReader);
 				 if(ordTicketDate->Items->Count==0)
 					 ordTicketDate->Text = "На данный момент рейсов нет";
 				 else ordTicketDate->Text = "";
@@ -4394,16 +4418,16 @@ private: System::Void ordTicketDep_TextChanged(System::Object^  sender, System::
 		 }
 private: System::Void ordTicketDest_TextChanged(System::Object^  sender, System::EventArgs^  e) {
 			 if(ordTicketDest->Text->Length!=0)
-				 FillCombo("SELECT distinct departure FROM "+PREFIX+".flights WHERE destination='"+ordTicketDest->Text+"';","departure",ordTicketDep);
+				 FillCombo("SELECT distinct departure FROM "+PREFIX+".flights WHERE destination='"+ordTicketDest->Text+"';","departure",ordTicketDep,conDataBase,myReader);
 			 else
 			 {
-				 FillCombo("SELECT distinct departure FROM "+PREFIX+".flights;","departure",ordTicketDep);
+				 FillCombo("SELECT distinct departure FROM "+PREFIX+".flights;","departure",ordTicketDep,conDataBase,myReader);
 				 ordTicketDate->Items->Clear();
 			 }
 			 if(ordTicketDep->Text->Length!=0 && ordTicketDest->Text->Length!=0)
 			 {
 				 FillCombo("SELECT DATE_FORMAT(departure_date,'%Y-%m-%d %H:%i:%s') FROM "+PREFIX+".flights WHERE destination='"
-					 +ordTicketDest->Text+"' AND departure='"+ordTicketDep->Text+"' AND departure_date>curdate();","DATE_FORMAT(departure_date,'%Y-%m-%d %H:%i:%s')",ordTicketDate);
+					 +ordTicketDest->Text+"' AND departure='"+ordTicketDep->Text+"' AND departure_date>curdate();","DATE_FORMAT(departure_date,'%Y-%m-%d %H:%i:%s')",ordTicketDate,conDataBase,myReader);
 				 if(ordTicketDate->Items->Count==0)
 					 ordTicketDate->Text = "На данный момент рейсов нет";
 				 else ordTicketDate->Text = "";
@@ -4448,44 +4472,52 @@ private: System::Void ordButton_Click(System::Object^  sender, System::EventArgs
 			 MySqlDataReader^ myReader;
 			 numTab = 6;
 			 myReader = executeReq("SELECT id_flight FROM "+PREFIX+".flights WHERE departure='"+ordTicketDep->Text+
-				 "' AND destination='"+ordTicketDest->Text+"' AND departure_date='"+ordTicketDate->Text+"';");
+				 "' AND destination='"+ordTicketDest->Text+"' AND departure_date='"+ordTicketDate->Text+"';",conDataBase,myReader);
 			 //SELECT id_flight FROM airlines.flights WHERE departure='Москва' AND destination='Киев' AND departure_date='2013-11-22 21:42:58';
 			 if(!myReader->Read())
 			 {
 				 MessageBox::Show("Такого рейса не существует", "Ошибка",
 					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
 				 ordTicketButton->Enabled = true;
+				 conDataBase->Close();
 				 return;
 			 }
 			 String^ idFlight=myReader->GetString(0);
+			 conDataBase->Close();
 			 String^ idPassStr = gcnew String(idPass);
-			 myReader = executeReq("SELECT * FROM "+PREFIX+".tickets WHERE id_flight="+idFlight+" AND id_pass='"+idPassStr+"';");
+			 myReader = executeReq("SELECT * FROM "+PREFIX+".tickets WHERE id_flight="+idFlight+" AND id_pass='"+idPassStr+"';",conDataBase,myReader);
 			 if(myReader->HasRows)
 			 {
 				 MessageBox::Show("Пользователь с данным паспортом уже заказал билет на данный рейс", "Ошибка",
 					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
 				 ordTicketButton->Enabled = true;
+				 conDataBase->Close();
 				 return;
 			 }
+			 conDataBase->Close();
 			 myReader = executeReq("SELECT spot_num FROM "+PREFIX+".plane_parametrs WHERE model=(SELECT model FROM "+
-				 PREFIX+".planes WHERE id_plane=(SELECT id_plane FROM "+PREFIX+".flights WHERE id_flight="+idFlight+"))");
+				 PREFIX+".planes WHERE id_plane=(SELECT id_plane FROM "+PREFIX+".flights WHERE id_flight="+idFlight+"))",conDataBase,myReader);
 			 if(!myReader->Read())
 			 {
 				 MessageBox::Show("Невозможно найти самолет рейса №"+idFlight, "Ошибка",
 					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
 				 ordTicketButton->Enabled = true;
+				 conDataBase->Close();
 				 return;
 			 }
 			 int spotAmount = myReader->GetUInt32(0);
-			 myReader = executeReq("SELECT count(*) FROM "+PREFIX+".tickets WHERE id_flight="+idFlight+";");
+			 conDataBase->Close();
+			 myReader = executeReq("SELECT count(*) FROM "+PREFIX+".tickets WHERE id_flight="+idFlight+";",conDataBase,myReader);
 			 if(!myReader->Read())
 			 {
 				 MessageBox::Show("Невозможно найти билеты рейса №"+idFlight, "Ошибка",
 					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
 				 ordTicketButton->Enabled = true;
+				 conDataBase->Close();
 				 return;
 			 }
 			 int ticketAmount = myReader->GetUInt32(0);
+			 conDataBase->Close();
 			 if(ticketAmount>=spotAmount)
 			 {
 				 MessageBox::Show("Все билеты на рейс № "+idFlight+" проданы", "Ошибка",
@@ -4496,11 +4528,11 @@ private: System::Void ordButton_Click(System::Object^  sender, System::EventArgs
 			 /*else  MessageBox::Show(ticketAmount.ToString()+" "+spotAmount.ToString(), "Ошибка",
 				 MessageBoxButtons::OK,MessageBoxIcon::Error);	*/
 			 myReader = executeReq("INSERT INTO "+PREFIX+".tickets (id_pass,id_flight,class,sale_date) VALUES('"+
-				 idPassStr+"',"+idFlight+",'"+ordTicketClass->Text+"',curdate())");
+				 idPassStr+"',"+idFlight+",'"+ordTicketClass->Text+"',curdate())",conDataBase,myReader);
 			 loadData("select * from "+PREFIX+".tickets", ticketsTable);
 			 loadData("select flights.departure,flights.destination,DATE_FORMAT(flights.departure_date,'%Y-%m-%d %H:%i:%s'),DATE_FORMAT(flights.arrival_date,'%Y-%m-%d %H:%i:%s'),tariffs.price from  "+PREFIX+
 				 ".flights join "+PREFIX+".tariffs on flights.id_flight=tariffs.id_flight where tariffs.class='B' AND flights.departure_date>curdate();",ordTable);
-			 FillCombo("SELECT distinct id_pass FROM "+PREFIX+".tickets","id_pass",updTicketPass);
+			 FillCombo("SELECT distinct id_pass FROM "+PREFIX+".tickets","id_pass",updTicketPass,conDataBase,myReader);
 			 loadData("SELECT tickets.id_ticket,tickets.id_flight,flights.departure,flights.destination,flights.departure_date,flights.arrival_date,tariffs.price,tickets.sale_date from "+
 				 PREFIX+".tickets join "+PREFIX+".tariffs on tariffs.id_flight=tickets.id_flight join "+PREFIX+
 				 ".flights on flights.id_flight=tickets.id_flight where tariffs.class=tickets.class AND tickets.id_pass='"+(gcnew String(idPass))+"';",mainGrid);
@@ -4573,8 +4605,8 @@ private: System::Void addUserButton_Click(System::Object^  sender, System::Event
 			 }
 
 			 executeReq("INSERT INTO "+PREFIX+".users (passport,password,user_rules,teller_rules,cargo_rules,manager_rules,admin_rules) VALUES('"+
-				 addPasspText->Text+"','"+addPasswText->Text+"','"+user+"','"+teller+"','"+cargo+"','"+manager+"','"+admin+"')");
-			 executeReq("INSERT INTO "+PREFIX+".passengers (id_pass,full_name) VALUES('"+addPasspText->Text+"','"+addNameText->Text+"')");
+				 addPasspText->Text+"','"+addPasswText->Text+"','"+user+"','"+teller+"','"+cargo+"','"+manager+"','"+admin+"')",conDataBase,myReader);
+			 executeReq("INSERT INTO "+PREFIX+".passengers (id_pass,full_name) VALUES('"+addPasspText->Text+"','"+addNameText->Text+"')",conDataBase,myReader);
 			 asAdmin(ctrlUsersTable);
 			 addUserButton->Enabled = true;
 		 }
@@ -4594,8 +4626,8 @@ private: System::Void delUserButton_Click(System::Object^  sender, System::Event
 				 delUserButton->Enabled = true;
 				 return;
 			 }
-			 executeReq("DELETE FROM "+PREFIX+".users where passport='"+delUserPassp->Text+"';");
-			 executeReq("DELETE FROM "+PREFIX+".passengers where id_pass='"+delUserPassp->Text+"';");
+			 executeReq("DELETE FROM "+PREFIX+".users where passport='"+delUserPassp->Text+"';",conDataBase,myReader);
+			 executeReq("DELETE FROM "+PREFIX+".passengers where id_pass='"+delUserPassp->Text+"';",conDataBase,myReader);
 			 asAdmin(ctrlUsersTable);
 			 delUserButton->Enabled = true;
 		 }

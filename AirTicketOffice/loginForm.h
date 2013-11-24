@@ -20,6 +20,10 @@ namespace AirTicketOffice {
 	/// </summary>
 	public ref class loginForm : public System::Windows::Forms::Form
 	{
+	public: static String^ constring = L"datasource="+SERVER+";port="+PORT+";username="+USER+";password="+PASSWD;
+	public: static MySqlConnection^ conDataBase  = gcnew MySqlConnection(constring);
+	public: static MySqlCommand^ cmdDataBase;
+	public: static MySqlDataReader^ myReader;
 	public:
 		loginForm(void)
 		{
@@ -157,7 +161,7 @@ namespace AirTicketOffice {
 #pragma endregion
 	private: System::Void loginButton_Click(System::Object^  sender, System::EventArgs^  e) {
 			 loginButton->Enabled = false;
-			 MySqlDataReader^ myReader = executeReq("select * from "+PREFIX+".users;");
+			 MySqlDataReader^ myReader = executeReq("select * from "+PREFIX+".users;",conDataBase,myReader);
 			 if (!myReader) 
 			 {
 				 loginButton->Enabled = true;

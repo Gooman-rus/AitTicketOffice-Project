@@ -21,21 +21,23 @@ String^ getError()
 	}
 }
 
-MySqlDataReader^ executeReq(String^ request)
+MySqlDataReader^ executeReq(String^ request,MySqlConnection^ conDataBase,MySqlDataReader^ myReader)
 {
-	String^ constring = L"datasource="+SERVER+";port="+PORT+";username="+USER+";password="+PASSWD;
-	MySqlConnection^ conDataBase = gcnew MySqlConnection(constring);
+	//String^ constring = L"datasource="+SERVER+";port="+PORT+";username="+USER+";password="+PASSWD;
+	//conDataBase = gcnew MySqlConnection(constring);
 	MySqlCommand^ cmdDataBase = gcnew MySqlCommand(request, conDataBase);
-	MySqlDataReader^ myReader;
+	//MySqlDataReader^ myReader;
 	try
 	{
 		conDataBase->Open();
 		myReader = cmdDataBase->ExecuteReader();
 		conDataBase->ConnectionTimeout;
-		//conDataBase->Close();
+		if(!(request->Contains("SELECT") || request->Contains("Select") || request->Contains("select")))
+		  conDataBase->Close();
 	}
 	catch(MySqlException^ ex) {
 				int code = ex->Number;
+				conDataBase->Close();
 				if(code==1062)
 				{
 					MessageBox::Show(getError(),"Ошибка",MessageBoxButtons::OK,MessageBoxIcon::Error);
@@ -62,6 +64,7 @@ MySqlDataReader^ executeReq(String^ request)
 				else
 					MessageBox::Show("Error "+code.ToString()+": "+ex->Message,
 									"Ошибка",MessageBoxButtons::OK,MessageBoxIcon::Error);
+				conDataBase->Close();
 	}
 
 	return myReader;
@@ -88,6 +91,7 @@ bool loadData(String^ request, System::Windows::Forms::DataGridView^ dataGrid)
 	}
 	catch(MySqlException^ ex) {
 		int code = ex->Number;
+		conDataBase->Close();
 		if (code == 1062)
 		{
 			MessageBox::Show(getError());
@@ -104,9 +108,9 @@ bool loadData(String^ request, System::Windows::Forms::DataGridView^ dataGrid)
 }
 
 // заполняет combobox
-void FillCombo(String^ query,String^ column, System::Windows::Forms::ComboBox^ box)
+void FillCombo(String^ query,String^ column, System::Windows::Forms::ComboBox^ box,MySqlConnection^ conDataBase,MySqlDataReader^ myReader)
 {
-	MySqlDataReader^ myReader = executeReq(query);
+	myReader = executeReq(query,conDataBase,myReader);
 	box->Items->Clear();
 	if(!myReader)
 		return;
@@ -114,6 +118,7 @@ void FillCombo(String^ query,String^ column, System::Windows::Forms::ComboBox^ b
 	{
 		box->Items->Add(myReader->GetString(column));
 	}
+	conDataBase->Close();
 }
 void CopyCombo(System::Windows::Forms::ComboBox^ box1,System::Windows::Forms::ComboBox^ box2)
 {

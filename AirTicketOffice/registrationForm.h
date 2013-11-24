@@ -18,6 +18,10 @@ namespace AirTicketOffice {
 	/// </summary>
 	public ref class registrationForm : public System::Windows::Forms::Form
 	{
+	public: static String^ constring = L"datasource="+SERVER+";port="+PORT+";username="+USER+";password="+PASSWD;
+	public: static MySqlConnection^ conDataBase  = gcnew MySqlConnection(constring);
+	public: static MySqlCommand^ cmdDataBase;
+	public: static MySqlDataReader^ myReader;
 	public:
 		registrationForm(void)
 		{
@@ -287,14 +291,14 @@ private: System::Void registerButton_Click(System::Object^  sender, System::Even
 			 MySqlDataReader^ myReader;
 			 numTab =  1;
 			myReader = executeReq("INSERT INTO "+PREFIX+".users (passport,password) VALUES('"+
-				        inputPassport->Text+"',"+inputPassword->Text+")");
+				        inputPassport->Text+"',"+inputPassword->Text+")",conDataBase,myReader);
 			 if (!myReader) 
 			 {
 				 registerButton->Enabled = true;
 				 return;
 			 }
 			 myReader = executeReq("INSERT INTO "+PREFIX+".passengers VALUES('"+
-				        inputPassport->Text+"','"+nameInput->Text+"')");
+				        inputPassport->Text+"','"+nameInput->Text+"')",conDataBase,myReader);
 			 if (!myReader) 
 			 {
 				 registerButton->Enabled = true;
