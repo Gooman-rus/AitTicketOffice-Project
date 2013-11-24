@@ -16,6 +16,7 @@ using namespace System::Data;
 extern int numTab;
 extern int currRole;  // текущая роль
 extern char* idPass;
+extern bool isCellClick;
 
 // выполняет запрос
 MySqlDataReader^ executeReq(String^ request);	

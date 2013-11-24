@@ -9,6 +9,7 @@ using namespace System::Runtime::InteropServices;
 int numTab = 1;
 int currRole;  // текущая роль
 char* idPass;
+bool isCellClick = false;
 
 String^ getError()
 {
@@ -30,7 +31,8 @@ MySqlDataReader^ executeReq(String^ request)
 	{
 		conDataBase->Open();
 		myReader = cmdDataBase->ExecuteReader();
-
+		conDataBase->ConnectionTimeout;
+		//conDataBase->Close();
 	}
 	catch(MySqlException^ ex) {
 				int code = ex->Number;
@@ -82,6 +84,7 @@ bool loadData(String^ request, System::Windows::Forms::DataGridView^ dataGrid)
 		bSource->DataSource = dbdataset;
 		dataGrid->DataSource = bSource;
 		sda->Update(dbdataset);
+		conDataBase->Close();
 	}
 	catch(MySqlException^ ex) {
 		int code = ex->Number;

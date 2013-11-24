@@ -2,6 +2,8 @@
 #include "common.h"
 #include "work_with_tables.h"
 
+
+
 namespace AirTicketOffice {
 
 	using namespace System;
@@ -10,6 +12,7 @@ namespace AirTicketOffice {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+	using namespace System::Drawing::Printing;
 	using namespace System::Text::RegularExpressions;
 	using namespace System::Runtime::InteropServices;
 
@@ -18,6 +21,12 @@ namespace AirTicketOffice {
 	/// </summary>
 	public ref class mainForm : public System::Windows::Forms::Form
 	{
+	private:
+		System::Windows::Forms::Button^ printButton;
+	private: System::Windows::Forms::Button^  prntButton;
+	private: System::Windows::Forms::Button^  previewButton;
+	private: System::Windows::Forms::PrintPreviewDialog^  printPreviewDialog1;
+			 System::Drawing::Font^ printFont;
 	public:
 		mainForm(void)
 		{
@@ -126,6 +135,7 @@ namespace AirTicketOffice {
 					CopyCombo(updTicketDest,addTicketDest);
 					addTicketClass->Items->Add("A");
 					addTicketClass->Items->Add("B");
+					CopyCombo(ordTicketClass,addTicketClass);
 					CopyCombo(updTicketClass,addTicketClass);
 					FillCombo("SELECT distinct id_pass FROM "+PREFIX+".tickets","id_pass",updTicketPass);
 					CopyCombo(delTicketPass,updTicketPass);
@@ -442,6 +452,8 @@ private: System::Windows::Forms::Button^  delUserButton;
 private: System::Windows::Forms::Label^  label80;
 private: System::Windows::Forms::TextBox^  delUserPassp;
 
+private: System::Drawing::Printing::PrintDocument^  printDocument1;
+
 
 
 
@@ -465,8 +477,11 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 		/// </summary>
 		void InitializeComponent(void)
 		{
+			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(mainForm::typeid));
 			this->tabControl1 = (gcnew System::Windows::Forms::TabControl());
 			this->usersPage = (gcnew System::Windows::Forms::TabPage());
+			this->previewButton = (gcnew System::Windows::Forms::Button());
+			this->prntButton = (gcnew System::Windows::Forms::Button());
 			this->mainGrid = (gcnew System::Windows::Forms::DataGridView());
 			this->name = (gcnew System::Windows::Forms::Label());
 			this->label73 = (gcnew System::Windows::Forms::Label());
@@ -677,6 +692,8 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			this->updPasspText = (gcnew System::Windows::Forms::TextBox());
 			this->updRulesBox = (gcnew System::Windows::Forms::ComboBox());
 			this->ctrlUsersTable = (gcnew System::Windows::Forms::DataGridView());
+			this->printDocument1 = (gcnew System::Drawing::Printing::PrintDocument());
+			this->printPreviewDialog1 = (gcnew System::Windows::Forms::PrintPreviewDialog());
 			this->tabControl1->SuspendLayout();
 			this->usersPage->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->mainGrid))->BeginInit();
@@ -749,6 +766,8 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// 
 			// usersPage
 			// 
+			this->usersPage->Controls->Add(this->previewButton);
+			this->usersPage->Controls->Add(this->prntButton);
 			this->usersPage->Controls->Add(this->mainGrid);
 			this->usersPage->Controls->Add(this->name);
 			this->usersPage->Controls->Add(this->label73);
@@ -761,6 +780,26 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			this->usersPage->TabIndex = 0;
 			this->usersPage->Text = L"Заказ билета";
 			this->usersPage->UseVisualStyleBackColor = true;
+			// 
+			// previewButton
+			// 
+			this->previewButton->Location = System::Drawing::Point(658, 24);
+			this->previewButton->Name = L"previewButton";
+			this->previewButton->Size = System::Drawing::Size(75, 23);
+			this->previewButton->TabIndex = 7;
+			this->previewButton->Text = L"Просмотр";
+			this->previewButton->UseVisualStyleBackColor = true;
+			this->previewButton->Click += gcnew System::EventHandler(this, &mainForm::previewButton_Click);
+			// 
+			// prntButton
+			// 
+			this->prntButton->Location = System::Drawing::Point(739, 24);
+			this->prntButton->Name = L"prntButton";
+			this->prntButton->Size = System::Drawing::Size(75, 23);
+			this->prntButton->TabIndex = 6;
+			this->prntButton->Text = L" Печать";
+			this->prntButton->UseVisualStyleBackColor = true;
+			this->prntButton->Click += gcnew System::EventHandler(this, &mainForm::prntButton_Click);
 			// 
 			// mainGrid
 			// 
@@ -3207,6 +3246,21 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			this->ctrlUsersTable->TabIndex = 2;
 			this->ctrlUsersTable->CellClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &mainForm::ctrlUsersTable_CellClick);
 			// 
+			// printDocument1
+			// 
+			this->printDocument1->PrintPage += gcnew System::Drawing::Printing::PrintPageEventHandler(this, &mainForm::printDocument1_PrintPage);
+			// 
+			// printPreviewDialog1
+			// 
+			this->printPreviewDialog1->AutoScrollMargin = System::Drawing::Size(0, 0);
+			this->printPreviewDialog1->AutoScrollMinSize = System::Drawing::Size(0, 0);
+			this->printPreviewDialog1->ClientSize = System::Drawing::Size(400, 300);
+			this->printPreviewDialog1->Document = this->printDocument1;
+			this->printPreviewDialog1->Enabled = true;
+			this->printPreviewDialog1->Icon = (cli::safe_cast<System::Drawing::Icon^  >(resources->GetObject(L"printPreviewDialog1.Icon")));
+			this->printPreviewDialog1->Name = L"printPreviewDialog1";
+			this->printPreviewDialog1->Visible = false;
+			// 
 			// mainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -3328,15 +3382,14 @@ private: System::Void addPlanesParamButton_Click(System::Object^  sender, System
 				 addPlanesParamButton->Enabled = true;
 				 return;
 			 }
-			 MySqlDataReader^ myReader;
 			 numTab = 2;
-			 myReader = executeReq("INSERT INTO "+PREFIX+".plane_parametrs (model,spot_num) VALUES('"
+			 executeReq("INSERT INTO "+PREFIX+".plane_parametrs (model,spot_num) VALUES('"
 								   +planesParamModelTextBox->Text+"',"+spotNumericUpDown->Value+")");
 			 loadData("select * from "+PREFIX+".plane_parametrs", planeParamTable);
 			 FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",delPlaneParamModelComboBox);
-			 FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",updPlanesParamModelComboBox);
-			 FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",addPlaneModelComboBox);
-			 FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",updPlaneModelComboBox);
+			 CopyCombo(updPlanesParamModelComboBox,delPlaneParamModelComboBox);
+			 CopyCombo(addPlaneModelComboBox,delPlaneParamModelComboBox);
+			 CopyCombo(updPlaneModelComboBox,delPlaneParamModelComboBox);
 			 addPlanesParamButton->Enabled = true;
 		 }
 private: System::Void numericUpDown1_KeyPress(System::Object^  sender, System::Windows::Forms::KeyPressEventArgs^  e) {
@@ -3385,18 +3438,14 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 				 updatePlanesParamButton->Enabled = true;
 				 return;
 			 }
-			 MySqlDataReader^ myReader;
 			 numTab = 2;
-			 myReader = executeReq("UPDATE "+PREFIX+".plane_parametrs SET model='"+newPlanesParamModelTextBox->Text+"', spot_num ="+newSpotNumericUpDown->Value+" WHERE model = '"+updPlanesParamModelComboBox->Text+"';");
+			 executeReq("UPDATE "+PREFIX+".plane_parametrs SET model='"+newPlanesParamModelTextBox->Text+"', spot_num ="+newSpotNumericUpDown->Value+" WHERE model = '"+updPlanesParamModelComboBox->Text+"';");
 			 loadData("select * from "+PREFIX+".plane_parametrs", planeParamTable);
 			 loadData("select * from "+PREFIX+".planes", planesTable);
 			 FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",delPlaneParamModelComboBox);
 			 CopyCombo(updPlanesParamModelComboBox,delPlaneParamModelComboBox);
 			 CopyCombo(updPlaneModelComboBox,delPlaneParamModelComboBox);
 			 CopyCombo(addPlaneModelComboBox,delPlaneParamModelComboBox);
-			 //FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",updPlanesParamModelComboBox);
-			 //FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",addPlaneModelComboBox);
-			 //FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",updPlaneModelComboBox);
 			 updatePlanesParamButton->Enabled = true;
 		 }
 
@@ -3416,25 +3465,23 @@ private: System::Void deletePlanesParametrsButton_Click(System::Object^  sender,
 				 deletePlanesParametrsButton->Enabled = true;
 				 return;
 			 }
-			 MySqlDataReader^ myReader;
 			 numTab = 2;
-			 myReader = executeReq("DELETE FROM "+PREFIX+".plane_parametrs where model='"+delPlaneParamModelComboBox->Text+"';");
+			 executeReq("DELETE FROM "+PREFIX+".plane_parametrs where model='"+delPlaneParamModelComboBox->Text+"';");
 			 loadData("select * from "+PREFIX+".plane_parametrs", planeParamTable);
 			 loadData("select * from "+PREFIX+".planes", planesTable);
 			 FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",delPlaneParamModelComboBox);
 			 CopyCombo(updPlanesParamModelComboBox,delPlaneParamModelComboBox);
 			 CopyCombo(updPlaneModelComboBox,delPlaneParamModelComboBox);
 			 CopyCombo(addPlaneModelComboBox,delPlaneParamModelComboBox);
-			 //FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",updPlanesParamModelComboBox);
-			 //FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",addPlaneModelComboBox);
-			 //FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",updPlaneModelComboBox);
 			 deletePlanesParametrsButton->Enabled = true;
 			 }
 		 }
 private: System::Void planeParamTable_CellClick(System::Object^  sender, System::Windows::Forms::DataGridViewCellEventArgs^  e) {
+			 planeParamTable->Enabled = false;
 			 updPlanesParamModelComboBox->Text = planeParamTable->CurrentRow->Cells[0]->Value->ToString();
 			 newSpotNumericUpDown->Value = Convert::ToInt32(planeParamTable->CurrentRow->Cells[1]->Value->ToString(),10);
 			 delPlaneParamModelComboBox->Text = planeParamTable->CurrentRow->Cells[0]->Value->ToString();
+			 planeParamTable->Enabled = true;
 		 }
 private: System::Void addPlaneButton_Click(System::Object^  sender, System::EventArgs^  e) {
 			 addPlaneButton->Enabled = false;
@@ -3452,16 +3499,14 @@ private: System::Void addPlaneButton_Click(System::Object^  sender, System::Even
 				 addPlaneButton->Enabled = true;
 				 return;
 			 }
-			 MySqlDataReader^ myReader;
 			 numTab = 3;
-			 myReader = executeReq("INSERT INTO "+PREFIX+".planes (model,company) VALUES('"+
+			 executeReq("INSERT INTO "+PREFIX+".planes (model,company) VALUES('"+
 								   addPlaneModelComboBox->Text+"','"+addPlaneCompanyTextBox->Text+"')");
 			 loadData("select * from "+PREFIX+".planes", planesTable);
 			 FillCombo("SELECT id_plane FROM "+PREFIX+".planes","id_plane",updPlaneIdComboBox);
 			 CopyCombo(delPlaneIdComboBox,updPlaneIdComboBox);
 			 CopyCombo(addFlightPlaneId,updPlaneIdComboBox);
 			 CopyCombo(updFlightPlaneId,updPlaneIdComboBox);
-			 //FillCombo("SELECT id_plane FROM "+PREFIX+".planes","id_plane",delPlaneIdComboBox);
 			 addPlaneButton->Enabled = true;
 		 }
 private: System::Void button1_Click_1(System::Object^  sender, System::EventArgs^  e) {
@@ -3488,8 +3533,7 @@ private: System::Void button1_Click_1(System::Object^  sender, System::EventArgs
 				 return;
 			 }
 			 numTab = 3;
-			 MySqlDataReader^ myReader;
-			 myReader = executeReq("UPDATE "+PREFIX+".planes SET model='"+
+			 executeReq("UPDATE "+PREFIX+".planes SET model='"+
 						updPlaneModelComboBox->Text+"', company ='"+
 						updPlaneCompanyTextBox->Text+"' WHERE id_plane = '"+updPlaneIdComboBox->Text+"';");
 			 loadData("select * from "+PREFIX+".planes", planesTable);
@@ -3518,11 +3562,9 @@ private: System::Void deletePlaneButton_Click(System::Object^  sender, System::E
 			 }
 			 deletePlaneButton->Enabled = true;
 			 numTab = 3;
-			 MySqlDataReader^ myReader;
-			 myReader = executeReq("DELETE FROM "+PREFIX+".planes where id_plane='"+delPlaneIdComboBox->Text+"';");
+			 executeReq("DELETE FROM "+PREFIX+".planes where id_plane='"+delPlaneIdComboBox->Text+"';");
 			 loadData("select * from "+PREFIX+".planes", planesTable);
 			 FillCombo("SELECT id_plane FROM "+PREFIX+".planes","id_plane",updPlaneIdComboBox);
-			 //FillCombo("SELECT id_plane FROM "+PREFIX+".planes","id_plane",delPlaneIdComboBox);
 			 CopyCombo(delPlaneIdComboBox,updPlaneIdComboBox);
 			 CopyCombo(addFlightPlaneId,updPlaneIdComboBox);
 			 CopyCombo(updFlightPlaneId,updPlaneIdComboBox);
@@ -3572,13 +3614,13 @@ private: System::Void addFlightButton_Click(System::Object^  sender, System::Eve
 			 }
 			 MySqlDataReader^ myReader;
 			 numTab = 4;
-			 myReader = executeReq("INSERT INTO "+PREFIX+".flights (id_plane,departure,destination,departure_date,arrival_date) VALUES("+
+			 executeReq("INSERT INTO "+PREFIX+".flights (id_plane,departure,destination,departure_date,arrival_date) VALUES("+
 				 addFlightPlaneId->Text+",'"+addFlightDepart->Text+"','"+addFlightArrive->Text+"','"+addFlightDepartTime->Text+"','"+addFlightArrivalTime->Text+"')");
 			 myReader = executeReq("select max(id_flight) from "+PREFIX+".flights");
 			 myReader->Read();
 			 String^ addFlightId = myReader->GetString(0);
-			 myReader = executeReq("INSERT INTO "+PREFIX+".tariffs (id_flight,class,price) VALUES("+addFlightId+",'B',"+Convert::ToInt32(addFlightPrice->Text,10)+")");
-			 myReader = executeReq("INSERT INTO "+PREFIX+".tariffs (id_flight,class,price) VALUES("+addFlightId+",'A',"+(Convert::ToInt32(addFlightPrice->Text,10)*1.15).ToString()+")");
+			 executeReq("INSERT INTO "+PREFIX+".tariffs (id_flight,class,price) VALUES("+addFlightId+",'B',"+Convert::ToInt32(addFlightPrice->Text,10)+")");
+			 executeReq("INSERT INTO "+PREFIX+".tariffs (id_flight,class,price) VALUES("+addFlightId+",'A',"+(Convert::ToInt32(addFlightPrice->Text,10)*1.15).ToString()+")");
 			 loadData("select * from "+PREFIX+".flights", flightsTable);
 			 loadData("select * from "+PREFIX+".tariffs",tariffsTable);
 			 loadData("select flights.departure,flights.destination,DATE_FORMAT(flights.departure_date,'%Y-%m-%d %H:%i:%s'),DATE_FORMAT(flights.arrival_date,'%Y-%m-%d %H:%i:%s'),tariffs.price from  "+PREFIX+
@@ -3586,6 +3628,7 @@ private: System::Void addFlightButton_Click(System::Object^  sender, System::Eve
 			 loadData("SELECT tickets.id_ticket,tickets.id_flight,flights.departure,flights.destination,flights.departure_date,flights.arrival_date,tariffs.price,tickets.sale_date from "+
 				 PREFIX+".tickets join "+PREFIX+".tariffs on tariffs.id_flight=tickets.id_flight join "+PREFIX+
 				 ".flights on flights.id_flight=tickets.id_flight where tariffs.class=tickets.class AND tickets.id_pass='"+(gcnew String(idPass))+"';",mainGrid);
+			 loadData("select * from "+PREFIX+".tickets",ticketsTable);
 			 FillCombo("SELECT id_flight FROM "+PREFIX+".flights","id_flight",
 				 updFlightId);
 			 CopyCombo(delFlightId,updFlightId);
@@ -3647,15 +3690,14 @@ private: System::Void updFlightButton_Click(System::Object^  sender, System::Eve
 				 updFlightButton->Enabled = true;
 				 return;
 			 }
-			 MySqlDataReader^ myReader;
 			 numTab = 4;
-			 myReader = executeReq("UPDATE "+PREFIX+".flights SET id_plane="+updFlightPlaneId->Text+
+			 executeReq("UPDATE "+PREFIX+".flights SET id_plane="+updFlightPlaneId->Text+
 				 ", departure ='"+updFlightDep->Text+"', destination ='"+updFlightDest->Text+
 				 "', departure_date = '"+updFlightDepDate->Text+
 				 "', arrival_date ='"+updFlightArrivalDate->Text+"' WHERE id_flight = "+updFlightId->Text+";");
-			 myReader = executeReq("UPDATE "+PREFIX+".tariffs SET price="+updFlightPrice->Text+
+			 executeReq("UPDATE "+PREFIX+".tariffs SET price="+updFlightPrice->Text+
 				 " WHERE id_flight = "+updFlightId->Text+" AND class='B';");
-			 myReader = executeReq("UPDATE "+PREFIX+".tariffs SET price="+(Convert::ToInt32(updFlightPrice->Text)*1.15).ToString()+
+			 executeReq("UPDATE "+PREFIX+".tariffs SET price="+(Convert::ToInt32(updFlightPrice->Text)*1.15).ToString()+
 				 " WHERE id_flight = "+updFlightId->Text+" AND class='A';");
 			 loadData("select * from "+PREFIX+".flights", flightsTable);
 			 loadData("select * from "+PREFIX+".tariffs",tariffsTable);
@@ -3664,8 +3706,7 @@ private: System::Void updFlightButton_Click(System::Object^  sender, System::Eve
 			 loadData("SELECT tickets.id_ticket,tickets.id_flight,flights.departure,flights.destination,flights.departure_date,flights.arrival_date,tariffs.price,tickets.sale_date from "+
 				 PREFIX+".tickets join "+PREFIX+".tariffs on tariffs.id_flight=tickets.id_flight join "+PREFIX+
 				 ".flights on flights.id_flight=tickets.id_flight where tariffs.class=tickets.class AND tickets.id_pass='"+(gcnew String(idPass))+"';",mainGrid);
-			 loadData("select * from "+PREFIX+".cargo", cargoTable);
-			 //FillCombo("SELECT id_plane FROM "+PREFIX+".planes","id_plane",delPlaneIdComboBox);
+			 loadData("select * from "+PREFIX+".tickets",ticketsTable);
 			 FillCombo("SELECT id_flight FROM "+PREFIX+".flights WHERE departure_date>curdate() AND departure_date>curtime()","id_flight",
 				 addCargoFlight);
 			 CopyCombo(updCargoFlight,addCargoFlight);
@@ -3680,6 +3721,7 @@ private: System::Void updFlightButton_Click(System::Object^  sender, System::Eve
 			 updFlightButton->Enabled = true;
 		 }
 private: System::Void flightsTable_CellClick(System::Object^  sender, System::Windows::Forms::DataGridViewCellEventArgs^  e) {
+			 flightsTable->Enabled=false;
 			 updFlightId->Text = flightsTable->CurrentRow->Cells[0]->Value->ToString();
 			 updFlightPlaneId->Text = flightsTable->CurrentRow->Cells[1]->Value->ToString();
 			 updFlightDep->Text = flightsTable->CurrentRow->Cells[2]->Value->ToString();
@@ -3691,6 +3733,7 @@ private: System::Void flightsTable_CellClick(System::Object^  sender, System::Wi
 			 myReader->Read();
 			 updFlightPrice->Text = myReader->GetString(0);
 			 loadData("select * from "+PREFIX+".tariffs WHERE id_flight="+updFlightId->Text+";",tariffsTable);
+			 flightsTable->Enabled=true;
 		 }
 private: System::Void delFlightButton_Click(System::Object^  sender, System::EventArgs^  e) {
 			 delFlightButton->Enabled = false;
@@ -3702,9 +3745,7 @@ private: System::Void delFlightButton_Click(System::Object^  sender, System::Eve
 				 return;
 			 }
 			 numTab = 4;
-			 MySqlDataReader^ myReader;
-			 myReader = executeReq("DELETE FROM "+PREFIX+".flights where id_flight="+delFlightId->Text+";");
-//			 myReader = executeReq("DELETE FROM "+PREFIX+".tariffs where id_flight="+delFlightId->Text+";");
+			 executeReq("DELETE FROM "+PREFIX+".flights where id_flight="+delFlightId->Text+";");
 			 loadData("select * from "+PREFIX+".flights", flightsTable);
 			 loadData("select * from "+PREFIX+".tariffs",tariffsTable);
 			 loadData("select flights.departure,flights.destination,DATE_FORMAT(flights.departure_date,'%Y-%m-%d %H:%i:%s'),DATE_FORMAT(flights.arrival_date,'%Y-%m-%d %H:%i:%s'),tariffs.price from  "+PREFIX+
@@ -3712,7 +3753,7 @@ private: System::Void delFlightButton_Click(System::Object^  sender, System::Eve
 			 loadData("SELECT tickets.id_ticket,tickets.id_flight,flights.departure,flights.destination,flights.departure_date,flights.arrival_date,tariffs.price,tickets.sale_date from "+
 				 PREFIX+".tickets join "+PREFIX+".tariffs on tariffs.id_flight=tickets.id_flight join "+PREFIX+
 				 ".flights on flights.id_flight=tickets.id_flight where tariffs.class=tickets.class AND tickets.id_pass='"+(gcnew String(idPass))+"';",mainGrid);
-			 loadData("select * from "+PREFIX+".cargo", cargoTable);
+			 loadData("select * from "+PREFIX+".tickets",ticketsTable);
 			 FillCombo("SELECT id_flight FROM "+PREFIX+".flights","id_flight",
 				 updFlightId);
 			 CopyCombo(delFlightId,updFlightId);
@@ -3905,9 +3946,8 @@ private: System::Void addCargoButton_Click(System::Object^  sender, System::Even
 				 addCargoButton->Enabled = true;
 				 return;
 			 }
-			 MySqlDataReader^ myReader;
 			 numTab = 5;
-			 myReader = executeReq("INSERT INTO "+PREFIX+".cargo (id_pass,id_flight,name,dimensions,weight) VALUES('"+
+			 executeReq("INSERT INTO "+PREFIX+".cargo (id_pass,id_flight,name,dimensions,weight) VALUES('"+
 				 addCargoPass->Text+"',"+addCargoFlight->Text+",'"+addCargoName->Text+"','"
 				 +addCargoDimX->Text+"x"+addCargoDimY->Text+"x"+addCargoDimZ->Text+"','"+addCargoWeight->Text+"')");
 			 loadData("select * from "+PREFIX+".cargo", cargoTable);
@@ -3973,9 +4013,8 @@ private: System::Void updCargoButton_Click(System::Object^  sender, System::Even
 				 updCargoButton->Enabled = true;
 				 return;
 			 }
-			 MySqlDataReader^ myReader;
 			 numTab = 5;
-			 myReader = executeReq("UPDATE "+PREFIX+".cargo SET id_pass='"+updCargoPass->Text+
+			 executeReq("UPDATE "+PREFIX+".cargo SET id_pass='"+updCargoPass->Text+
 				 "', id_flight ="+updCargoFlight->Text+", name ='"+updCargoName->Text+
 				 "', dimensions = '"+updCargoDimX->Text+"x"+updCargoDimY->Text+"x"+updCargoDimZ->Text+
 				 "', weight ='"+updCargoWeight->Text+"' WHERE id_cargo = "+updCargoId->Text+";");
@@ -3983,6 +4022,7 @@ private: System::Void updCargoButton_Click(System::Object^  sender, System::Even
 			 updCargoButton->Enabled = true;
 		 }
 private: System::Void cargoTable_CellClick(System::Object^  sender, System::Windows::Forms::DataGridViewCellEventArgs^  e) {
+			 cargoTable->Enabled = false;
 			 updCargoId->Text = cargoTable->CurrentRow->Cells[0]->Value->ToString();
 			 delCargoId->Text = cargoTable->CurrentRow->Cells[0]->Value->ToString();
 			 updCargoPass->Text = cargoTable->CurrentRow->Cells[1]->Value->ToString();
@@ -4002,6 +4042,7 @@ private: System::Void cargoTable_CellClick(System::Object^  sender, System::Wind
 			 for(;k<s1->Length;k++)
 				 updCargoDimZ->Text += s1[k];
 			 updCargoWeight->Text = cargoTable->CurrentRow->Cells[5]->Value->ToString();
+			 cargoTable->Enabled = true;
 		 }
 private: System::Void delCargoButton_Click(System::Object^  sender, System::EventArgs^  e) {
 			 delCargoButton->Enabled = false;
@@ -4012,9 +4053,8 @@ private: System::Void delCargoButton_Click(System::Object^  sender, System::Even
 				 delCargoButton->Enabled = true;
 				 return;
 			 }
-			 MySqlDataReader^ myReader;
 			 numTab = 5;
-			 myReader = executeReq("DELETE FROM "+PREFIX+".cargo where id_cargo="+delCargoId->Text+";");
+			 executeReq("DELETE FROM "+PREFIX+".cargo where id_cargo="+delCargoId->Text+";");
 			 loadData("select * from "+PREFIX+".cargo", cargoTable);
 			 FillCombo("SELECT id_cargo FROM "+PREFIX+".cargo","id_cargo",updCargoId);
 			 CopyCombo(delCargoId,updCargoId);
@@ -4178,6 +4218,8 @@ private: System::Void updTicketDest_KeyPress(System::Object^  sender, System::Wi
 			 else updTicketDest->Text="";
 		 }
 private: System::Void updTicketDep_TextChanged(System::Object^  sender, System::EventArgs^  e) {
+		if(!isCellClick)
+		{
 			 if(updTicketDep->Text->Length!=0)
 				 FillCombo("SELECT distinct destination FROM "+PREFIX+".flights WHERE departure='"+updTicketDep->Text+"';","destination",updTicketDest);
 			 else
@@ -4193,8 +4235,11 @@ private: System::Void updTicketDep_TextChanged(System::Object^  sender, System::
 					 updTicketDate->Text = "На данный момент рейсов нет";
 				 else updTicketDate->Text = "";
 			 }
-		 }
+		}
+	}
 private: System::Void updTicketDest_TextChanged(System::Object^  sender, System::EventArgs^  e) {
+		if(!isCellClick)
+		{
 			 if(updTicketDest->Text->Length!=0)
 				 FillCombo("SELECT distinct departure FROM "+PREFIX+".flights WHERE destination='"+updTicketDest->Text+"';","departure",updTicketDep);
 			 else
@@ -4210,8 +4255,11 @@ private: System::Void updTicketDest_TextChanged(System::Object^  sender, System:
 					 updTicketDate->Text = "На данный момент рейсов нет";
 				 else updTicketDate->Text = "";
 			 }
-		 }
+		}
+	}
 private: System::Void ticketsTable_CellClick(System::Object^  sender, System::Windows::Forms::DataGridViewCellEventArgs^  e) {
+			 isCellClick = true;
+			 ticketsTable->Enabled = false;
 			 updTicketPass->Text = ticketsTable->CurrentRow->Cells[2]->Value->ToString();
 			 delTicketPass->Text = ticketsTable->CurrentRow->Cells[2]->Value->ToString();
 			 updTicketId->Text = ticketsTable->CurrentRow->Cells[0]->Value->ToString();
@@ -4220,9 +4268,12 @@ private: System::Void ticketsTable_CellClick(System::Object^  sender, System::Wi
 			 MySqlDataReader^ myReader;
 			 myReader = executeReq("SELECT departure,destination,DATE_FORMAT(departure_date,'%Y-%m-%d %H:%i:%s') FROM "+PREFIX+".flights WHERE id_flight="+ticketsTable->CurrentRow->Cells[1]->Value->ToString()+";");
 			 myReader->Read();
+			 updTicketDate->Items->Clear();
 			 updTicketDep->Text = myReader->GetString(0);
 			 updTicketDest->Text = myReader->GetString(1);
 			 updTicketDate->Text = myReader->GetString(2);
+			 isCellClick = false;
+			 ticketsTable->Enabled = true;
 		 }
 private: System::Void button1_Click_2(System::Object^  sender, System::EventArgs^  e) {
 			 updTicketButton->Enabled = false;
@@ -4471,7 +4522,7 @@ private: System::Void addUserButton_Click(System::Object^  sender, System::Event
 				 addUserButton->Enabled = true;
 				 return;
 			 }
-			 if(addPasswText->Text->Length!=11)
+			 if(addPasspText->Text->Length!=11)
 			 {
 				 MessageBox::Show("Поле '№ паспорта' введено неверно. Проверьте что введено 11 цифр", "Ошибка",
 					 MessageBoxButtons::OK,MessageBoxIcon::Error);	
@@ -4547,6 +4598,41 @@ private: System::Void delUserButton_Click(System::Object^  sender, System::Event
 			 executeReq("DELETE FROM "+PREFIX+".passengers where id_pass='"+delUserPassp->Text+"';");
 			 asAdmin(ctrlUsersTable);
 			 delUserButton->Enabled = true;
+		 }
+private: System::Void printDocument1_PrintPage(System::Object^  sender, System::Drawing::Printing::PrintPageEventArgs^  e) {
+			 String^ line ="";
+			 try
+			 {
+				 if(!mainGrid->Rows->Count==1)
+					 return;
+				printFont = gcnew System::Drawing::Font( "Arial",12 );
+				line=Environment::NewLine+"№ билета: "+mainGrid->CurrentRow->Cells[0]->Value->ToString()+Environment::NewLine+
+				"№ рейса: "+mainGrid->CurrentRow->Cells[1]->Value->ToString()+Environment::NewLine+
+				"Пункт отправления: "+mainGrid->CurrentRow->Cells[2]->Value->ToString()+Environment::NewLine+
+				"Пункт Назначения: "+mainGrid->CurrentRow->Cells[3]->Value->ToString()+Environment::NewLine+
+				"Время отправления: "+mainGrid->CurrentRow->Cells[4]->Value->ToString()+Environment::NewLine+
+				"Время прибытия: "+mainGrid->CurrentRow->Cells[5]->Value->ToString()+Environment::NewLine+
+				"Цена: "+mainGrid->CurrentRow->Cells[6]->Value->ToString()+Environment::NewLine+
+				"Дата продажи: "+mainGrid->CurrentRow->Cells[7]->Value->ToString();
+				 e->Graphics->DrawString(line,printFont,Brushes::Black,(float)e->MarginBounds.Left,0,gcnew StringFormat);
+			 }
+			 catch(Exception^ ex)
+			 {
+				MessageBox::Show( ex->Message );
+			 }
+		 }
+private: System::Void prntButton_Click(System::Object^  sender, System::EventArgs^  e) {
+			 try
+			 {
+				 printDocument1->Print();
+			 }
+			 catch(Exception^ ex)
+			 {
+				 MessageBox::Show( ex->Message );
+			 }
+		 }
+private: System::Void previewButton_Click(System::Object^  sender, System::EventArgs^  e) {
+			 printPreviewDialog1->ShowDialog();
 		 }
 };
 }
