@@ -55,11 +55,15 @@ namespace AirTicketOffice {
 			{
 				case 1:
 					r = "Пользователь"; 
-					asUser(tabControl1, false);
+					asUser(tabControl1,ordTable, false);
+					ordTicketClass->Items->Add("A");
+					ordTicketClass->Items->Add("B");
+					FillCombo("SELECT distinct departure FROM "+PREFIX+".flights WHERE departure_date>curdate()","departure",ordTicketDep);
+					FillCombo("SELECT distinct destination FROM "+PREFIX+".flights WHERE departure_date>curdate()","destination",ordTicketDest);
 					break;
 				case 2:
 					r = "Менеджер по билетам"; 
-					asTeller(tabControl1,ticketsTable, false);
+					asTeller(tabControl1,ticketsTable,ordTable, false);
 					FillCombo("SELECT id_pass FROM "+PREFIX+".passengers","id_pass",addTicketPass);
 					FillCombo("SELECT distinct departure FROM "+PREFIX+".flights","departure",addTicketDep);
 					FillCombo("SELECT distinct destination FROM "+PREFIX+".flights","destination",addTicketDest);
@@ -70,17 +74,26 @@ namespace AirTicketOffice {
 					CopyCombo(updTicketClass,addTicketClass);
 					FillCombo("SELECT distinct id_pass FROM "+PREFIX+".tickets","id_pass",updTicketPass);
 					CopyCombo(delTicketPass,updTicketPass);
+					ordTicketClass->Items->Add("A");
+					ordTicketClass->Items->Add("B");
+					FillCombo("SELECT distinct departure FROM "+PREFIX+".flights WHERE departure_date>curdate()","departure",ordTicketDep);
+					FillCombo("SELECT distinct destination FROM "+PREFIX+".flights WHERE departure_date>curdate()","destination",ordTicketDest);
 					break;
 				case 3:
 					r = "Менеджер грузов"; 
-					asCargoManager(cargoTable,tabControl1, false);
+					asCargoManager(cargoTable,tabControl1,ordTable, false);
 					FillCombo("SELECT id_flight FROM "+PREFIX+".flights WHERE departure_date>curdate() AND departure_date>curtime()","id_flight",
 						addCargoFlight);
 					CopyCombo(updCargoFlight,addCargoFlight);
 					FillCombo("SELECT id_pass FROM "+PREFIX+".passengers","id_pass",
 						addCargoPass);
+					CopyCombo(updCargoPass,addCargoPass);
 					FillCombo("SELECT id_cargo FROM "+PREFIX+".cargo","id_cargo",updCargoId);
 					CopyCombo(delCargoId,updCargoId);
+					ordTicketClass->Items->Add("A");
+					ordTicketClass->Items->Add("B");
+					FillCombo("SELECT distinct departure FROM "+PREFIX+".flights WHERE departure_date>curdate()","departure",ordTicketDep);
+					FillCombo("SELECT distinct destination FROM "+PREFIX+".flights WHERE departure_date>curdate()","destination",ordTicketDest);
 					break;
 				case 4:
 					r = "Организационный менеджер"; 
@@ -103,6 +116,7 @@ namespace AirTicketOffice {
 					CopyCombo(updCargoFlight,addCargoFlight);
 					FillCombo("SELECT id_pass FROM "+PREFIX+".passengers","id_pass",
 						addCargoPass);
+					CopyCombo(updCargoPass,addCargoPass);
 					FillCombo("SELECT id_cargo FROM "+PREFIX+".cargo","id_cargo",updCargoId);
 					CopyCombo(delCargoId,updCargoId);
 					FillCombo("SELECT id_pass FROM "+PREFIX+".passengers","id_pass",addTicketPass);
@@ -121,7 +135,7 @@ namespace AirTicketOffice {
 					asAdmin(ctrlUsersTable);
 					asMainManager(flightsTable, planesTable, 
 								   planeParamTable,tariffsTable, tabControl1,ticketsTable,ordTable, true);
-					asCargoManager(cargoTable,tabControl1, true);
+					asCargoManager(cargoTable,tabControl1,ordTable, true);
 					FillCombo("SELECT model FROM "+PREFIX+".plane_parametrs","model",
 						delPlaneParamModelComboBox);
 					CopyCombo(updPlanesParamModelComboBox,delPlaneParamModelComboBox);
@@ -137,6 +151,7 @@ namespace AirTicketOffice {
 					CopyCombo(updCargoFlight,addCargoFlight);
 					FillCombo("SELECT id_pass FROM "+PREFIX+".passengers","id_pass",
 						addCargoPass);
+					CopyCombo(updCargoPass,addCargoPass);
 					FillCombo("SELECT id_flight FROM "+PREFIX+".flights","id_flight",
 						updFlightId);
 					CopyCombo(delFlightId,updFlightId);
@@ -399,7 +414,7 @@ private: System::Windows::Forms::Button^  ordTicketButton;
 private: System::Windows::Forms::Label^  label68;
 private: System::Windows::Forms::ComboBox^  ordTicketClass;
 
-private: System::Windows::Forms::Label^  label69;
+
 private: System::Windows::Forms::Label^  label70;
 private: System::Windows::Forms::Label^  label71;
 private: System::Windows::Forms::ComboBox^  ordTicketDest;
@@ -464,7 +479,6 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			this->ordTicketButton = (gcnew System::Windows::Forms::Button());
 			this->label68 = (gcnew System::Windows::Forms::Label());
 			this->ordTicketClass = (gcnew System::Windows::Forms::ComboBox());
-			this->label69 = (gcnew System::Windows::Forms::Label());
 			this->label70 = (gcnew System::Windows::Forms::Label());
 			this->label71 = (gcnew System::Windows::Forms::Label());
 			this->ordTicketDest = (gcnew System::Windows::Forms::ComboBox());
@@ -804,7 +818,6 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			this->groupBox21->Controls->Add(this->ordTicketButton);
 			this->groupBox21->Controls->Add(this->label68);
 			this->groupBox21->Controls->Add(this->ordTicketClass);
-			this->groupBox21->Controls->Add(this->label69);
 			this->groupBox21->Controls->Add(this->label70);
 			this->groupBox21->Controls->Add(this->label71);
 			this->groupBox21->Controls->Add(this->ordTicketDest);
@@ -823,20 +836,20 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			this->ordTable->AllowUserToResizeRows = false;
 			this->ordTable->BackgroundColor = System::Drawing::SystemColors::ButtonHighlight;
 			this->ordTable->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::DisableResizing;
-			this->ordTable->Location = System::Drawing::Point(261, 36);
+			this->ordTable->Location = System::Drawing::Point(199, 36);
 			this->ordTable->MultiSelect = false;
 			this->ordTable->Name = L"ordTable";
 			this->ordTable->ReadOnly = true;
 			this->ordTable->RowHeadersVisible = false;
 			this->ordTable->RowHeadersWidthSizeMode = System::Windows::Forms::DataGridViewRowHeadersWidthSizeMode::DisableResizing;
-			this->ordTable->Size = System::Drawing::Size(544, 190);
+			this->ordTable->Size = System::Drawing::Size(606, 190);
 			this->ordTable->TabIndex = 25;
 			this->ordTable->CellClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &mainForm::ordTable_CellClick);
 			// 
 			// label74
 			// 
 			this->label74->AutoSize = true;
-			this->label74->Location = System::Drawing::Point(270, 20);
+			this->label74->Location = System::Drawing::Point(196, 20);
 			this->label74->Name = L"label74";
 			this->label74->Size = System::Drawing::Size(40, 13);
 			this->label74->TabIndex = 4;
@@ -845,7 +858,7 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// label67
 			// 
 			this->label67->AutoSize = true;
-			this->label67->Location = System::Drawing::Point(6, 60);
+			this->label67->Location = System::Drawing::Point(6, 100);
 			this->label67->Name = L"label67";
 			this->label67->Size = System::Drawing::Size(103, 13);
 			this->label67->TabIndex = 24;
@@ -854,7 +867,7 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// ordTicketDate
 			// 
 			this->ordTicketDate->FormattingEnabled = true;
-			this->ordTicketDate->Location = System::Drawing::Point(4, 76);
+			this->ordTicketDate->Location = System::Drawing::Point(4, 116);
 			this->ordTicketDate->Name = L"ordTicketDate";
 			this->ordTicketDate->Size = System::Drawing::Size(189, 21);
 			this->ordTicketDate->TabIndex = 23;
@@ -862,7 +875,7 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// 
 			// ordTicketButton
 			// 
-			this->ordTicketButton->Location = System::Drawing::Point(180, 203);
+			this->ordTicketButton->Location = System::Drawing::Point(118, 203);
 			this->ordTicketButton->Name = L"ordTicketButton";
 			this->ordTicketButton->Size = System::Drawing::Size(75, 23);
 			this->ordTicketButton->TabIndex = 22;
@@ -873,7 +886,7 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// label68
 			// 
 			this->label68->AutoSize = true;
-			this->label68->Location = System::Drawing::Point(6, 100);
+			this->label68->Location = System::Drawing::Point(6, 140);
 			this->label68->Name = L"label68";
 			this->label68->Size = System::Drawing::Size(38, 13);
 			this->label68->TabIndex = 21;
@@ -882,27 +895,16 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// ordTicketClass
 			// 
 			this->ordTicketClass->FormattingEnabled = true;
-			this->ordTicketClass->Location = System::Drawing::Point(4, 116);
+			this->ordTicketClass->Location = System::Drawing::Point(4, 156);
 			this->ordTicketClass->Name = L"ordTicketClass";
 			this->ordTicketClass->Size = System::Drawing::Size(47, 21);
 			this->ordTicketClass->TabIndex = 20;
 			this->ordTicketClass->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &mainForm::addPlaneModelComboBox_KeyPress);
 			// 
-			// label69
-			// 
-			this->label69->AutoSize = true;
-			this->label69->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
-				static_cast<System::Byte>(204)));
-			this->label69->Location = System::Drawing::Point(116, 31);
-			this->label69->Name = L"label69";
-			this->label69->Size = System::Drawing::Size(19, 25);
-			this->label69->TabIndex = 19;
-			this->label69->Text = L"-";
-			// 
 			// label70
 			// 
 			this->label70->AutoSize = true;
-			this->label70->Location = System::Drawing::Point(138, 20);
+			this->label70->Location = System::Drawing::Point(6, 60);
 			this->label70->Name = L"label70";
 			this->label70->Size = System::Drawing::Size(101, 13);
 			this->label70->TabIndex = 18;
@@ -920,7 +922,7 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// ordTicketDest
 			// 
 			this->ordTicketDest->FormattingEnabled = true;
-			this->ordTicketDest->Location = System::Drawing::Point(141, 36);
+			this->ordTicketDest->Location = System::Drawing::Point(4, 76);
 			this->ordTicketDest->Name = L"ordTicketDest";
 			this->ordTicketDest->Size = System::Drawing::Size(107, 21);
 			this->ordTicketDest->TabIndex = 16;
@@ -1355,6 +1357,8 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			this->groupBox16->Controls->Add(this->delCargoButton);
 			this->groupBox16->Controls->Add(this->label46);
 			this->groupBox16->Controls->Add(this->delCargoId);
+			this->groupBox16->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
 			this->groupBox16->Location = System::Drawing::Point(565, 20);
 			this->groupBox16->Name = L"groupBox16";
 			this->groupBox16->Size = System::Drawing::Size(246, 209);
@@ -1416,7 +1420,7 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// label48
 			// 
 			this->label48->AutoSize = true;
-			this->label48->Location = System::Drawing::Point(81, 184);
+			this->label48->Location = System::Drawing::Point(80, 180);
 			this->label48->Name = L"label48";
 			this->label48->Size = System::Drawing::Size(60, 13);
 			this->label48->TabIndex = 23;
@@ -1518,7 +1522,7 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// 
 			// updCargoDimZ
 			// 
-			this->updCargoDimZ->Location = System::Drawing::Point(178, 24);
+			this->updCargoDimZ->Location = System::Drawing::Point(173, 24);
 			this->updCargoDimZ->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) {500, 0, 0, 0});
 			this->updCargoDimZ->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) {1, 0, 0, 0});
 			this->updCargoDimZ->Name = L"updCargoDimZ";
@@ -1529,7 +1533,7 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// 
 			// updCargoDimY
 			// 
-			this->updCargoDimY->Location = System::Drawing::Point(99, 24);
+			this->updCargoDimY->Location = System::Drawing::Point(90, 24);
 			this->updCargoDimY->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) {500, 0, 0, 0});
 			this->updCargoDimY->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) {1, 0, 0, 0});
 			this->updCargoDimY->Name = L"updCargoDimY";
@@ -1552,7 +1556,7 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// label39
 			// 
 			this->label39->AutoSize = true;
-			this->label39->Location = System::Drawing::Point(233, 26);
+			this->label39->Location = System::Drawing::Point(228, 26);
 			this->label39->Name = L"label39";
 			this->label39->Size = System::Drawing::Size(21, 13);
 			this->label39->TabIndex = 5;
@@ -1561,7 +1565,7 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// label40
 			// 
 			this->label40->AutoSize = true;
-			this->label40->Location = System::Drawing::Point(145, 26);
+			this->label40->Location = System::Drawing::Point(136, 26);
 			this->label40->Name = L"label40";
 			this->label40->Size = System::Drawing::Size(31, 13);
 			this->label40->TabIndex = 4;
@@ -1570,7 +1574,7 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// label41
 			// 
 			this->label41->AutoSize = true;
-			this->label41->Location = System::Drawing::Point(62, 26);
+			this->label41->Location = System::Drawing::Point(53, 26);
 			this->label41->Name = L"label41";
 			this->label41->Size = System::Drawing::Size(31, 13);
 			this->label41->TabIndex = 3;
@@ -1624,7 +1628,7 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// label47
 			// 
 			this->label47->AutoSize = true;
-			this->label47->Location = System::Drawing::Point(81, 184);
+			this->label47->Location = System::Drawing::Point(80, 180);
 			this->label47->Name = L"label47";
 			this->label47->Size = System::Drawing::Size(60, 13);
 			this->label47->TabIndex = 11;
@@ -1678,7 +1682,7 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// 
 			// addCargoDimZ
 			// 
-			this->addCargoDimZ->Location = System::Drawing::Point(178, 24);
+			this->addCargoDimZ->Location = System::Drawing::Point(171, 24);
 			this->addCargoDimZ->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) {500, 0, 0, 0});
 			this->addCargoDimZ->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) {1, 0, 0, 0});
 			this->addCargoDimZ->Name = L"addCargoDimZ";
@@ -1689,7 +1693,7 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// 
 			// addCargoDimY
 			// 
-			this->addCargoDimY->Location = System::Drawing::Point(99, 24);
+			this->addCargoDimY->Location = System::Drawing::Point(90, 24);
 			this->addCargoDimY->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) {500, 0, 0, 0});
 			this->addCargoDimY->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) {1, 0, 0, 0});
 			this->addCargoDimY->Name = L"addCargoDimY";
@@ -1712,7 +1716,7 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// label37
 			// 
 			this->label37->AutoSize = true;
-			this->label37->Location = System::Drawing::Point(233, 26);
+			this->label37->Location = System::Drawing::Point(226, 26);
 			this->label37->Name = L"label37";
 			this->label37->Size = System::Drawing::Size(21, 13);
 			this->label37->TabIndex = 5;
@@ -1721,7 +1725,7 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// label36
 			// 
 			this->label36->AutoSize = true;
-			this->label36->Location = System::Drawing::Point(145, 26);
+			this->label36->Location = System::Drawing::Point(134, 26);
 			this->label36->Name = L"label36";
 			this->label36->Size = System::Drawing::Size(31, 13);
 			this->label36->TabIndex = 4;
@@ -1730,7 +1734,7 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// label35
 			// 
 			this->label35->AutoSize = true;
-			this->label35->Location = System::Drawing::Point(62, 26);
+			this->label35->Location = System::Drawing::Point(53, 26);
 			this->label35->Name = L"label35";
 			this->label35->Size = System::Drawing::Size(31, 13);
 			this->label35->TabIndex = 3;
@@ -1873,6 +1877,9 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			this->groupBox9->Controls->Add(this->delFlightButton);
 			this->groupBox9->Controls->Add(this->label26);
 			this->groupBox9->Controls->Add(this->delFlightId);
+			this->groupBox9->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
+			this->groupBox9->ForeColor = System::Drawing::SystemColors::HotTrack;
 			this->groupBox9->Location = System::Drawing::Point(543, 19);
 			this->groupBox9->Name = L"groupBox9";
 			this->groupBox9->Size = System::Drawing::Size(262, 197);
@@ -1882,6 +1889,9 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// 
 			// delFlightButton
 			// 
+			this->delFlightButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
+			this->delFlightButton->ForeColor = System::Drawing::SystemColors::ControlText;
 			this->delFlightButton->Location = System::Drawing::Point(185, 168);
 			this->delFlightButton->Name = L"delFlightButton";
 			this->delFlightButton->Size = System::Drawing::Size(71, 23);
@@ -1893,6 +1903,9 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// label26
 			// 
 			this->label26->AutoSize = true;
+			this->label26->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
+			this->label26->ForeColor = System::Drawing::SystemColors::ControlText;
 			this->label26->Location = System::Drawing::Point(3, 16);
 			this->label26->Name = L"label26";
 			this->label26->Size = System::Drawing::Size(126, 13);
@@ -1901,6 +1914,8 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// 
 			// delFlightId
 			// 
+			this->delFlightId->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
 			this->delFlightId->FormattingEnabled = true;
 			this->delFlightId->Location = System::Drawing::Point(6, 36);
 			this->delFlightId->Name = L"delFlightId";
@@ -1927,6 +1942,9 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			this->groupBox8->Controls->Add(this->updFlightDep);
 			this->groupBox8->Controls->Add(this->updFlightDepDate);
 			this->groupBox8->Controls->Add(this->updFlightPlaneId);
+			this->groupBox8->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
+			this->groupBox8->ForeColor = System::Drawing::SystemColors::HotTrack;
 			this->groupBox8->Location = System::Drawing::Point(278, 19);
 			this->groupBox8->Name = L"groupBox8";
 			this->groupBox8->Size = System::Drawing::Size(259, 197);
@@ -1937,6 +1955,9 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// label25
 			// 
 			this->label25->AutoSize = true;
+			this->label25->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
+			this->label25->ForeColor = System::Drawing::SystemColors::ControlText;
 			this->label25->Location = System::Drawing::Point(6, 20);
 			this->label25->Name = L"label25";
 			this->label25->Size = System::Drawing::Size(132, 13);
@@ -1946,6 +1967,9 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// label52
 			// 
 			this->label52->AutoSize = true;
+			this->label52->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
+			this->label52->ForeColor = System::Drawing::SystemColors::ControlText;
 			this->label52->Location = System::Drawing::Point(156, 100);
 			this->label52->Name = L"label52";
 			this->label52->Size = System::Drawing::Size(33, 13);
@@ -1954,6 +1978,8 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// 
 			// updFlightPrice
 			// 
+			this->updFlightPrice->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
 			this->updFlightPrice->Location = System::Drawing::Point(156, 116);
 			this->updFlightPrice->Name = L"updFlightPrice";
 			this->updFlightPrice->Size = System::Drawing::Size(64, 20);
@@ -1962,6 +1988,8 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// 
 			// updFlightId
 			// 
+			this->updFlightId->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
 			this->updFlightId->FormattingEnabled = true;
 			this->updFlightId->Location = System::Drawing::Point(9, 36);
 			this->updFlightId->Name = L"updFlightId";
@@ -1973,6 +2001,9 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// label24
 			// 
 			this->label24->AutoSize = true;
+			this->label24->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
+			this->label24->ForeColor = System::Drawing::SystemColors::ControlText;
 			this->label24->Location = System::Drawing::Point(162, 20);
 			this->label24->Name = L"label24";
 			this->label24->Size = System::Drawing::Size(70, 13);
@@ -1982,6 +2013,9 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// label23
 			// 
 			this->label23->AutoSize = true;
+			this->label23->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
+			this->label23->ForeColor = System::Drawing::SystemColors::ControlText;
 			this->label23->Location = System::Drawing::Point(133, 60);
 			this->label23->Name = L"label23";
 			this->label23->Size = System::Drawing::Size(99, 13);
@@ -1991,6 +2025,9 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// label22
 			// 
 			this->label22->AutoSize = true;
+			this->label22->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
+			this->label22->ForeColor = System::Drawing::SystemColors::ControlText;
 			this->label22->Location = System::Drawing::Point(9, 59);
 			this->label22->Name = L"label22";
 			this->label22->Size = System::Drawing::Size(105, 13);
@@ -1999,6 +2036,9 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// 
 			// updFlightButton
 			// 
+			this->updFlightButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
+			this->updFlightButton->ForeColor = System::Drawing::SystemColors::ControlText;
 			this->updFlightButton->Location = System::Drawing::Point(182, 168);
 			this->updFlightButton->Name = L"updFlightButton";
 			this->updFlightButton->Size = System::Drawing::Size(71, 23);
@@ -2010,6 +2050,8 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// updFlightArrivalDate
 			// 
 			this->updFlightArrivalDate->CustomFormat = L"yyyy-MM-dd HH:mm:ss";
+			this->updFlightArrivalDate->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, 
+				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(204)));
 			this->updFlightArrivalDate->Format = System::Windows::Forms::DateTimePickerFormat::Custom;
 			this->updFlightArrivalDate->Location = System::Drawing::Point(9, 158);
 			this->updFlightArrivalDate->Name = L"updFlightArrivalDate";
@@ -2030,6 +2072,9 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// label20
 			// 
 			this->label20->AutoSize = true;
+			this->label20->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
+			this->label20->ForeColor = System::Drawing::SystemColors::ControlText;
 			this->label20->Location = System::Drawing::Point(6, 140);
 			this->label20->Name = L"label20";
 			this->label20->Size = System::Drawing::Size(92, 13);
@@ -2038,6 +2083,8 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// 
 			// updFlightDest
 			// 
+			this->updFlightDest->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
 			this->updFlightDest->Location = System::Drawing::Point(136, 77);
 			this->updFlightDest->Name = L"updFlightDest";
 			this->updFlightDest->Size = System::Drawing::Size(116, 20);
@@ -2046,6 +2093,9 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// label21
 			// 
 			this->label21->AutoSize = true;
+			this->label21->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
+			this->label21->ForeColor = System::Drawing::SystemColors::ControlText;
 			this->label21->Location = System::Drawing::Point(6, 101);
 			this->label21->Name = L"label21";
 			this->label21->Size = System::Drawing::Size(108, 13);
@@ -2054,6 +2104,8 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// 
 			// updFlightDep
 			// 
+			this->updFlightDep->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
 			this->updFlightDep->Location = System::Drawing::Point(9, 76);
 			this->updFlightDep->Name = L"updFlightDep";
 			this->updFlightDep->Size = System::Drawing::Size(104, 20);
@@ -2062,6 +2114,8 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// updFlightDepDate
 			// 
 			this->updFlightDepDate->CustomFormat = L"yyyy-MM-dd HH:mm:ss";
+			this->updFlightDepDate->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, 
+				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(204)));
 			this->updFlightDepDate->Format = System::Windows::Forms::DateTimePickerFormat::Custom;
 			this->updFlightDepDate->Location = System::Drawing::Point(9, 117);
 			this->updFlightDepDate->Name = L"updFlightDepDate";
@@ -2070,6 +2124,8 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// 
 			// updFlightPlaneId
 			// 
+			this->updFlightPlaneId->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, 
+				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(204)));
 			this->updFlightPlaneId->FormattingEnabled = true;
 			this->updFlightPlaneId->Location = System::Drawing::Point(161, 36);
 			this->updFlightPlaneId->Name = L"updFlightPlaneId";
@@ -2095,6 +2151,9 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			this->groupBox7->Controls->Add(this->addFlightDepart);
 			this->groupBox7->Controls->Add(this->label13);
 			this->groupBox7->Controls->Add(this->addFlightPlaneId);
+			this->groupBox7->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
+			this->groupBox7->ForeColor = System::Drawing::SystemColors::HotTrack;
 			this->groupBox7->Location = System::Drawing::Point(6, 19);
 			this->groupBox7->Name = L"groupBox7";
 			this->groupBox7->Size = System::Drawing::Size(266, 197);
@@ -2105,6 +2164,9 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// label50
 			// 
 			this->label50->AutoSize = true;
+			this->label50->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
+			this->label50->ForeColor = System::Drawing::SystemColors::ControlText;
 			this->label50->Location = System::Drawing::Point(219, 44);
 			this->label50->Name = L"label50";
 			this->label50->Size = System::Drawing::Size(49, 13);
@@ -2114,6 +2176,9 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// label49
 			// 
 			this->label49->AutoSize = true;
+			this->label49->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
+			this->label49->ForeColor = System::Drawing::SystemColors::ControlText;
 			this->label49->Location = System::Drawing::Point(148, 20);
 			this->label49->Name = L"label49";
 			this->label49->Size = System::Drawing::Size(33, 13);
@@ -2122,6 +2187,8 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// 
 			// addFlightPrice
 			// 
+			this->addFlightPrice->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
 			this->addFlightPrice->Location = System::Drawing::Point(148, 36);
 			this->addFlightPrice->Name = L"addFlightPrice";
 			this->addFlightPrice->Size = System::Drawing::Size(64, 20);
@@ -2130,6 +2197,9 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// 
 			// addFlightButton
 			// 
+			this->addFlightButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
+			this->addFlightButton->ForeColor = System::Drawing::SystemColors::ControlText;
 			this->addFlightButton->Location = System::Drawing::Point(189, 168);
 			this->addFlightButton->Name = L"addFlightButton";
 			this->addFlightButton->Size = System::Drawing::Size(71, 23);
@@ -2141,6 +2211,8 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// addFlightArrivalTime
 			// 
 			this->addFlightArrivalTime->CustomFormat = L"yyyy-MM-dd HH:mm:ss";
+			this->addFlightArrivalTime->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, 
+				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(204)));
 			this->addFlightArrivalTime->Format = System::Windows::Forms::DateTimePickerFormat::Custom;
 			this->addFlightArrivalTime->Location = System::Drawing::Point(6, 158);
 			this->addFlightArrivalTime->Name = L"addFlightArrivalTime";
@@ -2150,6 +2222,9 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// label18
 			// 
 			this->label18->AutoSize = true;
+			this->label18->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
+			this->label18->ForeColor = System::Drawing::SystemColors::ControlText;
 			this->label18->Location = System::Drawing::Point(6, 140);
 			this->label18->Name = L"label18";
 			this->label18->Size = System::Drawing::Size(92, 13);
@@ -2159,6 +2234,9 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// label17
 			// 
 			this->label17->AutoSize = true;
+			this->label17->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
+			this->label17->ForeColor = System::Drawing::SystemColors::ControlText;
 			this->label17->Location = System::Drawing::Point(6, 101);
 			this->label17->Name = L"label17";
 			this->label17->Size = System::Drawing::Size(108, 13);
@@ -2168,6 +2246,8 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// addFlightDepartTime
 			// 
 			this->addFlightDepartTime->CustomFormat = L"yyyy-MM-dd HH:mm:ss";
+			this->addFlightDepartTime->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, 
+				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(204)));
 			this->addFlightDepartTime->Format = System::Windows::Forms::DateTimePickerFormat::Custom;
 			this->addFlightDepartTime->Location = System::Drawing::Point(6, 117);
 			this->addFlightDepartTime->Name = L"addFlightDepartTime";
@@ -2188,6 +2268,9 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// label15
 			// 
 			this->label15->AutoSize = true;
+			this->label15->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
+			this->label15->ForeColor = System::Drawing::SystemColors::ControlText;
 			this->label15->Location = System::Drawing::Point(145, 60);
 			this->label15->Name = L"label15";
 			this->label15->Size = System::Drawing::Size(99, 13);
@@ -2197,6 +2280,9 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// label14
 			// 
 			this->label14->AutoSize = true;
+			this->label14->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
+			this->label14->ForeColor = System::Drawing::SystemColors::ControlText;
 			this->label14->Location = System::Drawing::Point(2, 60);
 			this->label14->Name = L"label14";
 			this->label14->Size = System::Drawing::Size(105, 13);
@@ -2205,6 +2291,8 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// 
 			// addFlightArrive
 			// 
+			this->addFlightArrive->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
 			this->addFlightArrive->Location = System::Drawing::Point(148, 76);
 			this->addFlightArrive->Name = L"addFlightArrive";
 			this->addFlightArrive->Size = System::Drawing::Size(112, 20);
@@ -2212,6 +2300,8 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// 
 			// addFlightDepart
 			// 
+			this->addFlightDepart->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
 			this->addFlightDepart->Location = System::Drawing::Point(5, 76);
 			this->addFlightDepart->Name = L"addFlightDepart";
 			this->addFlightDepart->Size = System::Drawing::Size(112, 20);
@@ -2220,6 +2310,9 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// label13
 			// 
 			this->label13->AutoSize = true;
+			this->label13->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(204)));
+			this->label13->ForeColor = System::Drawing::SystemColors::ControlText;
 			this->label13->Location = System::Drawing::Point(6, 20);
 			this->label13->Name = L"label13";
 			this->label13->Size = System::Drawing::Size(70, 13);
@@ -2228,6 +2321,8 @@ private: System::Windows::Forms::TextBox^  delUserPassp;
 			// 
 			// addFlightPlaneId
 			// 
+			this->addFlightPlaneId->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, 
+				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(204)));
 			this->addFlightPlaneId->FormattingEnabled = true;
 			this->addFlightPlaneId->Location = System::Drawing::Point(6, 36);
 			this->addFlightPlaneId->Name = L"addFlightPlaneId";
@@ -3488,7 +3583,9 @@ private: System::Void addFlightButton_Click(System::Object^  sender, System::Eve
 			 loadData("select * from "+PREFIX+".tariffs",tariffsTable);
 			 loadData("select flights.departure,flights.destination,DATE_FORMAT(flights.departure_date,'%Y-%m-%d %H:%i:%s'),DATE_FORMAT(flights.arrival_date,'%Y-%m-%d %H:%i:%s'),tariffs.price from  "+PREFIX+
 				 ".flights join "+PREFIX+".tariffs on flights.id_flight=tariffs.id_flight where tariffs.class='B' AND flights.departure_date>curdate();",ordTable);
-			 loadData("SELECT * FROM "+PREFIX+".tickets WHERE id_pass='"+(gcnew String(idPass))+"';",mainGrid);
+			 loadData("SELECT tickets.id_ticket,tickets.id_flight,flights.departure,flights.destination,flights.departure_date,flights.arrival_date,tariffs.price,tickets.sale_date from "+
+				 PREFIX+".tickets join "+PREFIX+".tariffs on tariffs.id_flight=tickets.id_flight join "+PREFIX+
+				 ".flights on flights.id_flight=tickets.id_flight where tariffs.class=tickets.class AND tickets.id_pass='"+(gcnew String(idPass))+"';",mainGrid);
 			 FillCombo("SELECT id_flight FROM "+PREFIX+".flights","id_flight",
 				 updFlightId);
 			 CopyCombo(delFlightId,updFlightId);
@@ -3564,7 +3661,9 @@ private: System::Void updFlightButton_Click(System::Object^  sender, System::Eve
 			 loadData("select * from "+PREFIX+".tariffs",tariffsTable);
 			 loadData("select flights.departure,flights.destination,DATE_FORMAT(flights.departure_date,'%Y-%m-%d %H:%i:%s'),DATE_FORMAT(flights.arrival_date,'%Y-%m-%d %H:%i:%s'),tariffs.price from  "+PREFIX+
 				 ".flights join "+PREFIX+".tariffs on flights.id_flight=tariffs.id_flight where tariffs.class='B' AND flights.departure_date>curdate();",ordTable);
-			 loadData("SELECT * FROM "+PREFIX+".tickets WHERE id_pass='"+(gcnew String(idPass))+"';",mainGrid);
+			 loadData("SELECT tickets.id_ticket,tickets.id_flight,flights.departure,flights.destination,flights.departure_date,flights.arrival_date,tariffs.price,tickets.sale_date from "+
+				 PREFIX+".tickets join "+PREFIX+".tariffs on tariffs.id_flight=tickets.id_flight join "+PREFIX+
+				 ".flights on flights.id_flight=tickets.id_flight where tariffs.class=tickets.class AND tickets.id_pass='"+(gcnew String(idPass))+"';",mainGrid);
 			 loadData("select * from "+PREFIX+".cargo", cargoTable);
 			 //FillCombo("SELECT id_plane FROM "+PREFIX+".planes","id_plane",delPlaneIdComboBox);
 			 FillCombo("SELECT id_flight FROM "+PREFIX+".flights WHERE departure_date>curdate() AND departure_date>curtime()","id_flight",
@@ -3610,7 +3709,9 @@ private: System::Void delFlightButton_Click(System::Object^  sender, System::Eve
 			 loadData("select * from "+PREFIX+".tariffs",tariffsTable);
 			 loadData("select flights.departure,flights.destination,DATE_FORMAT(flights.departure_date,'%Y-%m-%d %H:%i:%s'),DATE_FORMAT(flights.arrival_date,'%Y-%m-%d %H:%i:%s'),tariffs.price from  "+PREFIX+
 				 ".flights join "+PREFIX+".tariffs on flights.id_flight=tariffs.id_flight where tariffs.class='B' AND flights.departure_date>curdate();",ordTable);
-			 loadData("SELECT * FROM "+PREFIX+".tickets WHERE id_pass='"+(gcnew String(idPass))+"';",mainGrid);
+			 loadData("SELECT tickets.id_ticket,tickets.id_flight,flights.departure,flights.destination,flights.departure_date,flights.arrival_date,tariffs.price,tickets.sale_date from "+
+				 PREFIX+".tickets join "+PREFIX+".tariffs on tariffs.id_flight=tickets.id_flight join "+PREFIX+
+				 ".flights on flights.id_flight=tickets.id_flight where tariffs.class=tickets.class AND tickets.id_pass='"+(gcnew String(idPass))+"';",mainGrid);
 			 loadData("select * from "+PREFIX+".cargo", cargoTable);
 			 FillCombo("SELECT id_flight FROM "+PREFIX+".flights","id_flight",
 				 updFlightId);

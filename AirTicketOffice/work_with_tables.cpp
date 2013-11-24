@@ -14,12 +14,7 @@ bool asMainManager (System::Windows::Forms::DataGridView^ tableFlights,
 {
 	
 	// после удаления одной вкладки индекс меняется
-	if (!admin) {
-		tabCtrl->TabPages->Remove(tabCtrl->TabPages[1]);	
-		tabCtrl->TabPages->Remove(tabCtrl->TabPages[1]);
-		tabCtrl->TabPages->Remove(tabCtrl->TabPages[2]);
-		//tabCtrl->TabPages->Remove(tabCtrl->TabPages[1]);
-	}
+
 	bool check;
 	check = loadData("select * from "+PREFIX+".flights", tableFlights);
 	check = loadData("select * from "+PREFIX+".planes", tablePlanes);
@@ -80,20 +75,41 @@ bool asMainManager (System::Windows::Forms::DataGridView^ tableFlights,
 	tableOrdTickets->Columns[2]->HeaderText = "Время отправления";
 	tableOrdTickets->Columns[3]->HeaderText = "Время прибытия";
 	tableOrdTickets->Columns[4]->HeaderText = "Цена";
-
+	tableOrdTickets->Columns[0]->Width = 120;
+	tableOrdTickets->Columns[1]->Width = 120;
+	tableOrdTickets->Columns[2]->Width = 120;
+	tableOrdTickets->Columns[3]->Width = 120;
+	if (!admin) {
+		tabCtrl->TabPages->Remove(tabCtrl->TabPages[1]);	
+		tabCtrl->TabPages->Remove(tabCtrl->TabPages[1]);
+		tabCtrl->TabPages->Remove(tabCtrl->TabPages[2]);
+		//tabCtrl->TabPages->Remove(tabCtrl->TabPages[1]);
+	}
 	return check;
 }
 
-bool asUser(System::Windows::Forms::TabControl^ tabCtrl, bool admin) {
+bool asUser(System::Windows::Forms::TabControl^ tabCtrl,
+	System::Windows::Forms::DataGridView^ tableOrdTickets, bool admin) {
 	bool check;
 
 	if (!admin)
 	for (int i=0;i<4;i++) tabCtrl->TabPages->Remove(tabCtrl->TabPages[1]);
-
+	check = loadData("select flights.departure,flights.destination,DATE_FORMAT(flights.departure_date,'%Y-%m-%d %H:%i:%s'),DATE_FORMAT(flights.arrival_date,'%Y-%m-%d %H:%i:%s'),tariffs.price from  "+PREFIX+
+		".flights join "+PREFIX+".tariffs on flights.id_flight=tariffs.id_flight where tariffs.class='B' AND flights.departure_date>curdate();",tableOrdTickets);
+	tableOrdTickets->Columns[0]->HeaderText = "Пункт отправления";
+	tableOrdTickets->Columns[1]->HeaderText = "Пункт назначения";
+	tableOrdTickets->Columns[2]->HeaderText = "Время отправления";
+	tableOrdTickets->Columns[3]->HeaderText = "Время прибытия";
+	tableOrdTickets->Columns[4]->HeaderText = "Цена";
+	tableOrdTickets->Columns[0]->Width = 120;
+	tableOrdTickets->Columns[1]->Width = 120;
+	tableOrdTickets->Columns[2]->Width = 120;
+	tableOrdTickets->Columns[3]->Width = 120;
 	return check;
 }
 
-bool asTeller(System::Windows::Forms::TabControl^ tabCtrl,System::Windows::Forms::DataGridView^ tableTickets, bool admin) {
+bool asTeller(System::Windows::Forms::TabControl^ tabCtrl,System::Windows::Forms::DataGridView^ tableTickets,
+	System::Windows::Forms::DataGridView^ tableOrdTickets,bool admin) {
 	bool check;
 
 	if (!admin) {
@@ -112,11 +128,23 @@ bool asTeller(System::Windows::Forms::TabControl^ tabCtrl,System::Windows::Forms
 	tableTickets->Columns[2]->Width = 90;
 	tableTickets->Columns[3]->Width = 50;
 	tableTickets->Columns[4]->Width = 90;
+	check = loadData("select flights.departure,flights.destination,DATE_FORMAT(flights.departure_date,'%Y-%m-%d %H:%i:%s'),DATE_FORMAT(flights.arrival_date,'%Y-%m-%d %H:%i:%s'),tariffs.price from  "+PREFIX+
+		".flights join "+PREFIX+".tariffs on flights.id_flight=tariffs.id_flight where tariffs.class='B' AND flights.departure_date>curdate();",tableOrdTickets);
+	tableOrdTickets->Columns[0]->HeaderText = "Пункт отправления";
+	tableOrdTickets->Columns[1]->HeaderText = "Пункт назначения";
+	tableOrdTickets->Columns[2]->HeaderText = "Время отправления";
+	tableOrdTickets->Columns[3]->HeaderText = "Время прибытия";
+	tableOrdTickets->Columns[4]->HeaderText = "Цена";
+	tableOrdTickets->Columns[0]->Width = 120;
+	tableOrdTickets->Columns[1]->Width = 120;
+	tableOrdTickets->Columns[2]->Width = 120;
+	tableOrdTickets->Columns[3]->Width = 120;
 	return check;
 }
 
 bool asCargoManager(System::Windows::Forms::DataGridView^ tableCargo,
-					System::Windows::Forms::TabControl^ tabCtrl, bool admin) {
+					System::Windows::Forms::TabControl^ tabCtrl,
+					System::Windows::Forms::DataGridView^ tableOrdTickets,bool admin) {
 	bool check;
 
 	if (!admin) {
@@ -140,6 +168,17 @@ bool asCargoManager(System::Windows::Forms::DataGridView^ tableCargo,
 	tableCargo->Columns[3]->Width = 90;
 	tableCargo->Columns[4]->Width = 75;
 	tableCargo->Columns[5]->Width = 75;
+	check = loadData("select flights.departure,flights.destination,DATE_FORMAT(flights.departure_date,'%Y-%m-%d %H:%i:%s'),DATE_FORMAT(flights.arrival_date,'%Y-%m-%d %H:%i:%s'),tariffs.price from  "+PREFIX+
+		".flights join "+PREFIX+".tariffs on flights.id_flight=tariffs.id_flight where tariffs.class='B' AND flights.departure_date>curdate();",tableOrdTickets);
+	tableOrdTickets->Columns[0]->HeaderText = "Пункт отправления";
+	tableOrdTickets->Columns[1]->HeaderText = "Пункт назначения";
+	tableOrdTickets->Columns[2]->HeaderText = "Время отправления";
+	tableOrdTickets->Columns[3]->HeaderText = "Время прибытия";
+	tableOrdTickets->Columns[4]->HeaderText = "Цена";
+	tableOrdTickets->Columns[0]->Width = 120;
+	tableOrdTickets->Columns[1]->Width = 120;
+	tableOrdTickets->Columns[2]->Width = 120;
+	tableOrdTickets->Columns[3]->Width = 120;
 	return check;
 }
 
