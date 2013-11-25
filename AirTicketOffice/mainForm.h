@@ -4638,14 +4638,28 @@ private: System::Void printDocument1_PrintPage(System::Object^  sender, System::
 				 if(!mainGrid->Rows->Count==1)
 					 return;
 				printFont = gcnew System::Drawing::Font( "Arial",12 );
-				line=Environment::NewLine+"№ билета: "+mainGrid->CurrentRow->Cells[0]->Value->ToString()+Environment::NewLine+
+				myReader = executeReq("SELECT full_name FROM "+PREFIX+".passengers WHERE id_pass='"+(gcnew String(idPass))+"';",conDataBase,myReader);
+				myReader->Read();
+				String^ fio=myReader->GetString(0);
+				conDataBase->Close();
+				String^ buf = mainGrid->CurrentRow->Cells[7]->Value->ToString();
+				String^ sale="";
+				int i=0;
+				while(buf[i]!=' ')
+				{
+					sale+=buf[i];
+					i++;
+				}
+				line=Environment::NewLine+Environment::NewLine+Environment::NewLine+"№ билета: "+mainGrid->CurrentRow->Cells[0]->Value->ToString()+Environment::NewLine+
+				"№ паспорта: "+(gcnew String(idPass))+Environment::NewLine+
+				"ФИО: "+fio+Environment::NewLine+
 				"№ рейса: "+mainGrid->CurrentRow->Cells[1]->Value->ToString()+Environment::NewLine+
 				"Пункт отправления: "+mainGrid->CurrentRow->Cells[2]->Value->ToString()+Environment::NewLine+
-				"Пункт Назначения: "+mainGrid->CurrentRow->Cells[3]->Value->ToString()+Environment::NewLine+
+				"Пункт назначения: "+mainGrid->CurrentRow->Cells[3]->Value->ToString()+Environment::NewLine+
 				"Время отправления: "+mainGrid->CurrentRow->Cells[4]->Value->ToString()+Environment::NewLine+
 				"Время прибытия: "+mainGrid->CurrentRow->Cells[5]->Value->ToString()+Environment::NewLine+
 				"Цена: "+mainGrid->CurrentRow->Cells[6]->Value->ToString()+Environment::NewLine+
-				"Дата продажи: "+mainGrid->CurrentRow->Cells[7]->Value->ToString();
+				"Дата продажи: "+sale;//mainGrid->CurrentRow->Cells[7]->Value->ToString();
 				 e->Graphics->DrawString(line,printFont,Brushes::Black,(float)e->MarginBounds.Left,0,gcnew StringFormat);
 			 }
 			 catch(Exception^ ex)

@@ -178,6 +178,7 @@ namespace AirTicketOffice {
 						if (myReader->GetString(5) == "1") currRole = 4; // mainManager
 						if (myReader->GetString(6) == "1") currRole = 5; // admin
 						idPass = toCharArray(loginTextBox->Text);
+						conDataBase->Close();
 						this->Hide();
 						mainForm^ secondForm = gcnew mainForm();
 						secondForm->ShowDialog();
